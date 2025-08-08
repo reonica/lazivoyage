@@ -8603,13 +8603,15 @@ input, select, textarea {
   .accordion-container {
     max-width: 900px;
     margin: 0 auto;
+	width: 100%;
+    overflow-x: hidden;
   }
   
   .accordion-item {
     margin-bottom: 15px;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(9,90,39,0.1);
   }
   
   .accordion-header {
@@ -8622,6 +8624,7 @@ input, select, textarea {
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
+	box-sizing: border-box;
   }
   
   .accordion-header:hover {
@@ -8631,6 +8634,7 @@ input, select, textarea {
   .accordion-header h3 {
     margin: 0 15px;
     flex-grow: 1;
+	word-break: break-word;
   }
   
   .accordion-icon {
@@ -8646,7 +8650,8 @@ input, select, textarea {
   }
   
   .accordion-item.active .accordion-content {
-    max-height: 1000px; /* Đủ lớn để chứa nội dung */
+    max-height: 1000px;
+	overflow: auto;
   }
   
   .accordion-item.active .accordion-icon {
@@ -8659,6 +8664,8 @@ input, select, textarea {
     gap: 10px;
     padding: 20px;
     list-style: none;
+	width: 100%;
+    box-sizing: border-box; /* Quan trọng */
   }
   
   .province-list li a {
@@ -8668,9 +8675,25 @@ input, select, textarea {
     text-decoration: none;
     border-radius: 4px;
     transition: background 0.2s;
+	word-break: break-word;
   }
   
   .province-list li a:hover {
     background: #f0f0f0;
-    color: #0066cc;
+    color: #119130;
   }
+/* Accordition mobile */
+@media (max-width: 768px) {
+  .accordion-container {
+    padding: 0 15px;
+  }
+  
+  .province-list {
+    grid-template-columns: 1fr;
+    overflow-x: hidden;
+  }
+  
+  .accordion-header {
+    padding: 15px;
+  }
+}
