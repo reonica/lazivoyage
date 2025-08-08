@@ -8600,100 +8600,120 @@ input, select, textarea {
 			}
 
 /* ===== CORE STYLES ACCORDIONS ===== */
+.accordion-container {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.accordion-item {
+  margin-bottom: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(9,90,39,0.1);
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 20px;
+  background: #f8f8f8;
+  border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.accordion-header:hover {
+  background: #e9e9e9;
+}
+
+.accordion-header h3 {
+  margin: 0 15px;
+  flex-grow: 1;
+  word-break: break-word;
+}
+
+.accordion-icon {
+  font-size: 1.5em;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: white;
+  transform: translateZ(0);
+}
+
+.accordion-item.active .accordion-content {
+  max-height: 1000px;
+  overflow: auto;
+}
+
+.accordion-item.active .accordion-icon {
+  transform: rotate(45deg);
+}
+
+.province-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+  padding: 20px;
+  list-style: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.province-list li a {
+  display: block;
+  padding: 10px;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.2s;
+  word-break: break-word;
+}
+
+.province-list li a:hover {
+  background: #f0f0f0;
+  color: #119130;
+}
+
+/* Global fixes */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+  overscroll-behavior-x: none;
+}
+
+/* iOS Specific Fixes */
+@supports (-webkit-touch-callout: none) {
   .accordion-container {
-    max-width: 900px;
-    margin: 0 auto;
-	width: 100%;
-    overflow-x: hidden;
+    padding-right: env(safe-area-inset-right);
+    padding-left: env(safe-area-inset-left);
   }
   
-  .accordion-item {
-    margin-bottom: 15px;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(9,90,39,0.1);
-  }
-  
-  .accordion-header {
-    width: 100%;
-    padding: 20px;
-    background: #f8f8f8;
-    border: none;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: left;
-	box-sizing: border-box;
-  }
-  
-  .accordion-header:hover {
-    background: #e9e9e9;
-  }
-  
-  .accordion-header h3 {
-    margin: 0 15px;
-    flex-grow: 1;
-	word-break: break-word;
-  }
-  
-  .accordion-icon {
-    font-size: 1.5em;
-    transition: transform 0.3s ease;
-  }
-  
-  .accordion-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    background: white;
-  }
-  
-  .accordion-item.active .accordion-content {
-    max-height: 1000px;
-	overflow: auto;
-  }
-  
-  .accordion-item.active .accordion-icon {
-    transform: rotate(45deg);
-  }
-  
-  .province-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-    padding: 20px;
-    list-style: none;
-	width: 100%;
-    box-sizing: border-box; /* Quan trọng */
-  }
-  
-  .province-list li a {
-    display: block;
-    padding: 10px;
-    color: #333;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background 0.2s;
-	word-break: break-word;
-  }
-  
-  .province-list li a:hover {
-    background: #f0f0f0;
-    color: #119130;
-  }
-/* Accordition mobile */
-@media (max-width: 768px) {
-  .accordion-container {
-    padding: 0 15px;
-  }
-  
-  .province-list {
-    grid-template-columns: 1fr;
-    overflow-x: hidden;
-  }
-  
-  .accordion-header {
-    padding: 15px;
+  @media (max-width: 768px) {
+    .accordion-container {
+      padding: 0 15px;
+      padding-right: calc(15px + env(safe-area-inset-right));
+      padding-left: calc(15px + env(safe-area-inset-left));
+    }
+    
+    .province-list {
+      grid-template-columns: 1fr;
+    }
+    
+    .accordion-header {
+      padding: 15px;
+    }
   }
 }
