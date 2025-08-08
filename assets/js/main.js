@@ -1,7 +1,5 @@
 /*
 	Story by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
 
 (function($) {
@@ -337,5 +335,19 @@
 							}, 275);
 
 						});
+		// Region Selector (Accordion/Tabs)
+		$(function() {
+			// Desktop Tabs
+			$('.region-tab').on('click', function() {
+				$('.region-tab.active').removeClass('active');
+				$(this).addClass('active');
+			});
+			
+			// Mobile Accordion
+			$('.accordion-header').on('click', function() {
+				var $parent = $(this).parent();
+				$parent.toggleClass('active');
+			});
+		});
 
 })(jQuery);
