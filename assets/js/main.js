@@ -335,36 +335,21 @@
 							}, 275);
 
 						});
-		// Xử lý tabs desktop
-document.querySelectorAll('.region-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    // Xóa active hiện tại
-    document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
-    
-    // Thêm active cho tab được click
-    tab.classList.add('active');
-    
-    // Có thể thêm logic load nội dung tương ứng ở đây
-  });
-});
-
-// Xử lý accordion mobile
-document.querySelectorAll('.accordion-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const item = header.parentElement;
-    const isActive = item.classList.contains('active');
-    
-    // Đóng tất cả các accordion khác
-    document.querySelectorAll('.accordion-item').forEach(i => {
-      i.classList.remove('active');
+// JS Accordion
+	  document.querySelectorAll('.accordion-header').forEach(button => {
+    button.addEventListener('click', () => {
+      const accordionItem = button.parentNode;
+      accordionItem.classList.toggle('active');
+      
+      // Đóng các accordion khác khi mở một cái mới
+      document.querySelectorAll('.accordion-item').forEach(item => {
+        if (item !== accordionItem) {
+          item.classList.remove('active');
+        }
+      });
     });
-    
-    // Mở accordion hiện tại nếu trước đó không active
-    if (!isActive) {
-      item.classList.add('active');
-    }
   });
-});
 
 })(jQuery);
+
 
