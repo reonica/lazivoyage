@@ -335,19 +335,36 @@
 							}, 275);
 
 						});
-		// Region Selector (Accordion/Tabs)
-		$(function() {
-			// Desktop Tabs
-			$('.region-tab').on('click', function() {
-				$('.region-tab.active').removeClass('active');
-				$(this).addClass('active');
-			});
-			
-			// Mobile Accordion
-			$('.accordion-header').on('click', function() {
-				var $parent = $(this).parent();
-				$parent.toggleClass('active');
-			});
-		});
+		// Xử lý tabs desktop
+document.querySelectorAll('.region-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    // Xóa active hiện tại
+    document.querySelectorAll('.region-tab').forEach(t => t.classList.remove('active'));
+    
+    // Thêm active cho tab được click
+    tab.classList.add('active');
+    
+    // Có thể thêm logic load nội dung tương ứng ở đây
+  });
+});
+
+// Xử lý accordion mobile
+document.querySelectorAll('.accordion-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.parentElement;
+    const isActive = item.classList.contains('active');
+    
+    // Đóng tất cả các accordion khác
+    document.querySelectorAll('.accordion-item').forEach(i => {
+      i.classList.remove('active');
+    });
+    
+    // Mở accordion hiện tại nếu trước đó không active
+    if (!isActive) {
+      item.classList.add('active');
+    }
+  });
+});
 
 })(jQuery);
+
