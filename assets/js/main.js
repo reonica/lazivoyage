@@ -337,21 +337,37 @@
 						});
 // JS Accordion
 document.querySelectorAll('.accordion-header').forEach(button => {
-  button.addEventListener('click', () => {
-    const accordionItem = button.closest('.accordion-item');
-    const isAlreadyActive = accordionItem.classList.contains('active');
+  button.addEventListener('click', (e) => {
+    e.preventDefault();
     
-    document.querySelectorAll('.accordion-item').forEach(item => {
-      item.classList.remove('active');
-    });
+    const item = button.closest('.accordion-item');
+    const isOpening = !item.classList.contains('active');
     
-    if (!isAlreadyActive) {
-      accordionItem.classList.add('active');
+    if (isOpening) {
+      document.querySelectorAll('.accordion-item').forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+          otherItem.querySelector('.accordion-content').style.maxHeight = null;
+        }
+      });
     }
+    
+    item.classList.toggle('active');
+    const content = item.querySelector('.accordion-content');
+    
+    if (item.classList.contains('active')) {
+      content.style.maxHeight = content.scrollHeight + 'px';
+    } else {
+      content.style.maxHeight = null;
+    }
+    
+    button.style.transform = 'scale(0.98)';
+    setTimeout(() => button.style.transform = '', 150);
   });
 });
 
 })(jQuery);
+
 
 
 
