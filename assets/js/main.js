@@ -341,32 +341,34 @@ document.querySelectorAll('.accordion-header').forEach(button => {
     e.preventDefault();
     
     const item = button.closest('.accordion-item');
-    const isOpening = !item.classList.contains('active');
+    const wasActive = item.classList.contains('active');
     
-    if (isOpening) {
-      document.querySelectorAll('.accordion-item').forEach(otherItem => {
-        if (otherItem !== item) {
-          otherItem.classList.remove('active');
-          otherItem.querySelector('.accordion-content').style.maxHeight = null;
-        }
-      });
-    }
+    // Đóng tất cả accordion trước
+    document.querySelectorAll('.accordion-item').forEach(otherItem => {
+      otherItem.classList.remove('active');
+      otherItem.querySelector('.accordion-content').style.maxHeight = null;
+    });
     
-    item.classList.toggle('active');
-    const content = item.querySelector('.accordion-content');
-    
-    if (item.classList.contains('active')) {
+    // Nếu click vào accordion đang đóng thì mở nó
+    if (!wasActive) {
+      item.classList.add('active');
+      const content = item.querySelector('.accordion-content');
       content.style.maxHeight = content.scrollHeight + 'px';
-    } else {
-      content.style.maxHeight = null;
+      
+      // Cuộn đến vị trí accordion
+      setTimeout(() => {
+        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 100);
     }
     
+    // Hiệu ứng nhấn nút
     button.style.transform = 'scale(0.98)';
     setTimeout(() => button.style.transform = '', 150);
   });
 });
 
 })(jQuery);
+
 
 
 
