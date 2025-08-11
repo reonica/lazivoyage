@@ -6376,26 +6376,25 @@ input, select, textarea {
 				box-shadow: none !important;
 			}
 
-/* ===== OPTIMIZED ACCORDION STYLES ===== */
+/* ===== MODERN ACCORDION STYLES ===== */
 .accordion-container {
-  box-sizing: border-box !important;
-  width: calc(100% - 40px) !important;
-  margin: 0 20px !important;
-  padding: 0 !important;
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .accordion-item {
   margin-bottom: 15px;
   background: white;
   position: relative;
-  border-radius: 8px;
-  overflow: hidden;
 }
 
 .accordion-header {
   width: 100%;
   padding: 18px 25px;
   background: #f8f8f8;
+  border-radius: 8px;
   border: none;
   display: flex;
   align-items: center;
@@ -6405,34 +6404,75 @@ input, select, textarea {
 }
 
 .accordion-header:hover, 
-.accordion-header:active,
-.accordion-header:focus {
+.accordion-header:active {
   background: #e9e9e9;
-  outline: none;
+}
+
+.accordion-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #095a27;
+  font-weight: 600;
+}
+
+.accordion-icon {
+  width: 24px;
+  height: 24px;
+  background: #095a27;
+  color: white;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  will-change: max-height;
 }
 
 .accordion-item.active .accordion-content {
   max-height: 1000px;
   padding: 20px;
+  background: white;
   transition: max-height 0.4s ease, padding 0.3s ease;
 }
 
-/* Responsive fixes */
+.accordion-item.active .accordion-icon {
+  transform: rotate(45deg);
+}
+
+.province-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  justify-content: space-between;
+}
+
+.province-list li {
+  flex: 1 1 calc(33% - 12px);
+  min-width: 150px;
+}
+
 @media (min-width: 992px) {
   .accordion-item.active .accordion-content {
     width: calc(100% + 40px);
     margin-left: -20px;
+    padding: 20px 30px;
   }
 }
 
 @media (max-width: 768px) {
-  .accordion-header {
-    padding: 15px 20px;
-    -webkit-tap-highlight-color: transparent;
+  .province-list li {
+    flex: 1 1 100%;
   }
   
-  .accordion-item.active .accordion-content {
-    width: 100% !important;
-    margin-left: 0 !important;
+  .accordion-header {
+    padding: 15px 20px;
   }
 }
