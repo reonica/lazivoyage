@@ -358,7 +358,7 @@ document.querySelectorAll('.accordion-header').forEach(button => {
     // Toggle accordion hiện tại
     if (!wasActive) {
       item.classList.add('active');
-      content.style.maxHeight = content.scrollHeight + 'px';
+      content.style.maxHeight = (content.scrollHeight + 20) + 'px'; // Thêm buffer
       icon.textContent = '-';
       icon.style.transform = 'rotate(0deg)';
     } else {
@@ -375,5 +375,5 @@ document.querySelectorAll('.accordion-header').forEach(button => {
     }, 150);
   });
 });
-
+	
 })(jQuery);
