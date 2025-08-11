@@ -6378,9 +6378,9 @@ input, select, textarea {
 
 /* ===== MODERN ACCORDION STYLES ===== */
 .accordion-container {
-  max-width: 800px;
+  max-width: calc(100% - 40px); /* Full width trừ 20px mỗi bên */
   width: 100%;
-  margin: 0 auto;
+  margin: 0 20px; /* Cách lề 20px mỗi bên */
   padding: 20px;
 }
 
@@ -6400,12 +6400,19 @@ input, select, textarea {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.15s ease;
+  outline: none; /* Loại bỏ outline mặc định */
+  -webkit-tap-highlight-color: transparent; /* Loại bỏ highlight màu xanh trên di động */
 }
 
-.accordion-header:hover, 
-.accordion-header:active {
+.accordion-header:hover {
   background: #e9e9e9;
+}
+
+.accordion-header:active {
+  background: #e9e9e9; /* Màu xám giống desktop */
+  outline: none;
+  box-shadow: none;
 }
 
 .accordion-header h3 {
@@ -6451,7 +6458,7 @@ input, select, textarea {
   padding: 0;
   margin: 0;
   list-style: none;
-  justify-content: space-between;
+  justify-content: flex-start; /* Đổi thành flex-start */
 }
 
 .province-list li {
@@ -6465,6 +6472,15 @@ input, select, textarea {
     margin-left: -20px;
     padding: 20px 30px;
   }
+
+  .province-list {
+    justify-content: flex-start; /* Căn trái */
+  }
+
+  .province-list li {
+    flex: 1 1 100%; /* 1 cột trên desktop */
+    min-width: 0;
+  }
 }
 
 @media (max-width: 768px) {
@@ -6476,5 +6492,3 @@ input, select, textarea {
     padding: 15px 20px;
   }
 }
-
-
