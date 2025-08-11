@@ -6378,9 +6378,9 @@ input, select, textarea {
 
 /* ===== MODERN ACCORDION STYLES ===== */
 .accordion-container {
-  max-width: 800px;
-  width: 100%;
-  margin: 0 auto;
+  max-width: 100%;
+  width: calc(100% - 40px);
+  margin: 0 20px;
   padding: 20px;
 }
 
@@ -6476,3 +6476,4 @@ input, select, textarea {
     padding: 15px 20px;
   }
 }
+
