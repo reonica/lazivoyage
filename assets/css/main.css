@@ -8619,16 +8619,17 @@ input, select, textarea {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-.accordion-header {
-  width: 100%;
-  padding: 18px 24px;
-  background: linear-gradient(135deg, #f8f8f8, #ffffff);
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
+.accordion-header::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 30px;
+  height: 30px;
+  background: rgba(9, 90, 39, 0.1);
+  transform: rotate(45deg);
   transition: all 0.3s ease;
+  z-index: 0;
 }
 
 .accordion-header:hover {
@@ -8638,7 +8639,7 @@ input, select, textarea {
 .accordion-header h3 {
   margin: 0;
   font-size: 1.1rem;
-  color: #2c3e50;
+  color: #095a27;
   font-weight: 600;
 }
 
@@ -8649,10 +8650,8 @@ input, select, textarea {
 }
 
 .accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-  background: white;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: max-height;
 }
 
 .accordion-item.active .accordion-content {
@@ -8727,3 +8726,4 @@ input, select, textarea {
     padding: 6px 10px;
   }
 }
+
