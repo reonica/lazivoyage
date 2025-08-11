@@ -336,20 +336,22 @@
 
 						});
 // JS Accordion
-	  document.querySelectorAll('.accordion-header').forEach(button => {
-    button.addEventListener('click', () => {
-      const accordionItem = button.parentNode;
-      accordionItem.classList.toggle('active');
-      
-      // Đóng các accordion khác khi mở một cái mới
-      document.querySelectorAll('.accordion-item').forEach(item => {
-        if (item !== accordionItem) {
-          item.classList.remove('active');
-        }
-      });
+document.querySelectorAll('.accordion-header').forEach(button => {
+  button.addEventListener('click', () => {
+    const accordionItem = button.closest('.accordion-item');
+    const isAlreadyActive = accordionItem.classList.contains('active');
+    
+    document.querySelectorAll('.accordion-item').forEach(item => {
+      item.classList.remove('active');
     });
+    
+    if (!isAlreadyActive) {
+      accordionItem.classList.add('active');
+    }
   });
+});
 
 })(jQuery);
+
 
 
