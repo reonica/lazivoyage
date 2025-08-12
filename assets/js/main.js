@@ -375,5 +375,15 @@ document.querySelectorAll('.accordion-header').forEach(button => {
     }, 150);
   });
 });
+
+// test acc
+	document.querySelectorAll('.accordion-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const content = header.nextElementSibling;
+    const radio = header.previousElementSibling;
+    radio.checked = !radio.checked;
+  });
+});
 	
 })(jQuery);
+
