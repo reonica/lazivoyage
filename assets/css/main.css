@@ -4653,12 +4653,6 @@ input, select, textarea {
 				.gallery.style1 article .caption > :last-child { margin-bottom: 0; }
 			.gallery.style1 article:hover .caption { opacity: 1; }
 
- 			/* Caption Display on Mobile */
-			.gallery.style1 article.show-caption .caption {
-			    opacity: 1;
-			    pointer-events: auto;
-			}
-
 		@media screen and (max-width: 1280px) { .gallery.style1 article { width: 33.33333%; }
 				.gallery.style1 article .caption { padding: 1rem; } }
 		@media screen and (max-width: 980px) { .gallery.style1 article { width: 50%; }
@@ -6233,5 +6227,6 @@ input, select, textarea {
 			#wrapper.divided > *:first-child { box-shadow: none !important; }
 		#wrapper.divided > .invert { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.125); }
 			#wrapper.divided > .invert:first-child { box-shadow: none !important; }
+
 
 
