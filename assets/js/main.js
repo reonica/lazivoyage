@@ -335,12 +335,4 @@
 							}, 275);
 
 						});
-// JS Image Accordion
-document.querySelectorAll('.accordion-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const radio = header.previousElementSibling;
-    radio.checked = true;
-  });
-});
-	
 })(jQuery);
