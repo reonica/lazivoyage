@@ -6332,64 +6332,32 @@ input, select, textarea {
 				border-top-color: white;
 			}
 
-		#wrapper > .color1 {
-			background-color: #30363d;
-		}
-
-		#wrapper > .color2 {
-			background-color: #db8992;
-		}
-
-		#wrapper > .color3 {
-			background-color: #ab7aad;
-		}
-
-		#wrapper > .color4 {
-			background-color: #897cad;
-		}
-
-		#wrapper > .color5 {
-			background-color: #7794ce;
-		}
-
-		#wrapper > .color6 {
-			background-color: #64abb4;
-		}
-
-		#wrapper > .color7 {
-			background-color: #6ba78c;
-		}
-
-		#wrapper.divided > * {
-			box-shadow: inset 0 1px 0 0 rgba(9, 90, 39, 0.075);
-		}
-
-			#wrapper.divided > *:first-child {
-				box-shadow: none !important;
-			}
-
-		#wrapper.divided > .invert {
-			box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.125);
-		}
-
-			#wrapper.divided > .invert:first-child {
-				box-shadow: none !important;
-			}
+		#wrapper > .color1 { background-color: #30363d; }
+		#wrapper > .color2 { background-color: #db8992; }
+		#wrapper > .color3 { background-color: #ab7aad; }
+		#wrapper > .color4 { background-color: #897cad; }
+		#wrapper > .color5 { background-color: #7794ce; }
+		#wrapper > .color6 { background-color: #64abb4; }
+		#wrapper > .color7 { background-color: #6ba78c; }
+		#wrapper.divided > * { box-shadow: inset 0 1px 0 0 rgba(9, 90, 39, 0.075); }
+			#wrapper.divided > *:first-child { box-shadow: none !important; }
+		#wrapper.divided > .invert { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.125); }
+			#wrapper.divided > .invert:first-child { box-shadow: none !important; }
 
 /* ===== IMAGE ACCORDION STYLES ===== */
 .horizontal-accordion {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
-  height: 600px; /* Tăng chiều cao để phù hợp với hình ảnh lớn */
+  height: 600px;
+  background: transparent;
   overflow: hidden;
-  background: #000; /* Nền tối để nổi bật hình ảnh, tương tự Webflow */
 }
 
 .accordion-item {
-  flex: 1;
+  flex: 0.3;
   position: relative;
-  transition: flex 0.6s ease; /* Mượt hơn với thời gian 0.6s */
+  transition: flex 0.6s ease;
   overflow: hidden;
 }
 
@@ -6405,26 +6373,48 @@ input, select, textarea {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease, opacity 0.6s ease;
+  transition: transform 0.6s ease, filter 0.6s ease;
 }
 
-.accordion-header img:hover {
-  opacity: 0.9; /* Hiệu ứng hover nhẹ, tương tự Webflow */
+.accordion-item:not(:has(input:checked)) .accordion-header img {
+  filter: blur(5px); /* Hiệu ứng blur */
+}
+
+.accordion-item:not(:has(input:checked)) .accordion-content {
+  max-height: 0;
+}
+
+input[type="radio"]:checked + .accordion-header {
+  flex: 4; 
+}
+
+input[type="radio"]:checked ~ .accordion-header img {
+  transform: scale(1.05);
+  filter: none;
 }
 
 .vertical-text {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   position: absolute;
-  left: 15px;
+  left: 10px;
   top: 15px;
   color: white;
   background: rgba(0, 0, 0, 0.7);
   padding: 10px;
   font-size: 1.8em;
   font-weight: bold;
+  text-transform: uppercase;
   z-index: 1;
-  text-transform: uppercase; /* Tương tự Webflow */
+  transition: writing-mode 0.6s ease, top 0.6s ease, left 0.6s ease;
+}
+
+input[type="radio"]:checked ~ .accordion-header .vertical-text {
+  writing-mode: horizontal-tb;
+  top: 10px;
+  left: 10px;
+  padding: 8px;
+  font-size: 1.5em;
 }
 
 .accordion-content {
@@ -6440,6 +6430,11 @@ input, select, textarea {
   transition: max-height 0.6s ease;
 }
 
+input[type="radio"]:checked ~ .accordion-content {
+  max-height: 300px;
+  z-index: 2;
+}
+
 .accordion-content ul {
   margin: 0;
   padding: 0;
@@ -6451,7 +6446,7 @@ input, select, textarea {
 }
 
 .accordion-content ul li a {
-  color: #1e90ff; /* Màu liên kết nổi bật */
+  color: #1e90ff;
   text-decoration: none;
 }
 
@@ -6463,67 +6458,57 @@ input[type="radio"] {
   display: none;
 }
 
-input[type="radio"]:checked ~ .accordion-header img {
-  transform: scale(1.05); /* Phóng to nhẹ, giống Webflow */
-}
-
-input[type="radio"]:checked ~ .accordion-content {
-  max-height: 300px; /* Tăng để chứa nội dung dài hơn */
-}
-
-input[type="radio"]:checked ~ .accordion-header ~ .accordion-content {
-  z-index: 2;
-}
-
-input[type="radio"]:checked + .accordion-header {
-  flex: 4; /* Mở rộng lớn hơn để nổi bật */
-}
-
 /* Responsive cho mobile */
 @media (max-width: 768px) {
   .horizontal-accordion {
     flex-direction: column;
     height: auto;
     padding: 10px;
+    background: transparent;
   }
 
   .accordion-item {
     flex: none;
-    height: 250px; /* Chiều cao nhỏ hơn trên mobile */
+    height: 250px;
     margin-bottom: 10px;
     position: relative;
   }
 
-  .accordion-header {
-    height: 100%;
+  .accordion-item:not(:has(input:checked)) .accordion-header img {
+    filter: none;
   }
 
   input[type="radio"]:checked + .accordion-header {
     flex: none;
-    height: 400px; /* Mở rộng chiều cao khi chọn */
+    height: 400px;
   }
 
   .vertical-text {
-    writing-mode: horizontal-tb; /* Chuyển chữ sang ngang trên mobile */
+    writing-mode: horizontal-tb;
     left: 10px;
     top: 10px;
     font-size: 1.2em;
     padding: 8px;
   }
 
+  input[type="radio"]:checked ~ .accordion-header .vertical-text {
+    font-size: 1.3em;
+  }
+
   .accordion-content {
-    position: relative; /* Nội dung hiện dưới hình ảnh */
+    position: relative;
     max-height: 0;
     transition: max-height 0.4s ease;
+    background: rgba(0, 0, 0, 0.85);
   }
 
   input[type="radio"]:checked ~ .accordion-content {
-    max-height: 500px; /* Đủ chỗ cho nội dung dài */
+    max-height: 600px;
     position: relative;
     bottom: auto;
+    padding: 15px;
   }
 
-  /* Hiệu ứng slider nhẹ */
   .accordion-item {
     transition: height 0.4s ease;
   }
