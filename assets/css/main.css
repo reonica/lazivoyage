@@ -3963,6 +3963,174 @@ input, select, textarea {
 			object-position: right;
 		}
 
+/* Spotlight (style5) */
+
+	.spotlight.style5 {
+		padding: 7rem 5.25rem 5rem 5.25rem ;
+		-moz-align-items: center;
+		-webkit-align-items: center;
+		-ms-align-items: center;
+		align-items: center;
+		display: -moz-flex;
+		display: -webkit-flex;
+		display: -ms-flex;
+		display: flex;
+		-moz-justify-content: center;
+		-webkit-justify-content: center;
+		-ms-justify-content: center;
+		justify-content: center;
+		background-color: inherit;
+		position: relative;
+		overflow-x: hidden;
+		text-align: center;
+	}
+
+		.spotlight.style5 .content {
+			padding: 3.5rem 3.5rem 1.5rem 3.5rem ;
+			position: relative;
+			width: 40rem;
+			max-width: 52.5%;
+			background-color: inherit;
+			border-radius: 0.5rem;
+			margin-bottom: 2rem;
+			z-index: 1;
+		}
+
+		.spotlight.style5 .image {
+			-moz-flex-grow: 0;
+			-webkit-flex-grow: 0;
+			-ms-flex-grow: 0;
+			flex-grow: 0;
+			-moz-flex-shrink: 0;
+			-webkit-flex-shrink: 0;
+			-ms-flex-shrink: 0;
+			flex-shrink: 0;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			border-radius: 0;
+		}
+
+			.spotlight.style5 .image img {
+				-moz-object-fit: cover;
+				-webkit-object-fit: cover;
+				-ms-object-fit: cover;
+				object-fit: cover;
+				-moz-object-position: center;
+				-webkit-object-position: center;
+				-ms-object-position: center;
+				object-position: center;
+				display: block;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				border-radius: 0;
+			}
+
+		@media screen and (max-width: 1680px) {
+
+			.spotlight.style5 {
+				padding: 5rem 3.75rem 3rem 3.75rem ;
+			}
+
+				.spotlight.style5 .content {
+					padding: 2.5rem 2.5rem 0.5rem 2.5rem ;
+				}
+
+		}
+
+		@media screen and (max-width: 1280px) {
+
+			.spotlight.style5 {
+				padding: 4rem 3rem 2rem 3rem ;
+			}
+
+				.spotlight.style5 .content {
+					padding: 3rem 3rem 1rem 3rem ;
+				}
+
+		}
+
+		@media screen and (max-width: 980px) {
+
+			.spotlight.style5 {
+				padding: 3rem 2.25rem 1rem 2.25rem ;
+			}
+
+				.spotlight.style5 .content {
+					padding: 2.25rem 2.25rem 0.25rem 2.25rem ;
+				}
+
+		}
+
+		@media screen and (max-width: 736px) {
+
+			.spotlight.style5 {
+				padding: 2rem 1.5rem 0.1rem 1.5rem ;
+			}
+
+				.spotlight.style5 .content {
+					padding: 1.5rem 1.5rem 0.1rem 1.5rem ;
+				}
+
+		}
+
+		@media screen and (max-width: 480px) {
+
+			.spotlight.style5 .content {
+				max-width: 80%;
+			}
+
+		}
+
+		.spotlight.style5.fullscreen {
+			min-height: 100vh;
+		}
+
+		.spotlight.style5.halfscreen {
+			min-height: 50vh;
+		}
+
+		.spotlight.style5.orient-left {
+			-moz-justify-content: -moz-flex-start;
+			-webkit-justify-content: -webkit-flex-start;
+			-ms-justify-content: -ms-flex-start;
+			justify-content: flex-start;
+		}
+
+		.spotlight.style5.orient-right {
+			-moz-justify-content: -moz-flex-end;
+			-webkit-justify-content: -webkit-flex-end;
+			-ms-justify-content: -ms-flex-end;
+			justify-content: flex-end;
+		}
+
+		.spotlight.style5.content-align-left {
+			text-align: left;
+		}
+
+		.spotlight.style5.content-align-right {
+			text-align: right;
+		}
+
+		.spotlight.style5.image-position-left .image img {
+			-moz-object-position: left;
+			-webkit-object-position: left;
+			-ms-object-position: left;
+			object-position: left;
+		}
+
+		.spotlight.style5.image-position-right .image img {
+			-moz-object-position: right;
+			-webkit-object-position: right;
+			-ms-object-position: right;
+			object-position: right;
+		}
+
 /* Gallery (transitions) */
 
 	.gallery.onload-fade-in article .image img {
@@ -6227,6 +6395,7 @@ input, select, textarea {
 			#wrapper.divided > *:first-child { box-shadow: none !important; }
 		#wrapper.divided > .invert { box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.125); }
 			#wrapper.divided > .invert:first-child { box-shadow: none !important; }
+
 
 
 
