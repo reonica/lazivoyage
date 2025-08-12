@@ -179,46 +179,7 @@
 				.css('overflow-y', browser.mobile ? 'visible' : 'hidden')
 				.css('overflow-x', browser.mobile ? 'scroll' : 'hidden')
 				.scrollLeft(0);
-// Gallery
-$('.gallery')
-    .wrapInner('<div class="inner"></div>')
-    .prepend(browser.mobile ? '' : '<div class="forward"></div><div class="backward"></div>')
-    .scrollex({
-        top: '30vh',
-        bottom: '30vh',
-        delay: 50,
-        initialize: function() {
-            $(this).addClass('is-inactive');
-        },
-        terminate: function() {
-            $(this).removeClass('is-inactive');
-        },
-        enter: function() {
-            $(this).removeClass('is-inactive');
-        },
-        leave: function() {
-            var $this = $(this);
-            if ($this.hasClass('onscroll-bidirectional'))
-                $this.addClass('is-inactive');
-        }
-    })
-    .children('.inner')
-    .css('overflow-y', browser.mobile ? 'visible' : 'hidden')
-    .css('overflow-x', browser.mobile ? 'scroll' : 'hidden')
-    .scrollLeft(0)
-    .children('article')
-    .on('click', function(event) {
-        if (browser.mobile) {
-            var $article = $(this);
-            event.stopPropagation();
-            // Toggle show-caption class
-            $article.toggleClass('show-caption');
-            // Remove show-caption from other articles
-            $article.siblings().removeClass('show-caption');
-            // Add ARIA attribute for accessibility
-            $article.attr('aria-expanded', $article.hasClass('show-caption'));
-        }
-    });
+
 		// Style #1.
 			// ...
 
@@ -261,107 +222,117 @@ $('.gallery')
 
 				});
 
-// Lightbox
-$('.gallery.lightbox')
-    .on('click', 'a', function(event) {
-        var $a = $(this),
-            $article = $a.parents('article'),
-            $gallery = $a.parents('.gallery'),
-            $modal = $gallery.children('.modal'),
-            $modalImg = $modal.find('img'),
-            href = $a.attr('href');
+		// Lightbox.
+			$('.gallery.lightbox')
+				.on('click', 'a', function(event) {
 
-        // Not an image? Bail.
-        if (!href.match(/\.(jpg|gif|png|mp4)$/))
-            return;
+					var $a = $(this),
+						$gallery = $a.parents('.gallery'),
+						$modal = $gallery.children('.modal'),
+						$modalImg = $modal.find('img'),
+						href = $a.attr('href');
 
-        // Prevent default if showing caption on mobile
-        if (browser.mobile && $article.hasClass('show-caption')) {
-            event.preventDefault();
-            event.stopPropagation();
-            $article.removeClass('show-caption');
-            $article.attr('aria-expanded', 'false');
-            return;
-        }
+					// Not an image? Bail.
+						if (!href.match(/\.(jpg|gif|png|mp4)$/))
+							return;
 
-        // Prevent default.
-        event.preventDefault();
-        event.stopPropagation();
+					// Prevent default.
+						event.preventDefault();
+						event.stopPropagation();
 
-        // Locked? Bail.
-        if ($modal[0]._locked)
-            return;
+					// Locked? Bail.
+						if ($modal[0]._locked)
+							return;
 
-        // Lock.
-        $modal[0]._locked = true;
+					// Lock.
+						$modal[0]._locked = true;
 
-        // Set src.
-        $modalImg.attr('src', href);
+					// Set src.
+						$modalImg.attr('src', href);
 
-        // Set visible.
-        $modal.addClass('visible');
+					// Set visible.
+						$modal.addClass('visible');
 
-        // Focus.
-        $modal.focus();
+					// Focus.
+						$modal.focus();
 
-        // Delay.
-        setTimeout(function() {
-            // Unlock.
-            $modal[0]._locked = false;
-        }, 600);
-    })
-    .on('click', '.modal', function(event) {
-        var $modal = $(this),
-            $modalImg = $modal.find('img');
+					// Delay.
+						setTimeout(function() {
 
-        // Locked? Bail.
-        if ($modal[0]._locked)
-            return;
+							// Unlock.
+								$modal[0]._locked = false;
 
-        // Already hidden? Bail.
-        if (!$modal.hasClass('visible'))
-            return;
+						}, 600);
 
-        // Lock.
-        $modal[0]._locked = true;
+				})
+				.on('click', '.modal', function(event) {
 
-        // Clear visible, loaded.
-        $modal.removeClass('loaded');
+					var $modal = $(this),
+						$modalImg = $modal.find('img');
 
-        // Delay.
-        setTimeout(function() {
-            $modal.removeClass('visible');
-            setTimeout(function() {
-                // Clear src.
-                $modalImg.attr('src', '');
-                // Unlock.
-                $modal[0]._locked = false;
-                // Focus.
-                $body.focus();
-            }, 475);
-        }, 125);
-    })
-    .on('keypress', '.modal', function(event) {
-        var $modal = $(this);
+					// Locked? Bail.
+						if ($modal[0]._locked)
+							return;
 
-        // Escape? Hide modal.
-        if (event.keyCode == 27)
-            $modal.trigger('click');
-    })
-    .prepend('<div class="modal" tabIndex="-1"><div class="inner"><img src="" /></div></div>')
-    .find('img')
-    .on('load', function(event) {
-        var $modalImg = $(this),
-            $modal = $modalImg.parents('.modal');
+					// Already hidden? Bail.
+						if (!$modal.hasClass('visible'))
+							return;
 
-        setTimeout(function() {
-            // No longer visible? Bail.
-            if (!$modal.hasClass('visible'))
-                return;
+					// Lock.
+						$modal[0]._locked = true;
 
-            // Set loaded.
-            $modal.addClass('loaded');
-        }, 275);
-    });
+					// Clear visible, loaded.
+						$modal
+							.removeClass('loaded')
+
+					// Delay.
+						setTimeout(function() {
+
+							$modal
+								.removeClass('visible')
+
+							setTimeout(function() {
+
+								// Clear src.
+									$modalImg.attr('src', '');
+
+								// Unlock.
+									$modal[0]._locked = false;
+
+								// Focus.
+									$body.focus();
+
+							}, 475);
+
+						}, 125);
+
+				})
+				.on('keypress', '.modal', function(event) {
+
+					var $modal = $(this);
+
+					// Escape? Hide modal.
+						if (event.keyCode == 27)
+							$modal.trigger('click');
+
+				})
+				.prepend('<div class="modal" tabIndex="-1"><div class="inner"><img src="" /></div></div>')
+					.find('img')
+						.on('load', function(event) {
+
+							var $modalImg = $(this),
+								$modal = $modalImg.parents('.modal');
+
+							setTimeout(function() {
+
+								// No longer visible? Bail.
+									if (!$modal.hasClass('visible'))
+										return;
+
+								// Set loaded.
+									$modal.addClass('loaded');
+
+							}, 275);
+
+						});
 })(jQuery);
-
