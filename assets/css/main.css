@@ -6381,14 +6381,15 @@ input, select, textarea {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
-  height: 500px;
+  height: 600px; /* Tăng chiều cao để phù hợp với hình ảnh lớn */
   overflow: hidden;
+  background: #000; /* Nền tối để nổi bật hình ảnh, tương tự Webflow */
 }
 
 .accordion-item {
   flex: 1;
   position: relative;
-  transition: flex 0.5s ease;
+  transition: flex 0.6s ease; /* Mượt hơn với thời gian 0.6s */
   overflow: hidden;
 }
 
@@ -6397,26 +6398,33 @@ input, select, textarea {
   height: 100%;
   cursor: pointer;
   position: relative;
+  overflow: hidden;
 }
 
 .accordion-header img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s ease;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.accordion-header img:hover {
+  opacity: 0.9; /* Hiệu ứng hover nhẹ, tương tự Webflow */
 }
 
 .vertical-text {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   position: absolute;
-  left: 20px;
-  top: 20px;
+  left: 15px;
+  top: 15px;
   color: white;
   background: rgba(0, 0, 0, 0.7);
   padding: 10px;
-  font-size: 1.5em;
+  font-size: 1.8em;
+  font-weight: bold;
   z-index: 1;
+  text-transform: uppercase; /* Tương tự Webflow */
 }
 
 .accordion-content {
@@ -6424,12 +6432,31 @@ input, select, textarea {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.85);
   color: white;
   padding: 20px;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.5s ease;
+  transition: max-height 0.6s ease;
+}
+
+.accordion-content ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.accordion-content ul li {
+  margin-bottom: 10px;
+}
+
+.accordion-content ul li a {
+  color: #1e90ff; /* Màu liên kết nổi bật */
+  text-decoration: none;
+}
+
+.accordion-content ul li a:hover {
+  text-decoration: underline;
 }
 
 input[type="radio"] {
@@ -6437,11 +6464,11 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked ~ .accordion-header img {
-  transform: scale(1.1);
+  transform: scale(1.05); /* Phóng to nhẹ, giống Webflow */
 }
 
 input[type="radio"]:checked ~ .accordion-content {
-  max-height: 200px;
+  max-height: 300px; /* Tăng để chứa nội dung dài hơn */
 }
 
 input[type="radio"]:checked ~ .accordion-header ~ .accordion-content {
@@ -6449,20 +6476,55 @@ input[type="radio"]:checked ~ .accordion-header ~ .accordion-content {
 }
 
 input[type="radio"]:checked + .accordion-header {
-  flex: 3;
+  flex: 4; /* Mở rộng lớn hơn để nổi bật */
 }
 
+/* Responsive cho mobile */
 @media (max-width: 768px) {
   .horizontal-accordion {
     flex-direction: column;
     height: auto;
+    padding: 10px;
   }
+
   .accordion-item {
     flex: none;
-    height: 200px;
+    height: 250px; /* Chiều cao nhỏ hơn trên mobile */
+    margin-bottom: 10px;
+    position: relative;
   }
+
+  .accordion-header {
+    height: 100%;
+  }
+
   input[type="radio"]:checked + .accordion-header {
     flex: none;
-    height: 400px;
+    height: 400px; /* Mở rộng chiều cao khi chọn */
+  }
+
+  .vertical-text {
+    writing-mode: horizontal-tb; /* Chuyển chữ sang ngang trên mobile */
+    left: 10px;
+    top: 10px;
+    font-size: 1.2em;
+    padding: 8px;
+  }
+
+  .accordion-content {
+    position: relative; /* Nội dung hiện dưới hình ảnh */
+    max-height: 0;
+    transition: max-height 0.4s ease;
+  }
+
+  input[type="radio"]:checked ~ .accordion-content {
+    max-height: 500px; /* Đủ chỗ cho nội dung dài */
+    position: relative;
+    bottom: auto;
+  }
+
+  /* Hiệu ứng slider nhẹ */
+  .accordion-item {
+    transition: height 0.4s ease;
   }
 }
