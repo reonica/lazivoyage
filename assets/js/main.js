@@ -335,55 +335,12 @@
 							}, 275);
 
 						});
-// JS Accordion
-document.querySelectorAll('.accordion-header').forEach(button => {
-  button.addEventListener('click', (e) => {
-    e.preventDefault();
-    
-    const item = button.closest('.accordion-item');
-    const wasActive = item.classList.contains('active');
-    const content = item.querySelector('.accordion-content');
-    const icon = item.querySelector('.accordion-icon');
-    
-    // Đóng tất cả accordion khác
-    document.querySelectorAll('.accordion-item').forEach(otherItem => {
-      if (otherItem !== item) {
-        otherItem.classList.remove('active');
-        otherItem.querySelector('.accordion-content').style.maxHeight = null;
-        otherItem.querySelector('.accordion-icon').textContent = '+';
-        otherItem.querySelector('.accordion-icon').style.transform = 'rotate(0deg)';
-      }
-    });
-    
-    // Toggle accordion hiện tại
-    if (!wasActive) {
-      item.classList.add('active');
-      content.style.maxHeight = (content.scrollHeight + 20) + 'px'; // Thêm buffer
-      icon.textContent = '-';
-      icon.style.transform = 'rotate(0deg)';
-    } else {
-      item.classList.remove('active');
-      content.style.maxHeight = null;
-      icon.textContent = '+';
-      icon.style.transform = 'rotate(0deg)';
-    }
-    
-    // Hiệu ứng nhấn nút
-    button.style.transform = 'scale(0.98)';
-    setTimeout(() => {
-      button.style.transform = '';
-    }, 150);
-  });
-});
-
-// test acc
-	document.querySelectorAll('.accordion-header').forEach(header => {
+// JS Image Accordion
+document.querySelectorAll('.accordion-header').forEach(header => {
   header.addEventListener('click', () => {
-    const content = header.nextElementSibling;
     const radio = header.previousElementSibling;
-    radio.checked = !radio.checked;
+    radio.checked = true;
   });
 });
 	
 })(jQuery);
-
