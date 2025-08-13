@@ -350,7 +350,14 @@
 					  $('.mobile-menu-content').on('click', function(e) {
 					    e.stopPropagation();
 					  });
+					  
+					  // Expand search bar on desktop when clicking the search button
+					  $('.search-bar button').on('click', function(e) {
+					    e.preventDefault(); // Prevent form submission
+					    $('.search-bar input').toggleClass('expanded');
+					  });
 					});
 	
 })(jQuery);
+
 
