@@ -6442,26 +6442,51 @@ input, select, textarea {
 }
 
 .search-bar {
+  position: relative;
   display: flex;
   align-items: center;
-  position: relative;
 }
 
 .search-bar input {
   padding: 0.5rem 1rem;
-  padding-right: 2rem;
+  padding-right: 2.5rem;
   border: 1px solid #ddd;
   border-radius: 20px;
   outline: none;
+  transition: all 0.3s ease;
+  width: 180px;
 }
 
 .search-bar button {
   position: absolute;
-  right: 10px;
+  right: 12px;
   background: none;
   border: none;
-  cursor: pointer;
   color: #777;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: auto;
+}
+
+.hamburger {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: #333;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+  background-color: #f0f0f0;
 }
 
 .mobile-menu { 
@@ -6473,19 +6498,31 @@ input, select, textarea {
     display: none; 
   }
   
-  .search-bar input { 
-    width: 120px;
+  .search-bar input {
+    width: 40px;
+    padding-left: 35px;
+    color: transparent;
   }
   
-  .mobile-menu { 
-    display: block; 
+  .search-bar input:focus {
+    width: 150px;
+    padding-left: 1rem;
+    color: #333;
   }
   
-  .hamburger {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
+  .search-bar button {
+    left: 12px;
+    right: auto;
+  }
+  
+  .mobile-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .logo img {
+    height: 30px;
   }
 }
 
@@ -6538,3 +6575,4 @@ input, select, textarea {
   color: #888;
   font-size: 0.9rem;
 }
+
