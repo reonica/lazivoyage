@@ -6401,7 +6401,8 @@ input, select, textarea {
 }
 
 .search-bar input.expanded {
-  width: 300px; /* Expanded width for desktop */
+  width: 210px; /* Tăng 30px */
+  padding-left: 1.5rem; /* Căn chữ sang trái */
 }
 
 .search-bar button {
@@ -6417,9 +6418,9 @@ input, select, textarea {
 }
 
 .search-bar button, .search-bar button:focus, .search-bar button:active {
- -Cr outline: none; /* Remove focus outline */
-  box-shadow: none; /* Remove any box-shadow */
-  border: none; /* Ensure no border */
+  outline: none;
+  box-shadow: none;
+  border: none;
 }
 
 .hamburger {
@@ -6439,17 +6440,21 @@ input, select, textarea {
 }
 
 .hamburger, .hamburger:focus, .hamburger:active {
-  outline: none; /* Remove default focus outline */
-  background: none; /* Ensure no background color */
-  border: none; /* Ensure no border */
+  outline: none;
+  background: none;
+  border: none;
 }
 
 .hamburger i {
-  color: #333; /* Match website’s color scheme */
+  color: #333;
 }
 
-.hamburger:hover {
-  background-color: #f0f0f0;
+.hamburger:hover, .hamburger:active, .hamburger:focus {
+  background-color: #095a27;
+}
+
+.hamburger:hover i, .hamburger:active i, .hamburger:focus i {
+  color: white;
 }
 
 .mobile-menu { 
@@ -6457,11 +6462,11 @@ input, select, textarea {
 }
 
 .mobile-menu-content {
-  display: none; /* Hidden by default */
+  display: none;
   position: absolute;
-  top: 100%; /* Position below the header */
-  left: 0;
+  top: 100%;
   right: 0;
+  width: 33.33%; /* Chiếm 1/3 màn hình */
   background: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 999;
@@ -6475,6 +6480,7 @@ input, select, textarea {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  align-items: flex-end;
 }
 
 .mobile-menu-content a {
@@ -6483,6 +6489,7 @@ input, select, textarea {
   font-weight: 500;
   display: block;
   padding: 0.5rem 0;
+  text-align: right;
 }
 
 .mobile-menu-content a:hover {
@@ -6571,4 +6578,5 @@ input, select, textarea {
   color: #888;
   font-size: 0.9rem;
 }
+
 
