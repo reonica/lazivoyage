@@ -6400,6 +6400,10 @@ input, select, textarea {
   width: 180px;
 }
 
+.search-bar input.expanded {
+  width: 300px; /* Expanded width for desktop */
+}
+
 .search-bar button {
   position: absolute;
   right: 12px;
@@ -6410,6 +6414,12 @@ input, select, textarea {
   padding: 0;
   margin: 0;
   width: auto;
+}
+
+.search-bar button, .search-bar button:focus, .search-bar button:active {
+ -Cr outline: none; /* Remove focus outline */
+  box-shadow: none; /* Remove any box-shadow */
+  border: none; /* Ensure no border */
 }
 
 .hamburger {
@@ -6428,12 +6438,55 @@ input, select, textarea {
   transition: all 0.3s ease;
 }
 
+.hamburger, .hamburger:focus, .hamburger:active {
+  outline: none; /* Remove default focus outline */
+  background: none; /* Ensure no background color */
+  border: none; /* Ensure no border */
+}
+
+.hamburger i {
+  color: #333; /* Match website’s color scheme */
+}
+
 .hamburger:hover {
   background-color: #f0f0f0;
 }
 
 .mobile-menu { 
   display: none; 
+}
+
+.mobile-menu-content {
+  display: none; /* Hidden by default */
+  position: absolute;
+  top: 100%; /* Position below the header */
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  padding: 1rem;
+}
+
+.mobile-menu-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.mobile-menu-content a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  display: block;
+  padding: 0.5rem 0;
+}
+
+.mobile-menu-content a:hover {
+  color: #095a27;
 }
 
 @media (max-width: 768px) {
@@ -6518,3 +6571,4 @@ input, select, textarea {
   color: #888;
   font-size: 0.9rem;
 }
+
