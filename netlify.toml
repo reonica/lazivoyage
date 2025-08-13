@@ -1,5 +1,0 @@
-[[redirects]]
-  from = "/*"
-  to = "https://lazivoyage.com/:splat"
-  status = 301
-  force = true
