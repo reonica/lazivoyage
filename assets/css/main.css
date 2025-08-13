@@ -6406,45 +6406,135 @@ input, select, textarea {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 }
+
+.logo img {
+  height: 40px;
+  width: auto;
+}
+
+.desktop-menu {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
 .desktop-menu ul {
   display: flex;
   gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
+
+.desktop-menu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  padding-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
 .desktop-menu a:hover {
-  color: #5D8BF4;
-  border-bottom: 2px solid #5D8BF4;
+  color: #095a27;
+  border-bottom: 2px solid #095a27;
 }
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
 .search-bar input {
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  padding-right: 2rem;
   border: 1px solid #ddd;
   border-radius: 20px;
+  outline: none;
 }
-.mobile-menu { display: none; }
+
+.search-bar button {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #777;
+}
+
+.mobile-menu { 
+  display: none; 
+}
+
 @media (max-width: 768px) {
-  .desktop-menu, .search-bar input { display: none; }
-  .mobile-menu { display: block; }
-  .search-bar button { background: none; border: none; }
+  .desktop-menu { 
+    display: none; 
+  }
+  
+  .search-bar input { 
+    width: 120px;
+  }
+  
+  .mobile-menu { 
+    display: block; 
+  }
+  
+  .hamburger {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
 }
 
 /* Footer CSS */
 .minimalist-footer {
-    text-align: center;
-    padding: 50px 20px;
-    background: #f5f5f5;
-  }
-  .social-circle a {
-    display: inline-flex;
-    width: 40px;
-    height: 40px;
-    background: white;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    margin: 0 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
+  text-align: center;
+  padding: 3rem 20px;
+  background: #f5f5f5;
+  border-top: 1px solid #e1e1e1;
+}
 
+.footer-logo {
+  height: 50px;
+  width: auto;
+  margin-bottom: 1rem;
+}
 
+.minimalist-footer p {
+  color: #666;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
 
+.social-circle {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 2rem;
+}
+
+.social-circle a {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  color: #095a27;
+  transition: all 0.3s ease;
+}
+
+.social-circle a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.copyright {
+  color: #888;
+  font-size: 0.9rem;
+}
