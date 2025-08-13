@@ -335,4 +335,22 @@
 							}, 275);
 
 						});
+				// JS Header
+					$(function() {
+					  // Toggle menu
+					  $('.hamburger').on('click', function(e) {
+					    e.stopPropagation();
+					    $('.mobile-menu-content').stop().slideToggle(300);
+					  });
+					  
+					  $(document).on('click', function() {
+					    $('.mobile-menu-content').slideUp(300);
+					  });
+					  
+					  $('.mobile-menu-content').on('click', function(e) {
+					    e.stopPropagation();
+					  });
+					});
+	
 })(jQuery);
+
