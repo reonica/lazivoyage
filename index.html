@@ -277,26 +277,26 @@
 					<section class="wrapper style1 align-center">
 						<div class="inner medium" id="contact">
 							<h2>Thông tin liên hệ</h2>
-							<form method="post" action="#">
-								<div class="fields">
-									<div class="field half">
-										<label for="name">Tên</label>
-										<input type="text" name="name" id="name" value="" />
-									</div>
-									<div class="field half">
-										<label for="email">Email</label>
-										<input type="email" name="email" id="email" value="" />
-									</div>
-									<div class="field">
-										<label for="message">Nội dung</label>
-										<textarea name="message" id="message" rows="6"></textarea>
-									</div>
-								</div>
-								<ul class="actions special">
-									<li><input type="submit" name="submit" id="submit" value="Gửi" /></li>
-								</ul>
+							<form name="contact" method="POST" data-netlify="true">
+							    <input type="hidden" name="form-name" value="contact">
+							    <div class="fields">
+							        <div class="field half">
+							            <label for="name">Tên</label>
+							            <input type="text" name="name" id="name" required />
+							        </div>
+							        <div class="field half">
+							            <label for="email">Email</label>
+							            <input type="email" name="email" id="email" required />
+							        </div>
+							        <div class="field">
+							            <label for="message">Nội dung</label>
+							            <textarea name="message" id="message" rows="6" required></textarea>
+							        </div>
+							    </div>
+							    <ul class="actions special">
+							        <li><input type="submit" value="Gửi" /></li>
+							    </ul>
 							</form>
-
 						</div>
 					</section>
 
@@ -329,6 +329,7 @@
 
 	</body>
 </html>
+
 
 
 
