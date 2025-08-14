@@ -6092,6 +6092,33 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
   border: none;
 }
 
+.search-results-list {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  display: none;
+}
+
+.search-results-list a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+.search-results-list a:hover {
+  background-color: #f0f0f0;
+}
+
 .hamburger {
   background: none;
   border: none;
@@ -6106,7 +6133,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
   height: 40px;
   border-radius: 50%;
   transition: all 0.3s ease;
-  -webkit-tap-highlight-color: transparent; /* Xóa overlay xanh lam */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .hamburger, .hamburger:focus, .hamburger:active {
@@ -6265,10 +6292,3 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
   color: #888;
   font-size: 0.9rem;
 }
-
-
-
-
-
-
-
