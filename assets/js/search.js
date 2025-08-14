@@ -24,7 +24,7 @@ const urlList = [
   { name: "Cách chọn xe đạp gấp tốt và bền nhất", url: "https://lazivoyage.wordpress.com/2024/03/18/cach-chon-xe-dap-gap-tot-va-ben-nhat" },
   { name: "Phân biệt Chùa, Đình, Đền, Phủ, Miếu, Quán trong văn hóa Việt", url: "https://lazivoyage.wordpress.com/2024/03/09/phan-biet-chua-dinh-den-phu-mieu-quan-trong-van-hoa-viet" },
   { name: "Tham quan Phủ Chủ Tịch - Địa điểm nên đi khi du lịch Hà Nội", url: "https://lazivoyage.wordpress.com/2024/02/23/tham-quan-phu-chu-tich-dia-diem-nen-di-khi-du-lich-ha-noi" },
-  { name: "Chùa Trấn Quốc - Địa điểm du lịch tâm linh &amp; văn hóa Hà Nội", url: "https://lazivoyage.wordpress.com/2024/02/21/chua-tran-quoc-dia-diem-du-lich-bieu-tuong-tam-linh-van-hoa-ha-noi" },
+  { name: "Chùa Trấn Quốc - Địa điểm du lịch tâm linh văn hóa Hà Nội", url: "https://lazivoyage.wordpress.com/2024/02/21/chua-tran-quoc-dia-diem-du-lich-bieu-tuong-tam-linh-van-hoa-ha-noi" },
   { name: "Quần thể Lăng Bác - Di tích lịch sử, văn hóa nổi tiếng tại Hà Nội", url: "https://lazivoyage.wordpress.com/2024/02/18/quan-the-lang-bac-di-tich-lich-su-van-hoa-noi-tieng-tai-ha-noi" },
   { name: "Đền Bạch Mã, Thăng Long tứ trấn - Di tích 1000 năm tuổi tại Hà Nội", url: "https://lazivoyage.wordpress.com/2024/02/15/den-bach-ma-thang-long-tu-tran-di-tich-1000-nam-tuoi-tai-ha-noi" },
   { name: "Tài liệu thuyết minh Văn Miếu Quốc Tử Giám cho HDV mới", url: "https://lazivoyage.wordpress.com/2024/02/13/tai-lieu-thuyet-minh-ve-van-mieu-quoc-tu-giam-cho-hdv-moi" },
