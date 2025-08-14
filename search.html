@@ -89,34 +89,34 @@
         <script src="assets/js/main.js"></script>
         <script src="assets/js/search.js"></script>
         <script>
-            // Lấy query từ URL và hiển thị
+            // Lấy query từ URL
             const params = new URLSearchParams(window.location.search);
             const query = params.get('q') || "";
             document.getElementById('searchQuery').textContent = query;
-
+        
             // Hiển thị kết quả tìm kiếm
             const resultsContainer = document.getElementById('search-results');
             const filteredResults = urlList.filter(item =>
-                removeVietnameseTones(item.name).toLowerCase().includes(removeVietnameseTones(query).toLowerCase())
+              removeVietnameseTones(item.name).includes(removeVietnameseTones(query))
             );
-
+        
             if (filteredResults.length > 0) {
-                resultsContainer.innerHTML = filteredResults.map(r => `
-                    <article>
-                        <div class="image">
-                            <img src="${r.image || 'images/lazi-voyage/default-placeholder.jpg'}" alt="${r.name}" />
-                        </div>
-                        <div class="caption">
-                            <h3>${r.name}</h3>
-                            <p>${r.description || 'Khám phá thêm về ' + r.name}</p>
-                            <ul class="actions fixed">
-                                <li><a href="${r.url}" class="button small">Chi tiết</a></li>
-                            </ul>
-                        </div>
-                    </article>
-                `).join("");
+              resultsContainer.innerHTML = filteredResults.map(r => `
+                <article>
+                  <div class="image">
+                    <img src="${r.image || 'images/lazi-voyage/default-placeholder.jpg'}" alt="${r.name}" />
+                  </div>
+                  <div class="caption">
+                    <h3>${r.name}</h3>
+                    <p>${r.description || 'Khám phá thêm về ' + r.name}</p>
+                    <ul class="actions fixed">
+                      <li><a href="${r.url}" class="button small">Chi tiết</a></li>
+                    </ul>
+                  </div>
+                </article>
+              `).join("");
             } else {
-                resultsContainer.innerHTML = "<p>Không tìm thấy kết quả cho từ khóa này.</p>";
+              resultsContainer.innerHTML = "<p>Không tìm thấy kết quả cho từ khóa này.</p>";
             }
         </script>
     </body>
