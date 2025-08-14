@@ -7,27 +7,36 @@ const urlList = [
   { name: "Long Ly Quy Phụng – Tứ Linh Trong Văn Hóa Việt", url: "https://lazivoyage.wordpress.com/2024/08/11/long-ly-quy-phung-tu-linh-trong-van-hoa-viet/" },
 ];
 
+function removeVietnameseTones(str) {
+  return str
+    .normalize("NFD") // tách dấu
+    .replace(/[\u0300-\u036f]/g, "") // xóa dấu
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase();
+}
+
 // 2. Logic xử lý tìm kiếm
 const searchInput = document.getElementById('mySearchInput');
 const resultsContainer = document.getElementById('searchResults');
 
-searchInput.addEventListener('input', function() {
-  const searchTerm = searchInput.value.toLowerCase();
-  
+resultsContainer.style.width = "66%"; // 2/3 màn hình
+resultsContainer.style.maxWidth = "none";
+
+function renderResults(searchTerm) {
   resultsContainer.innerHTML = '';
-  
+
   if (searchTerm === '') {
     resultsContainer.style.display = 'none';
     return;
   }
 
   const filteredUrls = urlList.filter(item => 
-    item.name.toLowerCase().includes(searchTerm)
+    removeVietnameseTones(item.name).includes(removeVietnameseTones(searchTerm))
   );
 
   if (filteredUrls.length > 0) {
     resultsContainer.style.display = 'block';
-    
     filteredUrls.forEach(item => {
       const link = document.createElement('a');
       link.href = item.url;
@@ -37,6 +46,22 @@ searchInput.addEventListener('input', function() {
     });
   } else {
     resultsContainer.style.display = 'none';
+  }
+}
+
+searchInput.addEventListener('input', function() {
+  renderResults(searchInput.value);
+});
+
+// 3. Tạo trang kết quả riêng khi bấm Enter
+searchInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const query = searchInput.value.trim();
+    if (query !== '') {
+      const searchPageUrl = `/search.html?q=${encodeURIComponent(query)}`;
+      window.location.href = searchPageUrl;
+    }
   }
 });
 
