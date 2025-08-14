@@ -2,9 +2,16 @@
 
 // 1. Danh sách URL (dữ liệu)
 const urlList = [
-  { name: "Sức Sống Văn Hoá Việt Qua Thế Hệ Trẻ", url: "https://lazivoyage.blogspot.com/2025/05/suc-song-van-hoa-viet-qua-he-tre.html" },
-  { name: "Phân Biệt Hệ Tư Tưởng, Tôn Giáo, Tín Ngưỡng Và Mê Tín Dị Đoan", url: "https://lazivoyage.blogspot.com/2025/06/phan-biet-he-tu-tuong-ton-giao-tin-nguong-va-me-tin-di-doan.html" },
-  { name: "Long Ly Quy Phụng – Tứ Linh Trong Văn Hóa Việt", url: "https://lazivoyage.wordpress.com/2024/08/11/long-ly-quy-phung-tu-linh-trong-van-hoa-viet/" },
+{ name: "Ý Nghĩa Của Trống Đồng Trong Văn Hoá Việt", url: "https://lazivoyage.blogspot.com/2025/08/y-nghia-cua-trong-ong-trong-van-hoa-viet.html" },
+{ name: "Phân Biệt Hệ Tư Tưởng, Tôn Giáo, Tín Ngưỡng Và Mê Tín Dị Đoan", url: "https://lazivoyage.blogspot.com/2025/06/phan-biet-he-tu-tuong-ton-giao-tin-nguong-va-me-tin-di-doan.html" },
+{ name: "Vịnh Hạ Long, Bái Tử Long Hay Lan Hạ?", url: "https://lazivoyage.blogspot.com/2025/06/vinh-ha-long-bai-tu-long-hay-lan-ha.html" },
+{ name: "Cuộc Sống Ở Vịnh Hạ Long", url: "https://lazivoyage.blogspot.com/2025/06/cuoc-song-o-vinh-ha-long.html" },
+{ name: "Sự Hình Thành Núi Đá Vôi Ở Việt Nam", url: "https://lazivoyage.blogspot.com/2025/06/su-hinh-thanh-nui-da-voi-o-viet-nam.html" },
+{ name: "Lịch Sử Hình Thành Và Phát Triển Đạo Công Giáo Tại Việt Nam", url: "https://lazivoyage.blogspot.com/2025/06/lich-su-hinh-thanh-va-phat-trien-dao-cong-giao-tai-viet-nam.html" },
+{ name: "Sức Sống Văn Hoá Việt Qua Thế Hệ Trẻ", url: "https://lazivoyage.blogspot.com/2025/05/suc-song-van-hoa-viet-qua-he-tre.html" },
+{ name: "Hình Tượng Rắn Trong Thờ Mẫu Tại Việt Nam", url: "https://lazivoyage.blogspot.com/2025/05/hinh-tuong-ran-trong-tho-mau-tai-viet-nam.html" },
+{ name: "Tìm hiểu cuộc sống miền núi Đông Bắc Việt Nam", url: "https://lazivoyage.wordpress.com/2025/05/23/tim-hieu-cuoc-song-mien-nui-dong-bac-viet-nam/" },
+{ name: "Cuộc Sống Miền Tây Như Thế Nào?", url: "https://lazivoyage.wordpress.com/2025/05/22/cuoc-song-mien-tay-nhu-the-nao/" },
 ];
 
 function removeVietnameseTones(str) {
