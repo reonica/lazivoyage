@@ -36,11 +36,12 @@
 					  </nav>
 					  <div class="search-bar-container">
 					    <div class="search-bar">
-					      <input type="text" placeholder="Tìm kiếm..." aria-label="Search">
+					      <input type="text" id="mySearchInput" placeholder="Tìm kiếm..." aria-label="Search">
 					      <button type="submit" aria-label="Search button">
 					        <i class="fas fa-search"></i>
 					      </button>
 					    </div>
+						<div id="searchResults" class="search-results-list"></div>
 					  </div>
 					  <div class="mobile-menu">
 					    <button class="hamburger" aria-label="Menu">
@@ -324,13 +325,9 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="url-data.js"></script>
+			<script src="search-logic.js"></script>
+
 
 	</body>
 </html>
-
-
-
-
-
-
-
