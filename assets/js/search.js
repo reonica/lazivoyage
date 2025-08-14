@@ -51,6 +51,8 @@ function renderResults(searchTerm) {
         link.href = item.url;
         link.textContent = item.name;
         link.target = "_blank";
+        link.style.display = 'block'; // Đảm bảo mỗi liên kết hiển thị trên một dòng
+        link.style.padding = '5px 0'; // Thêm khoảng cách cho dễ nhìn
         resultsContainer.appendChild(link);
       });
     } else {
@@ -92,25 +94,23 @@ function renderSearchPageResults() {
     const query = params.get('q') || "";
     searchQueryElement.textContent = query;
 
+    resultsContainer.innerHTML = ''; // Xóa nội dung cũ
+
     const filteredResults = urlList.filter(item =>
       removeVietnameseTones(item.name).includes(removeVietnameseTones(query))
     );
 
     if (filteredResults.length > 0) {
-      resultsContainer.innerHTML = filteredResults.map(r => `
-        <article>
-          <div class="image">
-            <img src="${r.image || 'images/lazi-voyage/default-placeholder.jpg'}" alt="${r.name}" />
-          </div>
-          <div class="caption">
-            <h3>${r.name}</h3>
-            <p>${r.description || 'Khám phá thêm về ' + r.name}</p>
-            <ul class="actions fixed">
-              <li><a href="${r.url}" class="button small">Chi tiết</a></li>
-            </ul>
-          </div>
-        </article>
-      `).join("");
+      filteredResults.forEach(item => {
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.textContent = item.name;
+        link.target = "_blank";
+        link.style.display = 'block'; // Hiển thị mỗi liên kết trên một dòng
+        link.style.padding = '10px 0'; // Khoảng cách giữa các liên kết
+        link.style.textDecoration = 'underline'; // Thêm gạch chân để rõ ràng là liên kết
+        resultsContainer.appendChild(link);
+      });
     } else {
       resultsContainer.innerHTML = "<p>Không tìm thấy kết quả cho từ khóa này.</p>";
     }
