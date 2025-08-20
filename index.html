@@ -336,10 +336,79 @@
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/search.js"></script>
-
+		<!-- Schema Organization -->
+			<script type="application/ld+json">
+			{
+			  "@context": "https://schema.org",
+			  "@type": "Organization",
+			  "name": "Lazi Voyage",
+			  "url": "https://lazivoyage.com",
+			  "logo": "https://lazivoyage.com/images/lazi-voyage/logo-lazi-update.png",
+			  "contactPoint": {
+			    "@type": "ContactPoint",
+			    "contactType": "Customer Service",
+			    "email": "lazi.voyage@gmail.com",
+			    "telephone": "+84-91-688-2795"
+			  },
+			  "sameAs": [
+			    "https://www.instagram.com/josvu19",
+			    "https://www.facebook.com/josvu19",
+			    "https://fr.pinterest.com/goavecjo/",
+			    "https://x.com/guidefrvietnam",
+			    "https://www.linkedin.com/in/guidefrancophonevietnam/"
+			  ]
+			}
+			</script>
+		<!-- Schema WebSite -->
+			<script type="application/ld+json">
+			{
+			  "@context": "https://schema.org",
+			  "@type": "WebSite",
+			  "name": "Lazi Voyage",
+			  "url": "https://lazivoyage.com",
+			  "potentialAction": {
+			    "@type": "SearchAction",
+			    "target": {
+			      "@type": "EntryPoint",
+			      "urlTemplate": "https://lazivoyage.com/search.html?q={search_term_string}"
+			    },
+			    "query-input": "required name=search_term_string"
+			  }
+			}
+			</script>
+		<!-- Schema BreadcrumbList -->
+			<script type="application/ld+json">
+			{
+			  "@context": "https://schema.org",
+			  "@type": "BreadcrumbList",
+			  "itemListElement": [
+			    {
+			      "@type": "ListItem",
+			      "position": 1,
+			      "name": "Home",
+			      "item": "https://lazivoyage.com"
+			    }
+			  ]
+			}
+			</script>
+		<!-- Schema WebPage -->
+			<script type="application/ld+json">
+			{
+			  "@context": "https://schema.org",
+			  "@type": "WebPage",
+			  "name": "Lazi Voyage - Blog Văn Hóa Việt",
+			  "url": "https://lazivoyage.com",
+			  "description": "Lazi Voyage là blog để bạn khám phá văn hoá Việt và du lịch Việt Nam qua những câu chuyện và trải nghiệm đầy cảm hứng.",
+			  "image": "https://lazivoyage.com/images/lazi-voyage/du-lich-vietnam.jpg",
+			  "publisher": {
+			    "@type": "Organization",
+			    "name": "Lazi Voyage",
+			    "logo": {
+			      "@type": "ImageObject",
+			      "url": "https://lazivoyage.com/images/lazi-voyage/logo-lazi-update.png"
+			    }
+			  }
+			}
+			</script>
 	</body>
 </html>
-
-
-
-
