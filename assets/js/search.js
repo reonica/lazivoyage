@@ -4,7 +4,7 @@
 const urlList = [
   { name: "Ý Nghĩa Bộ Bát Bảo Chấp Kích Trong Văn Hoá Việt", url: "https://lazivoyage.blogspot.com/2025/08/y-nghia-bo-bat-bao-chap-kich-trong-van-hoa-viet.html" },
   { name: "Bản Đồ Du Lịch Việt Nam Sau Sáp Nhập", url: "https://lazivoyage.blogspot.com/2025/08/ban-do-du-lich-viet-nam-sau-sap-nhap.html" },
-  { name: "Ý Nghĩa Của Trống Đồng Trong Văn Hoá Việt", url: "https://lazivoyage.blogspot.com/2025/08/y-nghia-cua-trong-ong-trong-van-hoa-viet.html" },
+  { name: "Ý Nghĩa Của Trống Đồng Trong Văn Hoá Việt", url: "https://lazivoyage.blogspot.com/2025/08/y-nghia-cua-trong-dong-trong-van-hoa-viet.html" },
   { name: "Phân Biệt Hệ Tư Tưởng, Tôn Giáo, Tín Ngưỡng Và Mê Tín Dị Đoan", url: "https://lazivoyage.blogspot.com/2025/06/phan-biet-he-tu-tuong-ton-giao-tin-nguong-va-me-tin-di-doan.html" },
   { name: "Vịnh Hạ Long, Bái Tử Long Hay Lan Hạ?", url: "https://lazivoyage.blogspot.com/2025/06/vinh-ha-long-bai-tu-long-hay-lan-ha.html" },
   { name: "Cuộc Sống Ở Vịnh Hạ Long", url: "https://lazivoyage.blogspot.com/2025/06/cuoc-song-o-vinh-ha-long.html" },
