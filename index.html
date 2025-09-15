@@ -22,7 +22,43 @@
 	<body class="is-preload">
 
 					<!-- Header -->
-					<header data-include="_includes/header.html"></header>
+					<header class="sticky-header">
+					  <div class="logo">
+					    <a href="/"><img src="images/lazi-voyage/logo-lazi-update.png" alt="Lazivoyage"></a>
+					  </div>
+					  <nav class="desktop-menu">
+					    <ul>
+					      <li><a href="/">Home</a></li>
+					      <li><a href="#lang">Ngôn Ngữ</a></li>
+					      <li><a href="#map">Bản Đồ</a></li>
+					      <li><a href="#culture">Văn Hoá</a></li>
+					      <li><a href="#contact">Liên Hệ</a></li>
+					    </ul>
+					  </nav>
+					  <div class="search-bar-container">
+					    <div class="search-bar">
+					      <input type="text" id="mySearchInput" placeholder="Tìm kiếm..." aria-label="Search">
+					      <button type="submit" aria-label="Search button">
+					        <i class="fas fa-search"></i>
+					      </button>
+					    </div>
+					    <div id="searchResults" class="search-results-list"></div>
+					  </div>
+					  <div class="mobile-menu">
+					    <button class="hamburger" aria-label="Menu">
+					      <i class="fas fa-bars"></i>
+					    </button>
+					  </div>
+					  <div class="mobile-menu-content">
+					    <ul>
+					      <li><a href="/">Home</a></li>
+					      <li><a href="#lang">Ngôn Ngữ</a></li>
+					      <li><a href="#map">Bản Đồ</a></li>
+					      <li><a href="#culture">Văn Hoá</a></li>
+					      <li><a href="#contact">Liên Hệ</a></li>
+					    </ul>
+					  </div>
+					</header>
 		
 		<!-- Wrapper -->
 			<div id="wrapper" class="divided">
@@ -279,7 +315,18 @@
 					</section>
 
 				<!-- Footer -->
-					<footer data-include="_includes/footer.html"></footer>
+					<footer class="minimalist-footer">
+					  <img src="images/lazi-voyage/logo-lazi-update.png" alt="Lazi Voyage" class="footer-logo">
+					  <p><a href="https://linktr.ee/guidefrancophonevietnam"  target="_blank">Blog văn hóa Việt</a></p>
+					  <div class="social-circle">
+					    <a href="https://instagram.com/josvu19"><i class="fab fa-instagram"></i></a>
+					    <a href="https://facebook.com/josvu19"><i class="fab fa-facebook"></i></a>
+					    <a href="https://fr.pinterest.com/goavecjo/"><i class="fab fa-pinterest"></i></a>
+					    <a href="https://x.com/guidefrvietnam"><i class="fab fa-twitter"></i></a>
+					    <a href="https://www.linkedin.com/in/guidefrancophonevietnam/"><i class="fab fa-linkedin"></i></a>
+					  </div>
+					  <div class="copyright">© 2023 Lazi Voyage | All Rights Reserved</div>
+					</footer>
 			</div>
 
 		<!-- Scripts -->
@@ -367,6 +414,7 @@
 			</script>
 	</body>
 </html>
+
 
 
 
