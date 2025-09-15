@@ -357,32 +357,30 @@
 					    $('.search-bar input').toggleClass('expanded');
 					  });
 					});
-			document.addEventListener('DOMContentLoaded', function() {
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    
-    faqQuestions.forEach(question => {
-        question.addEventListener('click', () => {
-            const answer = question.nextElementSibling;
-            const isActive = answer.classList.contains('active');
-            
-            // Đóng tất cả các câu trả lời
-            document.querySelectorAll('.faq-answer').forEach(ans => {
-                ans.classList.remove('active');
-            });
-            
-            document.querySelectorAll('.faq-question').forEach(q => {
-                q.classList.remove('active');
-            });
-            
-            // Mở câu trả lời hiện tại nếu chưa mở
-            if (!isActive) {
-                question.classList.add('active');
-                answer.classList.add('active');
-            }
-        });
-    });
-});
+					// FAQ Toggle
+					document.addEventListener('DOMContentLoaded', function () {
+					  const faqQuestions = document.querySelectorAll('.faq-question');
+					
+					  faqQuestions.forEach(question => {
+					    question.addEventListener('click', () => {
+					      const faqItem = question.parentElement; // .faq-item
+					      const isActive = faqItem.classList.contains('active');
+					
+					      // Đóng tất cả trước
+					      document.querySelectorAll('.faq-item').forEach(item => {
+					        item.classList.remove('active');
+					      });
+					
+					      // Nếu item hiện tại chưa mở thì mở nó
+					      if (!isActive) {
+					        faqItem.classList.add('active');
+					      }
+					    });
+					  });
+					});
+
 })(jQuery);
+
 
 
 
