@@ -6125,7 +6125,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 .faq-question {
     width: 100%;
     text-align: left;
-    padding: 0.8rem 0;
+    padding: 0.8rem 1.5rem; /* Tăng padding bên để text không bị cắt */
     background: none;
     border: none;
     border-bottom: 1px solid #ddd;
@@ -6134,17 +6134,20 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     justify-content: space-between;
     align-items: center;
     transition: color 0.3s ease;
+    box-sizing: border-box; /* Đảm bảo padding không vượt width */
 }
 
 .faq-question:hover {
-    color: #333;
+    color: #095a27; /* Hover đổi màu giống text */
 }
 
 .faq-question h3 {
     margin: 0;
     font-size: 1rem;
     font-weight: 500;
-    color: #555;
+    color: #095a27; /* Thay đổi màu thành #095a27 */
+    text-transform: capitalize; /* Viết hoa chữ cái đầu, bỏ uppercase */
+    white-space: normal; /* Đảm bảo text xuống dòng nếu dài */
 }
 
 .faq-question i {
@@ -6166,7 +6169,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 }
 
 .faq-answer.active {
-    padding: 1rem 0;
+    padding: 1rem 1.5rem; /* Tăng padding bên cho nội dung */
     max-height: 1000px;
 }
 
@@ -6180,7 +6183,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
     .faq-question {
-        padding: 0.6rem 0;
+        padding: 0.6rem 1rem; /* Giảm padding trên mobile */
     }
     
     .faq-question h3 {
@@ -6188,6 +6191,6 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     }
     
     .faq-answer.active {
-        padding: 0.8rem 0;
+        padding: 0.8rem 1rem;
     }
 }
