@@ -6116,35 +6116,40 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 
 /* FAQ Styles */
 .faq-item {
-    margin-bottom: 1rem;
-    border: 1px solid rgba(160, 160, 160, 0.3);
-    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    border: none;
+    border-radius: 0;
     overflow: hidden;
 }
 
 .faq-question {
     width: 100%;
     text-align: left;
-    padding: 1.5rem;
-    background: #f7f7f7;
+    padding: 0.8rem 0;
+    background: none;
     border: none;
+    border-bottom: 1px solid #ddd;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background 0.3s ease;
+    transition: color 0.3s ease;
 }
 
 .faq-question:hover {
-    background: #eaeaea;
+    color: #333;
 }
 
 .faq-question h3 {
     margin: 0;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #555;
 }
 
 .faq-question i {
+    font-size: 0.8rem;
+    color: #777;
     transition: transform 0.3s ease;
 }
 
@@ -6157,30 +6162,32 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease, padding 0.3s ease;
-    background: white;
+    background: none;
 }
 
 .faq-answer.active {
-    padding: 1.5rem;
-    max-height: 500px;
+    padding: 1rem 0;
+    max-height: 1000px;
 }
 
 .faq-answer p {
     margin: 0;
     text-align: justify;
+    font-size: 0.9rem;
+    color: #666;
 }
 
 /* Responsive adjustments */
 @media screen and (max-width: 768px) {
     .faq-question {
-        padding: 1rem;
+        padding: 0.6rem 0;
     }
     
     .faq-question h3 {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
     }
     
     .faq-answer.active {
-        padding: 1rem;
+        padding: 0.8rem 0;
     }
-
+}
