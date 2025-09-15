@@ -363,23 +363,26 @@
 					
 					  faqQuestions.forEach(question => {
 					    question.addEventListener('click', () => {
-					      const faqItem = question.parentElement; // .faq-item
-					      const isActive = faqItem.classList.contains('active');
+					      const answer = question.nextElementSibling; // .faq-answer
+					      const isActive = question.classList.contains('active');
 					
-					      // Đóng tất cả trước
-					      document.querySelectorAll('.faq-item').forEach(item => {
-					        item.classList.remove('active');
+					      // Close all first
+					      document.querySelectorAll('.faq-question').forEach(q => {
+					        q.classList.remove('active');
+					        q.nextElementSibling.classList.remove('active');
 					      });
 					
-					      // Nếu item hiện tại chưa mở thì mở nó
+					      // Toggle the clicked one
 					      if (!isActive) {
-					        faqItem.classList.add('active');
+					        question.classList.add('active');
+					        answer.classList.add('active');
 					      }
 					    });
 					  });
 					});
 
 })(jQuery);
+
 
 
 
