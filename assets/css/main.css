@@ -5981,14 +5981,14 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 }
 
 .mobile-menu-content {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 70%;
-  height: 100%;
-  background: white;
-  z-index: 2000;
   display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 33.33%;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
   padding: 1rem;
 }
 
@@ -6198,4 +6198,5 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
         padding: 0.8rem 1rem;
     }
 }
+
 
