@@ -1,5 +1,8 @@
 // assets/js/include.js
 
+// Biến toàn cục để theo dõi trạng thái
+let isInitialized = false;
+
 // Hàm include header/footer
 async function includeHTML() {
   const includes = document.querySelectorAll("[data-include]");
@@ -19,20 +22,19 @@ async function includeHTML() {
       const headerEl = temp.querySelector(".sticky-header") || temp.querySelector("header");
       const footerEl = temp.querySelector("footer") || temp.querySelector(".minimalist-footer");
 
+      let newElement;
+      
       if (headerEl) {
-        // Thay thế placeholder bằng header thực
-        el.replaceWith(headerEl);
-        
+        newElement = headerEl.cloneNode(true);
         // Đưa header lên đầu body để sticky hoạt động
-        document.body.insertBefore(headerEl, document.body.firstChild);
+        document.body.insertBefore(newElement, document.body.firstChild);
+        el.remove();
       } else if (footerEl) {
-        // Thay thế placeholder bằng footer thực
-        el.replaceWith(footerEl);
-        
+        newElement = footerEl.cloneNode(true);
         // Đưa footer xuống cuối body
-        document.body.appendChild(footerEl);
+        document.body.appendChild(newElement);
+        el.remove();
       } else {
-        // Nếu không phải header/footer -> chèn như bình thường
         el.innerHTML = temp.innerHTML;
       }
     } catch (e) {
@@ -40,8 +42,11 @@ async function includeHTML() {
     }
   }
 
-  // Sau khi include xong thì init các tính năng
-  initFeatures();
+  // Chỉ init một lần duy nhất
+  if (!isInitialized) {
+    initFeatures();
+    isInitialized = true;
+  }
 }
 
 // Khởi tạo tất cả tính năng
@@ -81,19 +86,58 @@ function isStickyBroken(el) {
   return false;
 }
 
-// Khởi tạo menu mobile (hamburger) với event delegation
+// Khởi tạo menu mobile với kiểm tra kỹ hơn
 function initMobileMenu() {
-  // Sử dụng event delegation để xử lý click
-  document.body.addEventListener("click", function(e) {
-    if (e.target.closest(".hamburger")) {
-      const mobileMenu = document.querySelector(".mobile-menu-content");
-      if (mobileMenu) {
-        mobileMenu.classList.toggle("active");
-        console.log("Mobile menu toggled"); // Debug
-      }
+  console.log("Initializing mobile menu...");
+  
+  const hamburger = document.querySelector(".hamburger");
+  const mobileMenu = document.querySelector(".mobile-menu-content");
+
+  if (!hamburger || !mobileMenu) {
+    console.error("❌ Không tìm thấy hamburger hoặc mobile menu");
+    return;
+  }
+
+  console.log("Found elements:", hamburger, mobileMenu);
+
+  // Xóa event listeners cũ (nếu có)
+  hamburger.replaceWith(hamburger.cloneNode(true));
+  const newHamburger = document.querySelector(".hamburger");
+
+  newHamburger.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Hamburger clicked");
+    
+    mobileMenu.classList.toggle("active");
+    console.log("Mobile menu active:", mobileMenu.classList.contains("active"));
+  });
+
+  // Thêm sự kiện đóng menu khi click ra ngoài
+  document.addEventListener("click", function(e) {
+    if (mobileMenu.classList.contains("active") && 
+        !e.target.closest(".mobile-menu-content") && 
+        !e.target.closest(".hamburger")) {
+      mobileMenu.classList.remove("active");
+      console.log("Closed menu by clicking outside");
     }
+  });
+
+  // Ngăn sự kiện click trong menu lan ra ngoài
+  mobileMenu.addEventListener("click", function(e) {
+    e.stopPropagation();
   });
 }
 
 // Gọi hàm include khi load trang
-document.addEventListener("DOMContentLoaded", includeHTML);
+document.addEventListener("DOMContentLoaded", function() {
+  includeHTML().catch(error => {
+    console.error("Error including HTML:", error);
+  });
+});
+
+// Re-init nếu cần thiết (cho các SPA)
+window.reInitMenu = function() {
+  isInitialized = false;
+  initFeatures();
+};
