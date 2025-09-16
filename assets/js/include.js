@@ -5,73 +5,59 @@ async function includeHTML() {
   for (let el of includes) {
     const file = el.getAttribute("data-include");
     try {
-      console.log("👉 Đang load:", file);
       const response = await fetch(file);
       if (!response.ok) throw new Error("Không tìm thấy " + file);
       const content = await response.text();
 
-      // parse content
+      // Tạo node tạm để parse HTML
       const temp = document.createElement("div");
       temp.innerHTML = content.trim();
 
-      // TÌM header/footer trong nội dung include (nếu có)
+      // Tìm header/footer
       const headerEl = temp.querySelector(".sticky-header") || temp.querySelector("header");
       const footerEl = temp.querySelector("footer") || temp.querySelector(".minimalist-footer");
 
       if (headerEl) {
-        // Nếu placeholder là chính thẻ <header> (không muốn lồng), thay thế
-        if (el.tagName.toLowerCase() === "header") {
-          el.replaceWith(headerEl);
-        } else {
-          // đưa header lên là con trực tiếp của <body> (đặt ở đầu)
-          document.body.insertBefore(headerEl, document.body.firstChild);
-          // xóa placeholder
-          el.remove();
-        }
+        // Nếu là header thì đưa lên đầu body để sticky hoạt động
+        document.body.insertBefore(headerEl, document.body.firstChild);
+        el.remove();
       } else if (footerEl) {
-        // append footer vào cuối body
+        // Nếu là footer thì đưa xuống cuối body
         document.body.appendChild(footerEl);
         el.remove();
       } else {
-        // mặc định: thay placeholder bằng nội dung include (không có header/footer)
-        el.insertAdjacentHTML("afterend", temp.innerHTML);
-        el.remove();
+        // Nếu không phải header/footer thì chèn như bình thường
+        el.innerHTML = temp.innerHTML;
       }
-
-      console.log("✅ Load thành công:", file);
     } catch (e) {
       console.error("❌ Lỗi load include:", file, e);
     }
   }
 
-  // Sau khi include xong -> kiểm tra sticky; nếu sticky không hợp lệ thì chuyển về fixed (fallback)
+  // Sau khi include xong thì init các tính năng
   setTimeout(() => {
-    const header = document.querySelector(".sticky-header");
-    if (header) {
-      if (isStickyBroken(header)) {
-        // fallback: fixed + padding-top cho body
-        header.style.position = "fixed";
-        header.style.top = "0";
-        header.style.left = "0";
-        header.style.width = "100%";
-        header.style.zIndex = "1000";
-        document.body.style.paddingTop = header.offsetHeight + "px";
-        console.warn("⚠️ sticky không hoạt động -> đã bật fallback position:fixed");
-      } else {
-        // giữ z-index/nền cho an toàn
-        header.style.zIndex = header.style.zIndex || "1000";
-        if (!getComputedStyle(header).backgroundColor || getComputedStyle(header).backgroundColor === "rgba(0, 0, 0, 0)") {
-          header.style.background = header.style.background || "white";
-        }
-      }
-    }
-
-    // gọi initPage nếu có (menu, hamburger, v.v.)
-    if (typeof initPage === "function") initPage();
-  }, 60);
+    fixStickyFallback();
+    initMobileMenu();
+  }, 100);
 }
 
-// Kiểm tra nhanh xem có ancestor nào "phá" sticky không
+// Nếu sticky bị phá bởi ancestor -> fallback về fixed
+function fixStickyFallback() {
+  const header = document.querySelector(".sticky-header");
+  if (!header) return;
+
+  if (isStickyBroken(header)) {
+    header.style.position = "fixed";
+    header.style.top = "0";
+    header.style.left = "0";
+    header.style.width = "100%";
+    header.style.zIndex = "1000";
+    document.body.style.paddingTop = header.offsetHeight + "px";
+    console.warn("⚠️ sticky không hoạt động -> fallback position:fixed");
+  }
+}
+
+// Kiểm tra ancestor có phá sticky không
 function isStickyBroken(el) {
   let node = el.parentElement;
   while (node && node !== document.documentElement) {
@@ -84,6 +70,18 @@ function isStickyBroken(el) {
     node = node.parentElement;
   }
   return false;
+}
+
+// Khởi tạo menu mobile (hamburger)
+function initMobileMenu() {
+  const hamburger = document.querySelector(".hamburger");
+  const mobileMenu = document.querySelector(".mobile-menu-content");
+
+  if (hamburger && mobileMenu) {
+    hamburger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("active");
+    });
+  }
 }
 
 document.addEventListener("DOMContentLoaded", includeHTML);
