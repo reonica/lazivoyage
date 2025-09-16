@@ -86,15 +86,12 @@ function initSearchFunctionality() {
   const resultsContainer = document.getElementById('searchResults');
   
   if (!searchInput || !resultsContainer) {
-    // Không tìm thấy các element cần thiết, có thể không phải trang có thanh tìm kiếm
     return;
   }
 
-  // Thiết lập style cho container gợi ý
   resultsContainer.style.width = "66%";
   resultsContainer.style.maxWidth = "none";
 
-  // Hàm hiển thị kết quả gợi ý
   function renderSuggestions(searchTerm) {
     resultsContainer.innerHTML = '';
     if (searchTerm.trim() === '') {
@@ -122,17 +119,14 @@ function initSearchFunctionality() {
     }
   }
   
-  // Hàm xử lý việc chuyển trang khi tìm kiếm
   function performSearch() {
       const query = searchInput.value.trim();
       if (query !== '') {
-        // Luôn dùng đường dẫn tuyệt đối từ gốc trang web
         const searchPageUrl = `/search.html?q=${encodeURIComponent(query)}`;
         window.location.href = searchPageUrl;
       }
   }
 
-  // Gắn sự kiện cho input
   searchInput.addEventListener('input', function() {
     renderSuggestions(this.value);
   });
@@ -144,14 +138,12 @@ function initSearchFunctionality() {
     }
   });
 
-  // Ẩn box gợi ý khi click ra ngoài
   document.addEventListener('click', function(event) {
     if (!resultsContainer.contains(event.target) && event.target !== searchInput) {
       resultsContainer.style.display = 'none';
     }
   });
 
-  // Gắn sự kiện cho nút search (nếu có)
   const searchButton = document.querySelector('.search-bar button');
   if (searchButton) {
       searchButton.addEventListener('click', function(e) {
@@ -161,12 +153,11 @@ function initSearchFunctionality() {
   }
 }
 
-// 3. Logic hiển thị kết quả trên trang search.html
+// 3. Logic hiển thị kết quả trên trang search.html (ĐÃ CẬP NHẬT)
 function renderSearchPageResults() {
   const resultsContainer = document.getElementById('search-results');
   const searchQueryElement = document.getElementById('searchQuery');
 
-  // Chỉ chạy code này nếu tìm thấy các element của trang kết quả
   if (resultsContainer && searchQueryElement) {
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q') || "";
@@ -179,26 +170,33 @@ function renderSearchPageResults() {
     );
 
     if (filteredResults.length > 0) {
+      // THAY ĐỔI 1: Tạo một danh sách (<ul>) để chứa các kết quả
+      const resultList = document.createElement('ul');
+      resultList.style.listStyleType = 'disc'; // Dùng dấu chấm tròn
+      resultList.style.paddingLeft = '20px';   // Căn lề cho dấu chấm
+
       filteredResults.forEach(item => {
-        const resultItem = document.createElement('div');
-        resultItem.style.marginBottom = '15px';
+        // THAY ĐỔI 2: Mỗi kết quả là một mục trong danh sách (<li>)
+        const listItem = document.createElement('li');
+        listItem.style.marginBottom = '10px'; // Khoảng cách giữa các dòng
 
         const link = document.createElement('a');
         link.href = item.url;
         link.textContent = item.name;
         link.target = "_blank";
-        link.style.fontSize = '1.2em';
-        link.style.textDecoration = 'none';
-        
-        const urlText = document.createElement('p');
-        urlText.textContent = item.url;
-        urlText.style.color = '#006621';
-        urlText.style.margin = '5px 0 0 0';
+        link.style.fontSize = '1.1em'; // Điều chỉnh cỡ chữ nếu cần
 
-        resultItem.appendChild(link);
-        resultItem.appendChild(urlText);
-        resultsContainer.appendChild(resultItem);
+        // Gắn link vào trong mục <li>
+        listItem.appendChild(link);
+        
+        // THAY ĐỔI 3: Không còn hiển thị link trần nữa
+
+        // Gắn mục <li> vào danh sách <ul>
+        resultList.appendChild(listItem);
       });
+
+      // Gắn toàn bộ danh sách vào container
+      resultsContainer.appendChild(resultList);
     } else {
       resultsContainer.innerHTML = "<p>Không tìm thấy kết quả nào phù hợp với từ khóa của bạn.</p>";
     }
