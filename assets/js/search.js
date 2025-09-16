@@ -79,65 +79,95 @@ function removeVietnameseTones(str) {
 }
 
 // 2. Logic xử lý tìm kiếm cho thanh gợi ý
-const searchInput = document.getElementById('mySearchInput');
-const resultsContainer = document.getElementById('searchResults');
+function initSearchFunctionality() {
+  const searchInput = document.getElementById('mySearchInput');
+  const resultsContainer = document.getElementById('searchResults');
 
-if (resultsContainer) {
-  resultsContainer.style.width = "66%";
-  resultsContainer.style.maxWidth = "none";
-}
-
-function renderResults(searchTerm) {
   if (resultsContainer) {
-    resultsContainer.innerHTML = '';
-    if (searchTerm === '') {
-      resultsContainer.style.display = 'none';
-      return;
-    }
+    resultsContainer.style.width = "66%";
+    resultsContainer.style.maxWidth = "none";
+  }
 
-    const filteredUrls = urlList.filter(item => 
-      removeVietnameseTones(item.name).includes(removeVietnameseTones(searchTerm))
-    );
+  function renderResults(searchTerm) {
+    if (resultsContainer) {
+      resultsContainer.innerHTML = '';
+      if (searchTerm === '') {
+        resultsContainer.style.display = 'none';
+        return;
+      }
 
-    if (filteredUrls.length > 0) {
-      resultsContainer.style.display = 'block';
-      filteredUrls.forEach(item => {
-        const link = document.createElement('a');
-        link.href = item.url;
-        link.textContent = item.name;
-        link.target = "_blank";
-        link.style.display = 'block'; // Đảm bảo mỗi liên kết hiển thị trên một dòng
-        link.style.padding = '5px 0'; // Thêm khoảng cách cho dễ nhìn
-        resultsContainer.appendChild(link);
-      });
-    } else {
-      resultsContainer.style.display = 'none';
+      const filteredUrls = urlList.filter(item => 
+        removeVietnameseTones(item.name).includes(removeVietnameseTones(searchTerm))
+      );
+
+      if (filteredUrls.length > 0) {
+        resultsContainer.style.display = 'block';
+        filteredUrls.forEach(item => {
+          const link = document.createElement('a');
+          link.href = item.url;
+          link.textContent = item.name;
+          link.target = "_blank";
+          link.style.display = 'block';
+          link.style.padding = '5px 0';
+          resultsContainer.appendChild(link);
+        });
+      } else {
+        resultsContainer.style.display = 'none';
+      }
     }
   }
-}
 
-if (searchInput) {
-  searchInput.addEventListener('input', function() {
-    renderResults(searchInput.value);
-  });
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      renderResults(searchInput.value);
+    });
 
-  searchInput.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
+    searchInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const query = searchInput.value.trim();
+        if (query !== '') {
+          const searchPageUrl = `/search.html?q=${encodeURIComponent(query)}`;
+          window.location.href = searchPageUrl;
+        }
+      }
+    });
+  }
+
+  // Sử dụng event delegation cho form submit
+  document.addEventListener('submit', function(e) {
+    const form = e.target;
+    if (form.matches('form[action*="search"]') || form.querySelector('input[type="search"]')) {
       e.preventDefault();
-      const query = searchInput.value.trim();
-      if (query !== '') {
+      const searchInput = form.querySelector('input[type="search"], input[type="text"]');
+      if (searchInput && searchInput.value.trim()) {
+        const query = searchInput.value.trim();
         const searchPageUrl = `/search.html?q=${encodeURIComponent(query)}`;
         window.location.href = searchPageUrl;
       }
     }
   });
-}
 
-document.addEventListener('click', function(event) {
-  if (resultsContainer && !resultsContainer.contains(event.target) && event.target !== searchInput) {
-    resultsContainer.style.display = 'none';
-  }
-});
+  document.addEventListener('click', function(event) {
+    if (resultsContainer && !resultsContainer.contains(event.target) && event.target !== searchInput) {
+      resultsContainer.style.display = 'none';
+    }
+    
+    // Xử lý search button bằng event delegation
+    if (event.target.matches('.search-button, .search-btn, [type="submit"]')) {
+      event.preventDefault();
+      const form = event.target.closest('form');
+      if (form) {
+        const searchInput = form.querySelector('input[type="search"], input[type="text"]');
+        if (searchInput && searchInput.value.trim()) {
+          const query = searchInput.value.trim();
+          const searchPageUrl = `/search.html?q=${encodeURIComponent(query)}`;
+          window.location.href = searchPageUrl;
+        }
+      }
+    }
+  });
+}
 
 // 3. Logic hiển thị kết quả trên trang search.html
 function renderSearchPageResults() {
@@ -149,7 +179,7 @@ function renderSearchPageResults() {
     const query = params.get('q') || "";
     searchQueryElement.textContent = query;
 
-    resultsContainer.innerHTML = ''; // Xóa nội dung cũ
+    resultsContainer.innerHTML = '';
 
     const filteredResults = urlList.filter(item =>
       removeVietnameseTones(item.name).includes(removeVietnameseTones(query))
@@ -161,9 +191,9 @@ function renderSearchPageResults() {
         link.href = item.url;
         link.textContent = item.name;
         link.target = "_blank";
-        link.style.display = 'block'; // Hiển thị mỗi liên kết trên một dòng
-        link.style.padding = '10px 0'; // Khoảng cách giữa các liên kết
-        link.style.textDecoration = 'underline'; // Thêm gạch chân để rõ ràng là liên kết
+        link.style.display = 'block';
+        link.style.padding = '10px 0';
+        link.style.textDecoration = 'underline';
         resultsContainer.appendChild(link);
       });
     } else {
@@ -172,5 +202,8 @@ function renderSearchPageResults() {
   }
 }
 
-// Gọi hàm renderSearchPageResults khi trang search.html được tải
-document.addEventListener('DOMContentLoaded', renderSearchPageResults);
+// Gọi các hàm khi trang được tải
+document.addEventListener('DOMContentLoaded', function() {
+  initSearchFunctionality();
+  renderSearchPageResults();
+});
