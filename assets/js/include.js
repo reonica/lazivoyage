@@ -1,4 +1,6 @@
 // assets/js/include.js
+
+// Hàm include header/footer
 async function includeHTML() {
   const includes = document.querySelectorAll("[data-include]");
 
@@ -13,20 +15,20 @@ async function includeHTML() {
       const temp = document.createElement("div");
       temp.innerHTML = content.trim();
 
-      // Tìm header/footer
+      // Tìm header/footer trong file include
       const headerEl = temp.querySelector(".sticky-header") || temp.querySelector("header");
       const footerEl = temp.querySelector("footer") || temp.querySelector(".minimalist-footer");
 
       if (headerEl) {
-        // Nếu là header thì đưa lên đầu body để sticky hoạt động
+        // Nếu là header -> đưa lên đầu body để sticky hoạt động
         document.body.insertBefore(headerEl, document.body.firstChild);
         el.remove();
       } else if (footerEl) {
-        // Nếu là footer thì đưa xuống cuối body
+        // Nếu là footer -> đưa xuống cuối body
         document.body.appendChild(footerEl);
         el.remove();
       } else {
-        // Nếu không phải header/footer thì chèn như bình thường
+        // Nếu không phải header/footer -> chèn như bình thường
         el.innerHTML = temp.innerHTML;
       }
     } catch (e) {
@@ -84,4 +86,5 @@ function initMobileMenu() {
   }
 }
 
+// Gọi hàm include khi load trang
 document.addEventListener("DOMContentLoaded", includeHTML);
