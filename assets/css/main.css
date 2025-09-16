@@ -5981,15 +5981,19 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 }
 
 .mobile-menu-content {
-  display: none;
-  position: absolute;
-  top: 100%;
+  position: fixed;
+  top: 0;
   right: 0;
-  width: 33.33%;
+  width: 70%;
+  height: 100%;
   background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 999;
+  z-index: 2000;
+  display: none;
   padding: 1rem;
+}
+
+.mobile-menu-content.active {
+  display: block;
 }
 
 .mobile-menu-content ul {
@@ -6194,3 +6198,4 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
         padding: 0.8rem 1rem;
     }
 }
+
