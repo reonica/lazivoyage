@@ -17,7 +17,7 @@ const urlList = [
   { name: "Tìm hiểu cuộc sống miền núi Đông Bắc Việt Nam", url: "https://lazivoyage.wordpress.com/2025/05/23/tim-hieu-cuoc-song-mien-nui-dong-bac-viet-nam/" },
   { name: "Cuộc Sống Miền Tây Như Thế Nào?", url: "https://lazivoyage.wordpress.com/2025/05/22/cuoc-song-mien-tay-nhu-the-nao/" },
   { name: "Đặc Điểm Phật Giáo Nam Tông Của Người Khmer Nam Bộ &#8211; Lazi Voyage", url: "https://lazivoyage.wordpress.com/2025/05/19/dac-diem-phat-giao-nam-tong-cua-nguoi-khmer-nam-bo" },
-  { name: "Chi phí sinh đẻ tại các bệnh viện ở Hà Nội", url: "https://lazivoyage.wordpress.com/2024/09/09/chi-phi-sinh-de-tai-cac-benh-vien-o-ha-noi" },
+  { name: "Chi phí sinh đẻ tại các bệnh viện ở Hà Nội", url: "https://lazivoyage.wordpress.com/2024/09/09/chi-phi-sinh-de-tai-cac-benh-vien-o-ha-noi" },
   { name: "Quá Trình Phát Triển Của Thai Nhi Theo Từng Tuần", url: "https://lazivoyage.wordpress.com/2024/08/25/qua-trinh-phat-trien-cua-thai-nhi-theo-tung-tuan" },
   { name: "Danh sách đồ sơ sinh cần chuẩn bị cho gia đình sinh con đầu lòng", url: "https://lazivoyage.wordpress.com/2024/08/18/danh-sach-do-so-sinh-can-chuan-bi-cho-gia-dinh-sinh-con-dau-long" },
   { name: "Long Ly Quy Phụng & Tứ Linh Trong Văn Hóa Việt", url: "https://lazivoyage.wordpress.com/2024/08/11/long-ly-quy-phung-tu-linh-trong-van-hoa-viet" },
@@ -41,35 +41,37 @@ const urlList = [
   { name: "Blue zones là gì? Blue zones đầu tiên của Việt Nam ở đâu?", url: "https://lazivoyage.wordpress.com/2024/01/11/blue-zones-la-gi-blue-zones-dau-tien-cua-viet-nam-o-dau" },
   { name: "Khu du lịch sinh thái Làng Xanh Bến Tre", url: "https://lazivoyage.wordpress.com/2024/01/06/khu-sinh-thai-lang-xanh-ben-tre-tan-huong-ky-nghi-duong-gia-dinh-tron-ven" },
   { name: "Khu Du Lịch Bản Ven Xanh, điểm du lịch cộng đồng tại Bắc Giang", url: "https://lazivoyage.wordpress.com/2023/12/16/tour-tham-quan-khu-du-lich-ban-ven-xanh-diem-du-lich-cong-dong-bac-giang" },
-  { name: "Khu Du lịch sinh thái Đồi Trầm xây dựng nhiều hạng mục trái phép", url: "https://lazivoyage.wordpress.com/2023/12/06/khu-du-lich-sinh-thai-doi-tram-xay-dung-nhieu-hang-muc-trai-phep" },
-  { name: "Top 5 địa điểm du lịch nên đi sau thi cử", url: "https://lazivoyage.wordpress.com/2023/10/10/top-5-dia-diem-du-lich-nen-di-sau-thi-cu" },
-  { name: "Blackpink nên thử top 10 món đặc sản Hà Nội này", url: "https://lazivoyage.wordpress.com/2023/10/10/blackpink-nen-thu-top-10-mon-dac-san-ha-noi-nay" },
+  { name: "Khu Du lịch sinh thái Đồi Trầm xây dựng nhiều hạng mục trái phép", url: "https://lazivoyage.wordpress.com/2023/12/06/khu-du-lich-sinh-thai-doi-tram-xay-dung-nhieu-hang-muc-trai-phep" },
+  { name: "Top 5 địa điểm du lịch nên đi sau thi cử", url: "https://lazivoyage.wordpress.com/2023/10/10/top-5-dia-diem-du-lich-nen-di-sau-thi-cu" },
+  { name: "Blackpink nên thử top 10 món đặc sản Hà Nội này", url: "https://lazivoyage.wordpress.com/2023/10/10/blackpink-nen-thu-top-10-mon-dac-san-ha-noi-nay" },
   { name: "Điểm check-in hot: Vườn mận vàng Mộc Châu", url: "https://lazivoyage.wordpress.com/2023/09/28/vuon-man-chin-vang-kho-kiem-diem-check-in-dep-mien-che-khi-du-lich-moc-chau" },
   { name: "Triển khai đường bay thuỷ phi cơ Tuần Châu - Cô Tô", url: "https://lazivoyage.wordpress.com/2023/09/28/trien-khai-duong-bay-thuy-phi-co-tuan-chau-co-to" },
-  { name: "Top 6 khu du lịch sinh thái tại Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/top-6-khu-du-lich-sinh-thai-tai-phu-quoc" },
-  { name: "Top 28 Đặc sản Phú Quốc ngon nên thử và mua làm quà", url: "https://lazivoyage.wordpress.com/2023/09/28/top-28-dac-san-phu-quoc-ngon-nen-thu-va-mua-lam-qua" },
-  { name: "TOP 12 địa điểm check-in HOT nhất Grand World Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/top-12-dia-diem-check-in-hot-nhat-grand-world-phu-quoc" },
-  { name: "Top 10 điểm ngắm hoàng hôn đẹp tại Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/top-10-diem-ngam-hoang-hon-dep-tai-phu-quoc" },
+  { name: "Top 6 khu du lịch sinh thái tại Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/top-6-khu-du-lich-sinh-thai-tai-phu-quoc" },
+  { name: "Top 28 Đặc sản Phú Quốc ngon nên thử và mua làm quà", url: "https://lazivoyage.wordpress.com/2023/09/28/top-28-dac-san-phu-quoc-ngon-nen-thu-va-mua-lam-qua" },
+  { name: "TOP 12 địa điểm check-in HOT nhất Grand World Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/top-12-dia-diem-check-in-hot-nhat-grand-world-phu-quoc" },
+  { name: "Top 10 điểm ngắm hoàng hôn đẹp tại Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/top-10-diem-ngam-hoang-hon-dep-tai-phu-quoc" },
   { name: "Rừng cây Chá cổ nên thơ trong mùa rụng lá", url: "https://lazivoyage.wordpress.com/2023/09/28/rung-cay-cha-co-nen-tho-trong-mua-rung-la" },
   { name: "Quán cà phê xanh cho người mê lá ở Hà Nội", url: "https://lazivoyage.wordpress.com/2023/09/28/quan-ca-phe-xanh-cho-nguoi-me-la-o-ha-noi" },
   { name: "Phát triển bền vững du lịch sinh thái đảo Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/phat-trien-ben-vung-du-lich-sinh-thai-dao-phu-quoc" },
   { name: "Du lịch xanh: Trekking Vườn Quốc gia Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-xanh-trekking-vuon-quoc-gia-phu-quoc" },
-  { name: "Du lịch xanh: Du lịch sinh thái tại Kỳ Thượng, Hạ Long", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-xanh-du-lich-sinh-thai-tai-ky-thuong-ha-long" },
-  { name: "Cẩm nang du lịch Sapa từ a-z", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-sapa-cam-nang-du-lich-tu-a-z" },
-  { name: "Cẩm nang du lịch Sài Gòn tự túc từ Lazi", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-sai-gon-cam-nang-du-lich-tu-tuc" },
-  { name: "Lazi du lịch Phú Thọ &#8211; Review Phú Thọ từ a-z", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-phu-tho-review-du-lich-tu-a-z" },
-  { name: "Kinh nghiệm du lịch Huế tự túc từ a-z", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-hue-kinh-nghiem-du-lich-tu-tuc-tu-a-z" },
-  { name: "Trọn bộ cẩm nang du lịch Hạ  Long", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-ha-long-tron-bo-cam-nang-du-lich" },
-  { name: "Cẩm nang du lịch Đà Nẵng từ a-z", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-da-nang-cam-nang-du-lich-tu-a-z" },
+  { name: "Du lịch xanh: Du lịch sinh thái tại Kỳ Thượng, Hạ Long", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-xanh-du-lich-sinh-thai-tai-ky-thuong-ha-long" },
+  { name: "Cẩm nang du lịch Sapa từ a-z", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-sapa-cam-nang-du-lich-tu-a-z" },
+  { name: "Cẩm nang du lịch Sài Gòn tự túc từ Lazi", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-sai-gon-cam-nang-du-lich-tu-tuc" },
+  { name: "Lazi du lịch Phú Thọ &#8211; Review Phú Thọ từ a-z", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-phu-tho-review-du-lich-tu-a-z" },
+  { name: "Kinh nghiệm du lịch Huế tự túc từ a-z", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-hue-kinh-nghiem-du-lich-tu-tuc-tu-a-z" },
+  { name: "Trọn bộ cẩm nang du lịch Hạ  Long", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-ha-long-tron-bo-cam-nang-du-lich" },
+  { name: "Cẩm nang du lịch Đà Nẵng từ a-z", url: "https://lazivoyage.wordpress.com/2023/09/28/lazi-di-da-nang-cam-nang-du-lich-tu-a-z" },
   { name: "Hàng loạt khách hủy phòng, tour du thuyền vì bão Talim", url: "https://lazivoyage.wordpress.com/2023/09/28/hang-loat-khach-huy-phong-tour-du-thuyen-vi-bao-talim" },
-  { name: "Giá khách sạn Phú Quốc từ 1 đến 5 sao", url: "https://lazivoyage.wordpress.com/2023/09/28/gia-khach-san-phu-quoc-tu-1-5-sao" },
-  { name: "21 điểm checkin hot thị trấn Địa Trung Hải Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/chup-gi-tai-thi-tran-dia-trung-hai-phu-quoc-xem-21-diem-hot" },
-  { name: "Cẩm nang du lịch Na Hang chi tiết nhất", url: "https://lazivoyage.wordpress.com/2023/09/28/cam-nang-du-lich-na-hang-chi-tiet-nhat" },
+  { name: "Giá khách sạn Phú Quốc từ 1 đến 5 sao", url: "https://lazivoyage.wordpress.com/2023/09/28/gia-khach-san-phu-quoc-tu-1-5-sao" },
+  { name: "21 điểm checkin hot thị trấn Địa Trung Hải Phú Quốc", url: "https://lazivoyage.wordpress.com/2023/09/28/chup-gi-tai-thi-tran-dia-trung-hai-phu-quoc-xem-21-diem-hot" },
+  { name: "Cẩm nang du lịch Na Hang chi tiết nhất", url: "https://lazivoyage.wordpress.com/2023/09/28/cam-nang-du-lich-na-hang-chi-tiet-nhat" },
   { name: "Khám phá Bảo tàng Quảng Ninh trong chuyến du lịch văn hoá Hạ Long", url: "https://lazivoyage.wordpress.com/2023/09/28/bao-tang-quang-ninh-kham-pha-vien-ngoc-den-ben-vinh-ha-long" },
-  { name: "Review Phú Quốc chi tiết nhất", url: "https://lazivoyage.wordpress.com/2023/09/24/lazi-di-phu-quoc-review-du-lich-chi-tiet-nhat" },
+  { name: "Review Phú Quốc chi tiết nhất", url: "https://lazivoyage.wordpress.com/2023/09/24/lazi-di-phu-quoc-review-du-lich-chi-tiet-nhat" },
 ];
 
+// Hàm tiện ích để xóa dấu tiếng Việt
 function removeVietnameseTones(str) {
+  if (!str) return "";
   return str
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
@@ -78,102 +80,93 @@ function removeVietnameseTones(str) {
     .toLowerCase();
 }
 
-// 2. Logic xử lý tìm kiếm cho thanh gợi ý
+// 2. Logic xử lý tìm kiếm cho thanh gợi ý (sẽ được gọi từ include.js)
 function initSearchFunctionality() {
   const searchInput = document.getElementById('mySearchInput');
   const resultsContainer = document.getElementById('searchResults');
-
-  if (resultsContainer) {
-    resultsContainer.style.width = "66%";
-    resultsContainer.style.maxWidth = "none";
+  
+  if (!searchInput || !resultsContainer) {
+    // Không tìm thấy các element cần thiết, có thể không phải trang có thanh tìm kiếm
+    return;
   }
 
-  function renderResults(searchTerm) {
-    if (resultsContainer) {
-      resultsContainer.innerHTML = '';
-      if (searchTerm === '') {
-        resultsContainer.style.display = 'none';
-        return;
-      }
+  // Thiết lập style cho container gợi ý
+  resultsContainer.style.width = "66%";
+  resultsContainer.style.maxWidth = "none";
 
-      const filteredUrls = urlList.filter(item => 
-        removeVietnameseTones(item.name).includes(removeVietnameseTones(searchTerm))
-      );
+  // Hàm hiển thị kết quả gợi ý
+  function renderSuggestions(searchTerm) {
+    resultsContainer.innerHTML = '';
+    if (searchTerm.trim() === '') {
+      resultsContainer.style.display = 'none';
+      return;
+    }
 
-      if (filteredUrls.length > 0) {
-        resultsContainer.style.display = 'block';
-        filteredUrls.forEach(item => {
-          const link = document.createElement('a');
-          link.href = item.url;
-          link.textContent = item.name;
-          link.target = "_blank";
-          link.style.display = 'block';
-          link.style.padding = '5px 0';
-          resultsContainer.appendChild(link);
-        });
-      } else {
-        resultsContainer.style.display = 'none';
-      }
+    const filteredUrls = urlList.filter(item =>
+      removeVietnameseTones(item.name).includes(removeVietnameseTones(searchTerm))
+    );
+
+    if (filteredUrls.length > 0) {
+      resultsContainer.style.display = 'block';
+      filteredUrls.forEach(item => {
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.textContent = item.name;
+        link.target = "_blank";
+        link.style.display = 'block';
+        link.style.padding = '5px 0';
+        resultsContainer.appendChild(link);
+      });
+    } else {
+      resultsContainer.style.display = 'none';
     }
   }
-
-  if (searchInput) {
-    searchInput.addEventListener('input', function() {
-      renderResults(searchInput.value);
-    });
-
-    searchInput.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        const query = searchInput.value.trim();
-        if (query !== '') {
-          const searchPageUrl = `/search.html?q=${encodeURIComponent(query)}`;
-          window.location.href = searchPageUrl;
-        }
-      }
-    });
-  }
-
-  // Sử dụng event delegation cho form submit
-  document.addEventListener('submit', function(e) {
-    const form = e.target;
-    if (form.matches('form[action*="search"]') || form.querySelector('input[type="search"]')) {
-      e.preventDefault();
-      const searchInput = form.querySelector('input[type="search"], input[type="text"]');
-      if (searchInput && searchInput.value.trim()) {
-        const query = searchInput.value.trim();
+  
+  // Hàm xử lý việc chuyển trang khi tìm kiếm
+  function performSearch() {
+      const query = searchInput.value.trim();
+      if (query !== '') {
+        // Luôn dùng đường dẫn tuyệt đối từ gốc trang web
         const searchPageUrl = `/search.html?q=${encodeURIComponent(query)}`;
         window.location.href = searchPageUrl;
       }
+  }
+
+  // Gắn sự kiện cho input
+  searchInput.addEventListener('input', function() {
+    renderSuggestions(this.value);
+  });
+
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch();
     }
   });
 
+  // Ẩn box gợi ý khi click ra ngoài
   document.addEventListener('click', function(event) {
-    if (resultsContainer && !resultsContainer.contains(event.target) && event.target !== searchInput) {
+    if (!resultsContainer.contains(event.target) && event.target !== searchInput) {
       resultsContainer.style.display = 'none';
     }
-    
-    // Xử lý search button bằng event delegation
-    if (event.target.matches('.search-button, .search-btn, [type="submit"]')) {
-      event.preventDefault();
-      const form = event.target.closest('form');
-      if (form) {
-        const searchInput = form.querySelector('input[type="search"], input[type="text"]');
-        if (searchInput && searchInput.value.trim()) {
-          const query = searchInput.value.trim();
-          const searchPageUrl = `/search.html?q=${encodeURIComponent(query)}`;
-          window.location.href = searchPageUrl;
-        }
-      }
-    }
   });
+
+  // Gắn sự kiện cho nút search (nếu có)
+  const searchButton = document.querySelector('.search-bar button');
+  if (searchButton) {
+      searchButton.addEventListener('click', function(e) {
+          e.preventDefault();
+          performSearch();
+      });
+  }
 }
 
 // 3. Logic hiển thị kết quả trên trang search.html
 function renderSearchPageResults() {
   const resultsContainer = document.getElementById('search-results');
   const searchQueryElement = document.getElementById('searchQuery');
-  
+
+  // Chỉ chạy code này nếu tìm thấy các element của trang kết quả
   if (resultsContainer && searchQueryElement) {
     const params = new URLSearchParams(window.location.search);
     const query = params.get('q') || "";
@@ -187,23 +180,30 @@ function renderSearchPageResults() {
 
     if (filteredResults.length > 0) {
       filteredResults.forEach(item => {
+        const resultItem = document.createElement('div');
+        resultItem.style.marginBottom = '15px';
+
         const link = document.createElement('a');
         link.href = item.url;
         link.textContent = item.name;
         link.target = "_blank";
-        link.style.display = 'block';
-        link.style.padding = '10px 0';
-        link.style.textDecoration = 'underline';
-        resultsContainer.appendChild(link);
+        link.style.fontSize = '1.2em';
+        link.style.textDecoration = 'none';
+        
+        const urlText = document.createElement('p');
+        urlText.textContent = item.url;
+        urlText.style.color = '#006621';
+        urlText.style.margin = '5px 0 0 0';
+
+        resultItem.appendChild(link);
+        resultItem.appendChild(urlText);
+        resultsContainer.appendChild(resultItem);
       });
     } else {
-      resultsContainer.innerHTML = "<p>Không tìm thấy kết quả cho từ khóa này.</p>";
+      resultsContainer.innerHTML = "<p>Không tìm thấy kết quả nào phù hợp với từ khóa của bạn.</p>";
     }
   }
 }
 
-// Gọi các hàm khi trang được tải
-document.addEventListener('DOMContentLoaded', function() {
-  initSearchFunctionality();
-  renderSearchPageResults();
-});
+// Gọi hàm render kết quả khi trang search.html được tải
+document.addEventListener('DOMContentLoaded', renderSearchPageResults);
