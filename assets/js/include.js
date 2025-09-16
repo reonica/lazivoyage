@@ -55,19 +55,17 @@ function initFeatures() {
   requestAnimationFrame(() => {
     fixStickyFallback();
     initMobileMenu();
-    initSearchFunctionality(); // THÊM DÒNG NÀY
+    initSearchFunctionality();
     initSmoothScrolling();
   });
 }
 
-// CHỈ clone hamburger chứ không clone toàn bộ header
 function initMobileMenu() {
   const hamburger = document.querySelector(".hamburger");
   const mobileMenu = document.querySelector(".mobile-menu-content");
   
   if (!hamburger || !mobileMenu) return;
 
-  // Chỉ clone hamburger thay vì toàn bộ header
   const newHamburger = hamburger.cloneNode(true);
   hamburger.replaceWith(newHamburger);
 
@@ -78,7 +76,6 @@ function initMobileMenu() {
     document.body.style.overflow = mobileMenu.classList.contains("active") ? "hidden" : "";
   });
 
-  // Close when clicking outside or on links
   document.addEventListener("click", (e) => {
     if (mobileMenu.classList.contains("active") && 
         !e.target.closest(".mobile-menu-content") && 
@@ -88,7 +85,6 @@ function initMobileMenu() {
     }
   });
 
-  // Close when pressing ESC
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && mobileMenu.classList.contains("active")) {
       mobileMenu.classList.remove("active");
@@ -97,58 +93,24 @@ function initMobileMenu() {
   });
 }
 
-// THÊM HÀM MỚI: Khởi tạo chức năng search
+// SỬA LẠI HÀM NÀY - ĐƠN GIẢN HÓA
 function initSearchFunctionality() {
-  const searchButton = document.querySelector(".search-button, .search-btn, [type='submit']");
-  const searchInput = document.querySelector(".search-input, input[type='search']");
-  const searchForm = document.querySelector("form[role='search']");
-
+  const searchForm = document.querySelector("form[action='search.html']");
+  
   if (searchForm) {
-    // Sử dụng event delegation cho form submit
     searchForm.addEventListener("submit", function(e) {
-      e.preventDefault();
-      handleSearch();
-    });
-  }
-
-  if (searchButton) {
-    searchButton.addEventListener("click", function(e) {
-      e.preventDefault();
-      handleSearch();
-    });
-  }
-
-  if (searchInput) {
-    searchInput.addEventListener("keypress", function(e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        handleSearch();
-      }
-    });
-  }
-
-  function handleSearch() {
-    const searchTerm = searchInput ? searchInput.value.trim() : "";
-    
-    if (searchTerm) {
-      console.log("Searching for:", searchTerm);
-      // Thực hiện tìm kiếm - tuỳ chỉnh theo nhu cầu
-      window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
-      
-      // Hoặc nếu là search client-side:
-      // performClientSideSearch(searchTerm);
-    } else {
-      // Hiệu ứng shake hoặc alert nếu ô search trống
-      if (searchInput) {
+      // Không cần ngăn default behavior vì chúng ta MUỐN chuyển đến search.html
+      const searchInput = this.querySelector("input[type='search'], input[type='text']");
+      if (searchInput && !searchInput.value.trim()) {
+        e.preventDefault(); // Chỉ ngăn submit nếu ô search trống
         searchInput.classList.add("shake");
         setTimeout(() => searchInput.classList.remove("shake"), 500);
+        console.warn("Ô tìm kiếm trống!");
       }
-      console.warn("Ô tìm kiếm trống!");
-    }
+    });
   }
 }
 
-// Optional: Smooth scrolling for anchor links
 function initSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener("click", function (e) {
@@ -156,7 +118,6 @@ function initSmoothScrolling() {
       const target = document.querySelector(this.getAttribute("href"));
       if (target) {
         target.scrollIntoView({ behavior: "smooth" });
-        // Close mobile menu if open
         const mobileMenu = document.querySelector(".mobile-menu-content");
         if (mobileMenu && mobileMenu.classList.contains("active")) {
           mobileMenu.classList.remove("active");
@@ -167,7 +128,6 @@ function initSmoothScrolling() {
   });
 }
 
-// Các hàm cũ giữ nguyên
 function fixStickyFallback() {
   const header = document.querySelector(".sticky-header");
   if (!header) return;
