@@ -1,61 +1,173 @@
 // assets/js/include.js
 
-// Biến toàn cục để theo dõi trạng thái
 let isInitialized = false;
 
-// Hàm include header/footer
 async function includeHTML() {
-  const includes = document.querySelectorAll("[data-include]");
+  try {
+    const includes = document.querySelectorAll("[data-include]");
+    const includePromises = [];
 
-  for (let el of includes) {
-    const file = el.getAttribute("data-include");
-    try {
-      const response = await fetch(file);
-      if (!response.ok) throw new Error("Không tìm thấy " + file);
-      const content = await response.text();
+    for (let el of includes) {
+      const file = el.getAttribute("data-include");
+      includePromises.push(loadIncludeFile(el, file));
+    }
 
-      // Tạo node tạm để parse HTML
-      const temp = document.createElement("div");
-      temp.innerHTML = content.trim();
+    await Promise.all(includePromises);
+    
+    if (!isInitialized) {
+      initFeatures();
+      isInitialized = true;
+    }
+  } catch (error) {
+    console.error("❌ Lỗi includeHTML:", error);
+  }
+}
 
-      // Tìm header/footer trong file include
-      const headerEl = temp.querySelector(".sticky-header") || temp.querySelector("header");
-      const footerEl = temp.querySelector("footer") || temp.querySelector(".minimalist-footer");
+async function loadIncludeFile(el, file) {
+  try {
+    const response = await fetch(file);
+    if (!response.ok) throw new Error(`HTTP ${response.status}: ${file}`);
+    
+    const content = await response.text();
+    const temp = document.createElement("div");
+    temp.innerHTML = content.trim();
 
-      let newElement;
-      
-      if (headerEl) {
-        newElement = headerEl.cloneNode(true);
-        // Đưa header lên đầu body để sticky hoạt động
-        document.body.insertBefore(newElement, document.body.firstChild);
-        el.remove();
-      } else if (footerEl) {
-        newElement = footerEl.cloneNode(true);
-        // Đưa footer xuống cuối body
-        document.body.appendChild(newElement);
-        el.remove();
-      } else {
-        el.innerHTML = temp.innerHTML;
+    const headerEl = temp.querySelector(".sticky-header, header");
+    const footerEl = temp.querySelector("footer, .minimalist-footer");
+
+    if (headerEl) {
+      const newHeader = headerEl.cloneNode(true);
+      document.body.insertBefore(newHeader, document.body.firstChild);
+      el.remove();
+    } else if (footerEl) {
+      const newFooter = footerEl.cloneNode(true);
+      document.body.appendChild(newFooter);
+      el.remove();
+    } else {
+      el.innerHTML = temp.innerHTML;
+    }
+  } catch (e) {
+    console.error(`❌ Lỗi load ${file}:`, e);
+  }
+}
+
+function initFeatures() {
+  requestAnimationFrame(() => {
+    fixStickyFallback();
+    initMobileMenu();
+    initSearchFunctionality(); // THÊM DÒNG NÀY
+    initSmoothScrolling();
+  });
+}
+
+// CHỈ clone hamburger chứ không clone toàn bộ header
+function initMobileMenu() {
+  const hamburger = document.querySelector(".hamburger");
+  const mobileMenu = document.querySelector(".mobile-menu-content");
+  
+  if (!hamburger || !mobileMenu) return;
+
+  // Chỉ clone hamburger thay vì toàn bộ header
+  const newHamburger = hamburger.cloneNode(true);
+  hamburger.replaceWith(newHamburger);
+
+  newHamburger.addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    mobileMenu.classList.toggle("active");
+    document.body.style.overflow = mobileMenu.classList.contains("active") ? "hidden" : "";
+  });
+
+  // Close when clicking outside or on links
+  document.addEventListener("click", (e) => {
+    if (mobileMenu.classList.contains("active") && 
+        !e.target.closest(".mobile-menu-content") && 
+        !e.target.closest(".hamburger")) {
+      mobileMenu.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  });
+
+  // Close when pressing ESC
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && mobileMenu.classList.contains("active")) {
+      mobileMenu.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  });
+}
+
+// THÊM HÀM MỚI: Khởi tạo chức năng search
+function initSearchFunctionality() {
+  const searchButton = document.querySelector(".search-button, .search-btn, [type='submit']");
+  const searchInput = document.querySelector(".search-input, input[type='search']");
+  const searchForm = document.querySelector("form[role='search']");
+
+  if (searchForm) {
+    // Sử dụng event delegation cho form submit
+    searchForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      handleSearch();
+    });
+  }
+
+  if (searchButton) {
+    searchButton.addEventListener("click", function(e) {
+      e.preventDefault();
+      handleSearch();
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("keypress", function(e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        handleSearch();
       }
-    } catch (e) {
-      console.error("❌ Lỗi load include:", file, e);
+    });
+  }
+
+  function handleSearch() {
+    const searchTerm = searchInput ? searchInput.value.trim() : "";
+    
+    if (searchTerm) {
+      console.log("Searching for:", searchTerm);
+      // Thực hiện tìm kiếm - tuỳ chỉnh theo nhu cầu
+      window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
+      
+      // Hoặc nếu là search client-side:
+      // performClientSideSearch(searchTerm);
+    } else {
+      // Hiệu ứng shake hoặc alert nếu ô search trống
+      if (searchInput) {
+        searchInput.classList.add("shake");
+        setTimeout(() => searchInput.classList.remove("shake"), 500);
+      }
+      console.warn("Ô tìm kiếm trống!");
     }
   }
-
-  // Chỉ init một lần duy nhất
-  if (!isInitialized) {
-    initFeatures();
-    isInitialized = true;
-  }
 }
 
-// Khởi tạo tất cả tính năng
-function initFeatures() {
-  fixStickyFallback();
-  initMobileMenu();
+// Optional: Smooth scrolling for anchor links
+function initSmoothScrolling() {
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute("href"));
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth" });
+        // Close mobile menu if open
+        const mobileMenu = document.querySelector(".mobile-menu-content");
+        if (mobileMenu && mobileMenu.classList.contains("active")) {
+          mobileMenu.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+      }
+    });
+  });
 }
 
-// Nếu sticky bị phá bởi ancestor -> fallback về fixed
+// Các hàm cũ giữ nguyên
 function fixStickyFallback() {
   const header = document.querySelector(".sticky-header");
   if (!header) return;
@@ -71,7 +183,6 @@ function fixStickyFallback() {
   }
 }
 
-// Kiểm tra ancestor có phá sticky không
 function isStickyBroken(el) {
   let node = el.parentElement;
   while (node && node !== document.documentElement) {
@@ -86,58 +197,4 @@ function isStickyBroken(el) {
   return false;
 }
 
-// Khởi tạo menu mobile với kiểm tra kỹ hơn
-function initMobileMenu() {
-  console.log("Initializing mobile menu...");
-  
-  const hamburger = document.querySelector(".hamburger");
-  const mobileMenu = document.querySelector(".mobile-menu-content");
-
-  if (!hamburger || !mobileMenu) {
-    console.error("❌ Không tìm thấy hamburger hoặc mobile menu");
-    return;
-  }
-
-  console.log("Found elements:", hamburger, mobileMenu);
-
-  // Xóa event listeners cũ (nếu có)
-  hamburger.replaceWith(hamburger.cloneNode(true));
-  const newHamburger = document.querySelector(".hamburger");
-
-  newHamburger.addEventListener("click", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    console.log("Hamburger clicked");
-    
-    mobileMenu.classList.toggle("active");
-    console.log("Mobile menu active:", mobileMenu.classList.contains("active"));
-  });
-
-  // Thêm sự kiện đóng menu khi click ra ngoài
-  document.addEventListener("click", function(e) {
-    if (mobileMenu.classList.contains("active") && 
-        !e.target.closest(".mobile-menu-content") && 
-        !e.target.closest(".hamburger")) {
-      mobileMenu.classList.remove("active");
-      console.log("Closed menu by clicking outside");
-    }
-  });
-
-  // Ngăn sự kiện click trong menu lan ra ngoài
-  mobileMenu.addEventListener("click", function(e) {
-    e.stopPropagation();
-  });
-}
-
-// Gọi hàm include khi load trang
-document.addEventListener("DOMContentLoaded", function() {
-  includeHTML().catch(error => {
-    console.error("Error including HTML:", error);
-  });
-});
-
-// Re-init nếu cần thiết (cho các SPA)
-window.reInitMenu = function() {
-  isInitialized = false;
-  initFeatures();
-};
+document.addEventListener("DOMContentLoaded", includeHTML);
