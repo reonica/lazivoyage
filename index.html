@@ -375,39 +375,6 @@
 			  }
 			}
 			</script>
-		<!-- Schema FAQPage -->
-			<script type="application/ld+json">
-			{
-			  "@context": "https://schema.org",
-			  "@type": "FAQPage",
-			  "mainEntity": [
-			    {
-			      "@type": "Question",
-			      "name": "Tết Nguyên Đán có ý nghĩa như thế nào trong văn hoá Việt Nam?",
-			      "acceptedAnswer": {
-			        "@type": "Answer",
-			        "text": "Tết Nguyên Đán (hay còn gọi là Tết Cổ Truyền) là dịp lễ quan trọng nhất trong năm của người Việt, đánh dấu sự khởi đầu của một năm mới theo âm lịch. Tết không chỉ là thời điểm giao thoa giữa trời đất, con người và thần linh mà còn là dịp để gia đình sum họp, tưởng nhớ tổ tiên và cầu chúc những điều tốt lành."
-			      }
-			    },
-			    {
-			      "@type": "Question",
-			      "name": "Áo dài có vai trò như thế nào trong văn hoá Việt?",
-			      "acceptedAnswer": {
-			        "@type": "Answer",
-			        "text": "Áo dài là quốc phục của Việt Nam, biểu tượng cho vẻ đẹp duyên dáng và tinh thần dân tộc. Trải qua nhiều thay đổi theo thời gian, áo dài ngày nay vẫn giữ được những nét truyền thống như tà áo dài, cổ áo cao và thân áo ôm sát, đồng thời kết hợp với các yếu tố hiện đại trong chất liệu và họa tiết."
-			      }
-			    },
-			    {
-			      "@type": "Question",
-			      "name": "Vì sao ẩm thực Việt Nam được đánh giá cao trên thế giới?",
-			      "acceptedAnswer": {
-			        "@type": "Answer",
-			        "text": "Ẩm thực Việt Nam được đánh giá cao nhờ sự kết hợp hài hòa giữa các yếu tố âm-dương, ngũ hành, tạo nên sự cân bằng trong hương vị và dinh dưỡng. Mỗi món ăn thường có sự phối hợp của năm vị cơ bản: chua, cay, mặn, ngọt, đắng."
-			      }
-			    }
-			  ]
-			}
-			</script>
 		<!-- Schema Article cho bài viết nổi bật với keywords -->
 			<script type="application/ld+json">
 			{
@@ -437,8 +404,155 @@
 			  "keywords": "bản đồ du lịch Việt Nam, bản đồ Việt Nam sau sáp nhập, du lịch miền Bắc, văn hóa Việt"
 			}
 			</script>
+			<script>
+			// Hàm tự động tạo FAQ Schema
+			function generateFAQSchema() {
+			    const faqItems = document.querySelectorAll('.faq-item');
+			    if (faqItems.length === 0) return null;
+			    
+			    const schema = {
+			        "@context": "https://schema.org",
+			        "@type": "FAQPage",
+			        "mainEntity": []
+			    };
+			    
+			    faqItems.forEach((item, index) => {
+			        const questionElem = item.querySelector('.faq-question h3');
+			        const answerElem = item.querySelector('.faq-answer p');
+			        
+			        if (questionElem && answerElem) {
+			            // Loại bỏ biểu tượng mũi tên và khoảng trắng thừa
+			            const questionText = questionElem.textContent
+			                .replace(/[\u25BC\u25B2\uf078\uf077]/, '')
+			                .replace(/\s+/g, ' ')
+			                .trim();
+			            
+			            const answerText = answerElem.textContent.trim();
+			            
+			            // Chỉ thêm nếu có nội dung hợp lệ
+			            if (questionText && answerText) {
+			                schema.mainEntity.push({
+			                    "@type": "Question",
+			                    "name": questionText,
+			                    "acceptedAnswer": {
+			                        "@type": "Answer",
+			                        "text": answerText
+			                    }
+			                });
+			            }
+			        }
+			    });
+			    
+			    return schema.mainEntity.length > 0 ? schema : null;
+			}
+			
+			// Hàm tự động tạo Gallery Schema (sử dụng ImageGallery thay vì ItemList)
+			function generateGallerySchema() {
+			    const galleryItems = document.querySelectorAll('.gallery article');
+			    if (galleryItems.length === 0) return null;
+			    
+			    const schema = {
+			        "@context": "https://schema.org",
+			        "@type": "ImageGallery",
+			        "name": "Dấu Ấn Văn Hoá Việt",
+			        "description": "Bộ sưu tập hình ảnh về văn hóa Việt Nam",
+			        "associatedMedia": []
+			    };
+			    
+			    galleryItems.forEach((item, index) => {
+			        const imageElem = item.querySelector('.image img');
+			        const captionElem = item.querySelector('.caption');
+			        
+			        if (imageElem) {
+			            // Xử lý URL hình ảnh đúng cách
+			            let imageUrl = imageElem.src;
+			            if (!imageUrl.startsWith('http')) {
+			                // Nếu là đường dẫn tương đối, chuyển thành tuyệt đối
+			                imageUrl = new URL(imageUrl, window.location.origin).href;
+			            }
+			            
+			            const imageName = captionElem?.querySelector('h3')?.textContent?.trim() || `Hình ảnh ${index + 1}`;
+			            const imageDesc = captionElem?.querySelector('p')?.textContent?.trim() || "Hình ảnh văn hóa Việt Nam";
+			            const imageAlt = imageElem.alt || imageName;
+			            
+			            schema.associatedMedia.push({
+			                "@type": "ImageObject",
+			                "name": imageName,
+			                "description": imageDesc,
+			                "contentUrl": imageUrl,
+			                "thumbnailUrl": imageUrl,
+			                "alternateName": imageAlt
+			            });
+			        }
+			    });
+			    
+			    return schema.associatedMedia.length > 0 ? schema : null;
+			}
+			
+			// Hàm helper để thêm schema an toàn
+			function addSchemaToPage(schema, id) {
+			    if (!schema) return;
+			    
+			    // Kiểm tra xem schema đã tồn tại chưa
+			    const existingSchema = document.getElementById(id);
+			    if (existingSchema) {
+			        existingSchema.remove();
+			    }
+			    
+			    const script = document.createElement('script');
+			    script.type = 'application/ld+json';
+			    script.id = id;
+			    script.textContent = JSON.stringify(schema);
+			    document.head.appendChild(script);
+			}
+			
+			// Đảm bảo jQuery không can thiệp vào sự kiện DOMContentLoaded
+			function initSchemas() {
+			    try {
+			        // Tạo và thêm FAQ Schema
+			        const faqSchema = generateFAQSchema();
+			        if (faqSchema) {
+			            addSchemaToPage(faqSchema, 'auto-faq-schema');
+			            console.log('✅ FAQ Schema đã được tạo tự động');
+			        }
+			        
+			        // Tạo và thêm Gallery Schema
+			        const gallerySchema = generateGallerySchema();
+			        if (gallerySchema) {
+			            addSchemaToPage(gallerySchema, 'auto-gallery-schema');
+			            console.log('✅ Gallery Schema đã được tạo tự động');
+			        }
+			    } catch (error) {
+			        console.warn('⚠️ Lỗi khi tạo schema tự động:', error);
+			    }
+			}
+			
+			// Sử dụng jQuery ready nếu jQuery đã được tải
+			if (typeof jQuery !== 'undefined') {
+			    jQuery(document).ready(function($) {
+			        // Đợi một chút để đảm bảo tất cả nội dung đã tải
+			        setTimeout(initSchemas, 500);
+			    });
+			} else {
+			    // Sử dụng DOMContentLoaded nếu không có jQuery
+			    document.addEventListener('DOMContentLoaded', function() {
+			        setTimeout(initSchemas, 500);
+			    });
+			}
+			
+			// Tùy chọn: Tự động cập nhật schema khi nội dung thay đổi
+			function updateSchemas() {
+			    initSchemas();
+			}
+			
+			// Export functions để có thể gọi từ bên ngoài nếu cần
+			if (typeof window !== 'undefined') {
+			    window.updateSchemas = updateSchemas;
+			}
+			</script>
 	</body>
 </html>
+
 
 
 
