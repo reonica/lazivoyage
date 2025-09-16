@@ -55,7 +55,7 @@ function initFeatures() {
   requestAnimationFrame(() => {
     fixStickyFallback();
     initMobileMenu();
-    initSearchFunctionality();
+    // KHÔNG gọi initSearchFunctionality() ở đây nữa
     initSmoothScrolling();
   });
 }
@@ -93,23 +93,8 @@ function initMobileMenu() {
   });
 }
 
-// SỬA LẠI HÀM NÀY - ĐƠN GIẢN HÓA
-function initSearchFunctionality() {
-  const searchForm = document.querySelector("form[action='search.html']");
-  
-  if (searchForm) {
-    searchForm.addEventListener("submit", function(e) {
-      // Không cần ngăn default behavior vì chúng ta MUỐN chuyển đến search.html
-      const searchInput = this.querySelector("input[type='search'], input[type='text']");
-      if (searchInput && !searchInput.value.trim()) {
-        e.preventDefault(); // Chỉ ngăn submit nếu ô search trống
-        searchInput.classList.add("shake");
-        setTimeout(() => searchInput.classList.remove("shake"), 500);
-        console.warn("Ô tìm kiếm trống!");
-      }
-    });
-  }
-}
+// XÓA HOÀN TOÀN hàm initSearchFunctionality từ include.js
+// Search functionality sẽ được xử lý bởi search.js
 
 function initSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
