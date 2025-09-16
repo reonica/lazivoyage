@@ -12,8 +12,10 @@ async function includeHTML() {
       includePromises.push(loadIncludeFile(el, file));
     }
 
+    // Chờ cho tất cả các file include (header, footer) được tải xong
     await Promise.all(includePromises);
     
+    // Chỉ khởi tạo các tính năng một lần
     if (!isInitialized) {
       initFeatures();
       isInitialized = true;
@@ -52,10 +54,15 @@ async function loadIncludeFile(el, file) {
 }
 
 function initFeatures() {
+  // Dùng requestAnimationFrame để đảm bảo DOM đã sẵn sàng cho các thao tác
   requestAnimationFrame(() => {
     fixStickyFallback();
     initMobileMenu();
-    // KHÔNG gọi initSearchFunctionality() ở đây nữa
+    // ✅ THAY ĐỔI QUAN TRỌNG: Gọi hàm khởi tạo search ở đây!
+    // Điều này đảm bảo thanh search đã tồn tại trong DOM.
+    if (typeof initSearchFunctionality === 'function') {
+      initSearchFunctionality();
+    }
     initSmoothScrolling();
   });
 }
@@ -92,9 +99,6 @@ function initMobileMenu() {
     }
   });
 }
-
-// XÓA HOÀN TOÀN hàm initSearchFunctionality từ include.js
-// Search functionality sẽ được xử lý bởi search.js
 
 function initSmoothScrolling() {
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
