@@ -20,13 +20,17 @@ async function includeHTML() {
       const footerEl = temp.querySelector("footer") || temp.querySelector(".minimalist-footer");
 
       if (headerEl) {
-        // Nếu là header -> đưa lên đầu body để sticky hoạt động
+        // Thay thế placeholder bằng header thực
+        el.replaceWith(headerEl);
+        
+        // Đưa header lên đầu body để sticky hoạt động
         document.body.insertBefore(headerEl, document.body.firstChild);
-        el.remove();
       } else if (footerEl) {
-        // Nếu là footer -> đưa xuống cuối body
+        // Thay thế placeholder bằng footer thực
+        el.replaceWith(footerEl);
+        
+        // Đưa footer xuống cuối body
         document.body.appendChild(footerEl);
-        el.remove();
       } else {
         // Nếu không phải header/footer -> chèn như bình thường
         el.innerHTML = temp.innerHTML;
@@ -37,10 +41,13 @@ async function includeHTML() {
   }
 
   // Sau khi include xong thì init các tính năng
-  setTimeout(() => {
-    fixStickyFallback();
-    initMobileMenu();
-  }, 100);
+  initFeatures();
+}
+
+// Khởi tạo tất cả tính năng
+function initFeatures() {
+  fixStickyFallback();
+  initMobileMenu();
 }
 
 // Nếu sticky bị phá bởi ancestor -> fallback về fixed
@@ -74,16 +81,18 @@ function isStickyBroken(el) {
   return false;
 }
 
-// Khởi tạo menu mobile (hamburger)
+// Khởi tạo menu mobile (hamburger) với event delegation
 function initMobileMenu() {
-  const hamburger = document.querySelector(".hamburger");
-  const mobileMenu = document.querySelector(".mobile-menu-content");
-
-  if (hamburger && mobileMenu) {
-    hamburger.addEventListener("click", () => {
-      mobileMenu.classList.toggle("active");
-    });
-  }
+  // Sử dụng event delegation để xử lý click
+  document.body.addEventListener("click", function(e) {
+    if (e.target.closest(".hamburger")) {
+      const mobileMenu = document.querySelector(".mobile-menu-content");
+      if (mobileMenu) {
+        mobileMenu.classList.toggle("active");
+        console.log("Mobile menu toggled"); // Debug
+      }
+    }
+  });
 }
 
 // Gọi hàm include khi load trang
