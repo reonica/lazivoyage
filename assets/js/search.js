@@ -2,6 +2,7 @@
 
 // 1. Danh sách URL (dữ liệu)
 const urlList = [
+  { name: "Sống Cùng Người Lô Lô", url: "https://lazivoyage.blogspot.com/2025/09/song-cung-nguoi-lo-lo.html" },
   { name: "Sống Cùng Người Tày - Tìm Hiểu Văn Hoá Tày", url: "https://lazivoyage.blogspot.com/2025/09/song-cung-nguoi-tay-tim-hieu-van-hoa-tay.html" },
   { name: "Lịch Họp Chợ Phiên Ở Miền Bắc", url: "https://lazivoyage.blogspot.com/2025/09/lich-hop-cho-phien-o-mien-bac.html" },
   { name: "Lịch Mùa Lúa Chín Trong Năm Ở Miền Bắc", url: "https://lazivoyage.blogspot.com/2025/09/lich-mua-lua-chin-trong-nam-o-mien-bac.html" },
