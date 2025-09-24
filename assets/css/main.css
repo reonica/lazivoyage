@@ -6199,4 +6199,80 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     }
 }
 
+/* Floating Buttons Styles */
+.floating-buttons {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.floating-btn {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #095a27, #119130);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.floating-btn.blog-btn {
+    opacity: 1;
+    transform: translateY(0);
+    background: linear-gradient(135deg, #e74c3c, #e67e22);
+}
+
+.floating-btn.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.floating-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.floating-btn:active {
+    transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .floating-buttons {
+        right: 15px;
+        bottom: 15px;
+    }
+    
+    .floating-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .floating-buttons {
+        right: 10px;
+        bottom: 10px;
+    }
+    
+    .floating-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+}
 
