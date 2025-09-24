@@ -383,7 +383,7 @@
 		});
 	});
 
-	// Floating Buttons Functionality - ĐÃ SỬA VỊ TRÍ
+	// Floating Buttons Functionality
 	$(document).ready(function() {
 		const backToTopBtn = document.getElementById('backToTop');
 		const blogBtn = document.querySelector('.blog-btn');
@@ -391,7 +391,7 @@
 		if (backToTopBtn && blogBtn) {
 			// Show/hide back to top button based on scroll position
 			function toggleBackToTop() {
-				if (window.pageYOffset > 300) {
+				if (window.pageYOffset > 50) {
 					backToTopBtn.classList.add('visible');
 				} else {
 					backToTopBtn.classList.remove('visible');
@@ -427,3 +427,4 @@
 	});
 
 })(jQuery);
+
