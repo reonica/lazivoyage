@@ -335,55 +335,95 @@
 							}, 275);
 
 						});
-				// JS Header
-					$(function() {
-					  // Toggle menu
-					  $('.hamburger').on('click', function(e) {
-					    e.stopPropagation();
-					    $('.mobile-menu-content').stop().slideToggle(300);
-					  });
-					  
-					  $(document).on('click', function() {
-					    $('.mobile-menu-content').slideUp(300);
-					  });
-					  
-					  $('.mobile-menu-content').on('click', function(e) {
-					    e.stopPropagation();
-					  });
-					  
-					  // Expand search bar on desktop when clicking the search button
-					  $('.search-bar button').on('click', function(e) {
-					    e.preventDefault(); // Prevent form submission
-					    $('.search-bar input').toggleClass('expanded');
-					  });
-					});
-					// FAQ Toggle
-					document.addEventListener('DOMContentLoaded', function () {
-					  const faqQuestions = document.querySelectorAll('.faq-question');
-					
-					  faqQuestions.forEach(question => {
-					    question.addEventListener('click', () => {
-					      const answer = question.nextElementSibling; // .faq-answer
-					      const isActive = question.classList.contains('active');
-					
-					      // Close all first
-					      document.querySelectorAll('.faq-question').forEach(q => {
-					        q.classList.remove('active');
-					        q.nextElementSibling.classList.remove('active');
-					      });
-					
-					      // Toggle the clicked one
-					      if (!isActive) {
-					        question.classList.add('active');
-					        answer.classList.add('active');
-					      }
-					    });
-					  });
-					});
+
+	// JS Header
+	$(function() {
+		// Toggle menu
+		$('.hamburger').on('click', function(e) {
+			e.stopPropagation();
+			$('.mobile-menu-content').stop().slideToggle(300);
+		});
+		
+		$(document).on('click', function() {
+			$('.mobile-menu-content').slideUp(300);
+		});
+		
+		$('.mobile-menu-content').on('click', function(e) {
+			e.stopPropagation();
+		});
+		
+		// Expand search bar on desktop when clicking the search button
+		$('.search-bar button').on('click', function(e) {
+			e.preventDefault(); // Prevent form submission
+			$('.search-bar input').toggleClass('expanded');
+		});
+	});
+
+	// FAQ Toggle
+	$(document).ready(function() {
+		const faqQuestions = document.querySelectorAll('.faq-question');
+		
+		faqQuestions.forEach(question => {
+			question.addEventListener('click', () => {
+				const answer = question.nextElementSibling; // .faq-answer
+				const isActive = question.classList.contains('active');
+		
+				// Close all first
+				document.querySelectorAll('.faq-question').forEach(q => {
+					q.classList.remove('active');
+					q.nextElementSibling.classList.remove('active');
+				});
+		
+				// Toggle the clicked one
+				if (!isActive) {
+					question.classList.add('active');
+					answer.classList.add('active');
+				}
+			});
+		});
+	});
+
+	// Floating Buttons Functionality - ĐÃ SỬA VỊ TRÍ
+	$(document).ready(function() {
+		const backToTopBtn = document.getElementById('backToTop');
+		const blogBtn = document.querySelector('.blog-btn');
+		
+		if (backToTopBtn && blogBtn) {
+			// Show/hide back to top button based on scroll position
+			function toggleBackToTop() {
+				if (window.pageYOffset > 300) {
+					backToTopBtn.classList.add('visible');
+				} else {
+					backToTopBtn.classList.remove('visible');
+				}
+			}
+			
+			// Smooth scroll to top function
+			function scrollToTop() {
+				window.scrollTo({
+					top: 0,
+					behavior: 'smooth'
+				});
+			}
+			
+			// Event listeners
+			window.addEventListener('scroll', toggleBackToTop);
+			backToTopBtn.addEventListener('click', scrollToTop);
+			
+			// Add hover effects
+			[backToTopBtn, blogBtn].forEach(btn => {
+				btn.addEventListener('mouseenter', function() {
+					this.style.transform = 'translateY(-2px)';
+				});
+				
+				btn.addEventListener('mouseleave', function() {
+					this.style.transform = 'translateY(0)';
+				});
+			});
+			
+			// Initialize button visibility
+			toggleBackToTop();
+		}
+	});
 
 })(jQuery);
-
-
-
-
-
