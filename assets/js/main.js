@@ -384,7 +384,7 @@
 	});
 
 	// Floating Buttons Functionality
-	$(function() {
+	$(document).ready(function() {
 		const backToTopBtn = $('#backToTop');
 		const blogBtn = $('.blog-btn');
 		
