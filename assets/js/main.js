@@ -389,29 +389,29 @@
 		const blogBtn = $('.blog-btn');
 
 		if (backToTopBtn.length) {
-			// Show/hide back to top button based on scroll position
+			// Kiểm tra hiển thị khi cuộn
 			function toggleBackToTop() {
 				if ($(window).scrollTop() > 100) {
-					backToTopBtn.addClass('visible');
+					backToTopBtn.addClass('visible').css('display','flex');
 				} else {
-					backToTopBtn.removeClass('visible');
+					backToTopBtn.removeClass('visible').css('display','none');
 				}
 			}
 
-			// Smooth scroll to top
+			// Cuộn mượt lên đầu trang
 			backToTopBtn.on('click', function(e) {
 				e.preventDefault();
 				$('html, body').animate({ scrollTop: 0 }, 600);
 			});
 
-			// Run on scroll
+			// Sự kiện scroll
 			$(window).on('scroll', toggleBackToTop);
 
-			// Init
+			// Khởi tạo
 			toggleBackToTop();
 		}
 
-		// Hover effect for both buttons
+		// Hover effect cho cả hai nút
 		backToTopBtn.add(blogBtn).hover(
 			function() { $(this).css('transform', 'translateY(-2px)'); },
 			function() { $(this).css('transform', 'translateY(0)'); }
