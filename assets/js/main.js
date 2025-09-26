@@ -389,26 +389,14 @@
 		const blogBtn = $('.blog-btn');
 
 		if (backToTopBtn.length) {
-			// Kiểm tra hiển thị khi cuộn
-			function toggleBackToTop() {
-				if ($(window).scrollTop() > 100) {
-					backToTopBtn.addClass('visible').css('display','flex');
-				} else {
-					backToTopBtn.removeClass('visible').css('display','none');
-				}
-			}
+			// Luôn hiển thị nút back to top
+			backToTopBtn.addClass('visible').css('display', 'flex');
 
-			// Cuộn mượt lên đầu trang
+			// Cuộn mượt lên đầu trang khi click
 			backToTopBtn.on('click', function(e) {
 				e.preventDefault();
 				$('html, body').animate({ scrollTop: 0 }, 600);
 			});
-
-			// Sự kiện scroll
-			$(window).on('scroll', toggleBackToTop);
-
-			// Khởi tạo
-			toggleBackToTop();
 		}
 
 		// Hover effect cho cả hai nút
