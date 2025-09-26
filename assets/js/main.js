@@ -387,23 +387,35 @@
 	$(function() {
 		const backToTopBtn = $('#backToTop');
 		const blogBtn = $('.blog-btn');
+		
+		if (backToTopBtn.length && blogBtn.length) {
+			// Show/hide back to top button based on scroll position
+			function toggleBackToTop() {
+				if ($(window).scrollTop() > 50) {
+					backToTopBtn.addClass('visible');
+				} else {
+					backToTopBtn.removeClass('visible');
+				}
+			}
 
-		if (backToTopBtn.length) {
-			// Luôn hiển thị nút back to top
-			backToTopBtn.addClass('visible').css('display', 'flex');
+			// Smooth scroll to top function
+			function scrollToTop() {
+				$('html, body').animate({ scrollTop: 0 }, 'smooth');
+			}
 
-			// Cuộn mượt lên đầu trang khi click
-			backToTopBtn.on('click', function(e) {
-				e.preventDefault();
-				$('html, body').animate({ scrollTop: 0 }, 600);
-			});
+			// Event listeners
+			$(window).on('scroll', toggleBackToTop);
+			backToTopBtn.on('click', scrollToTop);
+
+			// Add hover effects
+			backToTopBtn.add(blogBtn).hover(
+				function() { $(this).css('transform', 'translateY(-2px)'); },
+				function() { $(this).css('transform', 'translateY(0)'); }
+			);
+
+			// Initialize button visibility
+			toggleBackToTop();
 		}
-
-		// Hover effect cho cả hai nút
-		backToTopBtn.add(blogBtn).hover(
-			function() { $(this).css('transform', 'translateY(-2px)'); },
-			function() { $(this).css('transform', 'translateY(0)'); }
-		);
 	});
 
 })(jQuery);
