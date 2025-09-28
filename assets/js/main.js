@@ -383,39 +383,43 @@
 		});
 	});
 
-	// Floating Buttons Functionality
-	$(document).ready(function() {
-		const backToTopBtn = $('#backToTop');
-		const blogBtn = $('.blog-btn');
-		
-		if (backToTopBtn.length && blogBtn.length) {
-			// Show/hide back to top button based on scroll position
-			function toggleBackToTop() {
-				if ($(window).scrollTop() > 50) {
-					backToTopBtn.addClass('visible');
-				} else {
-					backToTopBtn.removeClass('visible');
-				}
-			}
-
-			// Smooth scroll to top function
-			function scrollToTop() {
-				$('html, body').animate({ scrollTop: 0 }, 'smooth');
-			}
-
-			// Event listeners
-			$(window).on('scroll', toggleBackToTop);
-			backToTopBtn.on('click', scrollToTop);
-
-			// Add hover effects
-			backToTopBtn.add(blogBtn).hover(
-				function() { $(this).css('transform', 'translateY(-2px)'); },
-				function() { $(this).css('transform', 'translateY(0)'); }
-			);
-
-			// Initialize button visibility
-			toggleBackToTop();
-		}
+	// Floating Buttons Functionality (robust, delegated)
+	$(function() {
+	    // Toggle visibility based on scroll
+	    function toggleBackToTop() {
+	        var $btn = $('#backToTop');
+	        if ($btn.length === 0) return; // nếu chưa có, thôi (delegation vẫn xử lý khi sau này chèn)
+	        if ($(window).scrollTop() > 50) {
+	            $btn.addClass('visible');
+	        } else {
+	            $btn.removeClass('visible');
+	        }
+	    }
+	
+	    // Delegated click handler -> works even if element is injected later
+	    $(document).on('click', '#backToTop', function(e) {
+	        e.preventDefault();
+	        // Use native smooth if supported, otherwise fallback to jQuery
+	        if ('scrollBehavior' in document.documentElement.style) {
+	            window.scrollTo({ top: 0, behavior: 'smooth' });
+	        } else {
+	            $('html, body').animate({ scrollTop: 0 }, 400);
+	        }
+	    });
+	
+	    // Hover effects (delegated)
+	    $(document).on('mouseenter', '#backToTop, .blog-btn', function() {
+	        $(this).css('transform', 'translateY(-2px)');
+	    }).on('mouseleave', '#backToTop, .blog-btn', function() {
+	        $(this).css('transform', 'translateY(0)');
+	    });
+	
+	    // Scroll listener
+	    $(window).on('scroll', toggleBackToTop);
+	
+	    // Init (try once; if element added later, toggleBackToTop() will run on scroll)
+	    toggleBackToTop();
 	});
 
 })(jQuery);
+
