@@ -6208,7 +6208,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     display: flex;
     flex-direction: column;
     gap: 10px;
-    pointer-events: none; /* container không nhận sự kiện; từng nút bật pointer khi visible/always-on */
+    pointer-events: none;
 }
 
 /* base button */
@@ -6229,48 +6229,60 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    pointer-events: none; /* tắt khi ẩn */
+    pointer-events: none;
     will-change: transform, opacity;
 }
 
-/* Blog button: luôn hiển thị (nếu muốn luôn hiện), không bị ẩn */
 .floating-btn.blog-btn {
     background: linear-gradient(135deg, #e74c3c, #e67e22);
-    opacity: 1 !important;         /* bắt buộc luôn hiện */
+    opacity: 1 !important;
     transform: translateY(0) !important;
-    pointer-events: auto !important; /* luôn nhận sự kiện */
+    pointer-events: auto !important;
 }
 
-/* Khi nút visible (dành cho #backToTop) */
 .floating-btn.visible {
     opacity: 1;
     transform: translateY(0);
-    pointer-events: auto; /* bật tương tác khi hiện */
+    pointer-events: auto;
 }
 
-/* Hover effects: giữ gradient nhưng thêm nổi bật bằng shadow/scale */
 .floating-btn:hover {
     transform: translateY(-2px) scale(1.03);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* ===== Tuỳ chọn hover cho backToTop =====
-   Bỏ comment 1 trong 2 block dưới đây theo ý bạn:
-   - Nếu muốn hover --> TRẮNG: dùng block (A)
-   - Nếu muốn hover --> TRONG SUỐT: dùng block (B)
-*/
-
-/* (A) Hover đổi nền thành trắng, đổi màu icon/text (uncomment nếu muốn) */
 #backToTop:hover {
     background: white !important;
-    color: #111 !important; /* icon/text màu tối khi nền trắng */
+    color: #111 !important;
     box-shadow: 0 6px 24px rgba(0,0,0,0.2);
 }
 
-/* Nếu muốn icon đổi màu khi hover trắng (chỉ áp dụng khi bạn dùng A) */
 #backToTop:hover i,
 #backToTop:hover svg {
-    color: inherit; /* dùng màu text hiện tại (mình đã set color ở #backToTop:hover) */
+    color: inherit;
+}
+
+.floating-btn.blog-btn:hover {
+    background: white !important;
+    color: #111 !important;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+    transform: translateY(-2px) scale(1.03);
+    pointer-events: auto;
+}
+
+.floating-btn.blog-btn:hover i,
+.floating-btn.blog-btn:hover svg {
+    color: inherit;
+}
+
+.floating-btn,
+.floating-btn.blog-btn {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.floating-btn:focus {
+    outline: 2px solid rgba(0,0,0,0.08);
+    outline-offset: 2px;
 }
 
 /* Responsive Design */
@@ -6283,3 +6295,4 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     .floating-buttons { right: 10px; bottom: 10px; }
     .floating-btn { width: 40px; height: 40px; font-size: 14px; }
 }
+
