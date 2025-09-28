@@ -383,39 +383,5 @@
 		});
 	});
 
-	// Floating Buttons Functionality
-	$(document).ready(function() {
-		const backToTopBtn = $('#backToTop');
-		const blogBtn = $('.blog-btn');
-		
-		if (backToTopBtn.length && blogBtn.length) {
-			// Show/hide back to top button based on scroll position
-			function toggleBackToTop() {
-				if ($(window).scrollTop() > 50) {
-					backToTopBtn.addClass('visible');
-				} else {
-					backToTopBtn.removeClass('visible');
-				}
-			}
-
-			// Smooth scroll to top function
-			function scrollToTop() {
-				$('html, body').animate({ scrollTop: 0 }, 'smooth');
-			}
-
-			// Event listeners
-			$(window).on('scroll', toggleBackToTop);
-			backToTopBtn.on('click', scrollToTop);
-
-			// Add hover effects
-			backToTopBtn.add(blogBtn).hover(
-				function() { $(this).css('transform', 'translateY(-2px)'); },
-				function() { $(this).css('transform', 'translateY(0)'); }
-			);
-
-			// Initialize button visibility
-			toggleBackToTop();
-		}
-	});
-
 })(jQuery);
+
