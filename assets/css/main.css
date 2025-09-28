@@ -6225,8 +6225,6 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    opacity: 0;
-    transform: translateY(20px);
 }
 
 .floating-btn.blog-btn {
@@ -6277,3 +6275,4 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
         font-size: 14px;
     }
 }
+
