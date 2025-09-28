@@ -383,16 +383,14 @@
 		});
 	});
 
-	// Floating Buttons — chỉ hiển thị khi cuộn xuống (thay block cũ)
+	// Floating Buttons
 	$(function() {
-	    var $btn = $('#backToTop');
-	    if ($btn.length === 0) return;
+	    var scrollThreshold = 300; // hiện sau khi cuộn 300px (thay đổi nếu muốn)
+	    var ticking = false;
 	
-	    // Cấu hình: thay đổi giá trị này để điều chỉnh khi nào nút xuất hiện (pixels)
-	    var scrollThreshold = 300; // hiện sau khi cuộn xuống 300px (tùy chỉnh)
-	
-	    // Hàm show/hide
 	    function toggleBackToTop() {
+	        var $btn = $('#backToTop');
+	        if ($btn.length === 0) return; // nếu chưa có button thì thôi (chạy lại sau)
 	        if ($(window).scrollTop() > scrollThreshold) {
 	            $btn.addClass('visible');
 	        } else {
@@ -400,8 +398,7 @@
 	        }
 	    }
 	
-	    // Tối ưu xử lý scroll bằng requestAnimationFrame
-	    var ticking = false;
+	    // tối ưu scroll bằng requestAnimationFrame
 	    $(window).on('scroll', function() {
 	        if (!ticking) {
 	            window.requestAnimationFrame(function() {
@@ -412,10 +409,12 @@
 	        }
 	    });
 	
-	    // Khởi tạo trạng thái (nếu trang được load ở vị trí cuộn giữa trang)
+	    // khởi tạo (trường hợp trang load ở giữa)
 	    toggleBackToTop();
+	    // chạy lại sau 500ms để xử lý trường hợp include.js vừa chèn element xong
+	    setTimeout(toggleBackToTop, 500);
 	
-	    // Click: cuộn lên trên mượt mà
+	    // Delegated click handler -> đảm bảo hoạt động ngay cả khi nút được chèn sau
 	    $(document).on('click', '#backToTop', function(e) {
 	        e.preventDefault();
 	        if ('scrollBehavior' in document.documentElement.style) {
@@ -425,14 +424,24 @@
 	        }
 	    });
 	
-	    // Hover effects (vẫn dùng delegated để an toàn khi element được inject sau)
+	    // Hover effects (delegated)
 	    $(document).on('mouseenter', '#backToTop, .blog-btn', function() {
 	        $(this).css('transform', 'translateY(-2px)');
 	    }).on('mouseleave', '#backToTop, .blog-btn', function() {
 	        $(this).css('transform', 'translateY(0)');
 	    });
+	
+	    // (Tùy chọn) Quan sát DOM: nếu nút được chèn động, chạy toggle 1 lần nữa
+	    if (window.MutationObserver) {
+	        var mo = new MutationObserver(function() {
+	            if ($('#backToTop').length) toggleBackToTop();
+	        });
+	        mo.observe(document.body, { childList: true, subtree: true });
+	    }
 	});
 
+
 })(jQuery);
+
 
 
