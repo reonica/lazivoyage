@@ -27,42 +27,111 @@
 
 <!-- Back to Top Script -->
 <script>
-$(document).ready(function() {
-    console.log('Footer backtotop script loaded');
+// Debug function to check jQuery and DOM
+function debugFloatingButtons() {
+    console.log('=== DEBUG FLOATING BUTTONS ===');
+    console.log('jQuery available:', typeof jQuery !== 'undefined');
+    if (typeof jQuery !== 'undefined') {
+        console.log('jQuery version:', jQuery.fn.jquery);
+    }
     
+    // Check if buttons exist in DOM
+    const backToTopBtn = document.getElementById('backToTop');
+    const blogBtn = document.querySelector('.blog-btn');
+    const floatingButtons = document.querySelector('.floating-buttons');
+    
+    console.log('backToTop element:', backToTopBtn);
+    console.log('blogBtn element:', blogBtn);
+    console.log('floating-buttons container:', floatingButtons);
+    console.log('==============================');
+}
+
+// Wait for everything to be ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Content Loaded - footer script');
+    debugFloatingButtons();
+});
+
+// Also try with jQuery if available
+if (typeof jQuery !== 'undefined') {
+    jQuery(document).ready(function($) {
+        console.log('jQuery Ready - footer script');
+        debugFloatingButtons();
+        
+        // Initialize floating buttons
+        initFloatingButtons();
+    });
+} else {
+    // Fallback if jQuery not available yet
+    window.addEventListener('load', function() {
+        console.log('Window Loaded - footer script');
+        debugFloatingButtons();
+        initFloatingButtons();
+    });
+}
+
+function initFloatingButtons() {
+    console.log('Initializing floating buttons...');
+    
+    if (typeof jQuery === 'undefined') {
+        console.error('jQuery not available for floating buttons');
+        return;
+    }
+    
+    const $ = jQuery;
     const backToTopBtn = $('#backToTop');
     const blogBtn = $('.blog-btn');
     
-    console.log('Back to Top button found:', backToTopBtn.length);
-    console.log('Blog button found:', blogBtn.length);
+    console.log('jQuery Back to Top button found:', backToTopBtn.length);
+    console.log('jQuery Blog button found:', blogBtn.length);
     
-    if (backToTopBtn.length && blogBtn.length) {
-        console.log('Both buttons found, initializing...');
-        
-        // Show/hide back to top button based on scroll position
-        function toggleBackToTop() {
-            const scrollTop = $(window).scrollTop();
-            
-            if (scrollTop > 50) {
-                backToTopBtn.addClass('visible');
-            } else {
-                backToTopBtn.removeClass('visible');
-            }
-        }
-
-        // Smooth scroll to top function
-        function scrollToTop() {
-            $('html, body').animate({ scrollTop: 0 }, 'smooth');
-        }
-
-        // Event listeners
-        $(window).on('scroll', toggleBackToTop);
-        backToTopBtn.on('click', scrollToTop);
-
-        // Initialize button visibility
-        toggleBackToTop();
-        
-        console.log('Floating buttons initialized successfully');
+    if (backToTopBtn.length === 0) {
+        console.error('Back to Top button not found with jQuery!');
+        return;
     }
-});
+    
+    if (blogBtn.length === 0) {
+        console.error('Blog button not found with jQuery!');
+        return;
+    }
+    
+    // Show/hide back to top button based on scroll position
+    function toggleBackToTop() {
+        const scrollTop = $(window).scrollTop();
+        console.log('Scroll position:', scrollTop);
+        
+        if (scrollTop > 50) {
+            backToTopBtn.addClass('visible');
+            console.log('Back to Top button shown');
+        } else {
+            backToTopBtn.removeClass('visible');
+            console.log('Back to Top button hidden');
+        }
+    }
+
+    // Smooth scroll to top function
+    function scrollToTop() {
+        console.log('Scrolling to top');
+        $('html, body').animate({ scrollTop: 0 }, 'smooth');
+    }
+
+    // Event listeners
+    $(window).on('scroll', toggleBackToTop);
+    backToTopBtn.on('click', scrollToTop);
+
+    // Add hover effects
+    backToTopBtn.add(blogBtn).hover(
+        function() { 
+            $(this).css('transform', 'translateY(-2px)'); 
+        },
+        function() { 
+            $(this).css('transform', 'translateY(0)'); 
+        }
+    );
+
+    // Initialize button visibility
+    toggleBackToTop();
+    
+    console.log('Floating buttons initialized successfully');
+}
 </script>
