@@ -6241,12 +6241,12 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 .floating-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    background: inherit; /* Ngăn thay đổi màu nền */
+    background: transparent !important;
 }
 
 #backToTop {
-    background: linear-gradient(135deg, #095a27, #119130); /* Đảm bảo màu nền */
-    border-radius: 50%; /* Đảm bảo hình tròn */
+    background: linear-gradient(135deg, #095a27, #119130);
+    border-radius: 50%;
 }
 
 /* Responsive Design */
@@ -6275,4 +6275,5 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
         font-size: 14px;
     }
 }
+
 
