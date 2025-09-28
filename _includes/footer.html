@@ -10,16 +10,59 @@
   <a href="https://lazivoyage.wordpress.com"><i class="fa-brands fa-wordpress-simple"></i></a>
  </div>
  <div class="copyright">© 2023 Lazi Voyage | All Rights Reserved</div>
-  <!-- Floating Buttons -->
-  <div class="floating-buttons">
-      <!-- Back to Top Button -->
-      <a id="backToTop" class="floating-btn" title="Lên đầu trang">
-          <i class="fa-solid fa-house"></i>
-      </a>
-      
-      <!-- Blog Button -->
-      <a href="https://lazivoyage.blogspot.com" class="floating-btn blog-btn" title="Blog Văn Hoá Việt">
-          <i class="fas fa-blog"></i>
-      </a>
-  </div>
+ 
+ <!-- Floating Buttons -->
+ <div class="floating-buttons">
+     <!-- Back to Top Button -->
+     <a id="backToTop" class="floating-btn" title="Lên đầu trang">
+         <i class="fa-solid fa-house"></i>
+     </a>
+     
+     <!-- Blog Button -->
+     <a href="https://lazivoyage.blogspot.com" class="floating-btn blog-btn" title="Blog Văn Hoá Việt">
+         <i class="fas fa-blog"></i>
+     </a>
+ </div>
 </footer>
+
+<!-- Back to Top Script -->
+<script>
+$(document).ready(function() {
+    console.log('Footer backtotop script loaded');
+    
+    const backToTopBtn = $('#backToTop');
+    const blogBtn = $('.blog-btn');
+    
+    console.log('Back to Top button found:', backToTopBtn.length);
+    console.log('Blog button found:', blogBtn.length);
+    
+    if (backToTopBtn.length && blogBtn.length) {
+        console.log('Both buttons found, initializing...');
+        
+        // Show/hide back to top button based on scroll position
+        function toggleBackToTop() {
+            const scrollTop = $(window).scrollTop();
+            
+            if (scrollTop > 50) {
+                backToTopBtn.addClass('visible');
+            } else {
+                backToTopBtn.removeClass('visible');
+            }
+        }
+
+        // Smooth scroll to top function
+        function scrollToTop() {
+            $('html, body').animate({ scrollTop: 0 }, 'smooth');
+        }
+
+        // Event listeners
+        $(window).on('scroll', toggleBackToTop);
+        backToTopBtn.on('click', scrollToTop);
+
+        // Initialize button visibility
+        toggleBackToTop();
+        
+        console.log('Floating buttons initialized successfully');
+    }
+});
+</script>
