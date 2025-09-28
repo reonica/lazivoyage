@@ -6199,7 +6199,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     }
 }
 
-/* Floating Buttons Styles */
+/* Floating Buttons Styles - updated */
 .floating-buttons {
     position: fixed;
     right: 20px;
@@ -6208,6 +6208,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     display: flex;
     flex-direction: column;
     gap: 10px;
+    pointer-events: none;
 }
 
 .floating-btn {
@@ -6219,61 +6220,40 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
     color: white;
     font-size: 18px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: opacity .25s ease, transform .18s ease, box-shadow .18s ease;
+    opacity: 0;
+    transform: translateY(10px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    pointer-events: none;
+    will-change: transform, opacity;
 }
 
 .floating-btn.blog-btn {
-    opacity: 1;
-    transform: translateY(0);
     background: linear-gradient(135deg, #e74c3c, #e67e22);
 }
 
 .floating-btn.visible {
     opacity: 1;
     transform: translateY(0);
+    pointer-events: auto;
 }
 
 .floating-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.03);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-    background: transparent !important;
-}
-
-#backToTop {
-    background: linear-gradient(135deg, #095a27, #119130);
-    border-radius: 50%;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .floating-buttons {
-        right: 15px;
-        bottom: 15px;
-    }
-    
-    .floating-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 16px;
-    }
+    .floating-buttons { right: 15px; bottom: 15px; }
+    .floating-btn { width: 45px; height: 45px; font-size: 16px; }
 }
 
 @media (max-width: 480px) {
-    .floating-buttons {
-        right: 10px;
-        bottom: 10px;
-    }
-    
-    .floating-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 14px;
-    }
+    .floating-buttons { right: 10px; bottom: 10px; }
+    .floating-btn { width: 40px; height: 40px; font-size: 14px; }
 }
-
-
