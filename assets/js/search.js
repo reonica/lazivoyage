@@ -2,6 +2,7 @@
 
 // 1. Danh sách URL (dữ liệu)
 const urlList = [
+  { name: "Mặt Trận Vị Xuyên Trong Chiến Tranh Biên Giới 1979", url: "https://lazivoyage.blogspot.com/2025/10/mat-tran-vi-xuyen-trong-chien-tranh.html" },
   { name: "Khám Phá 53 Dân Tộc Thiểu Số Ở Việt Nam", url: "https://lazivoyage.blogspot.com/2025/10/kham-pha-53-dan-toc-thieu-so-o-viet-nam.html" },
   { name: "Du Thuyền Trên Sông Nho Quế", url: "https://lazivoyage.blogspot.com/2025/10/du-thuyen-tren-song-nho-que.html" },
   { name: "Khám Phá Cột Cờ Lũng Cú Cực Bắc Việt Nam", url: "https://lazivoyage.blogspot.com/2025/10/kham-pha-cot-co-lung-cu-cuc-bac-viet-nam.html" },
