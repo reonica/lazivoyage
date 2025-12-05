@@ -39,13 +39,13 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 		}
 
 /* Type */
-	html { font-size: 16px; }
-		@media screen and (max-width: 1680px) { html { font-size: 16px; } }
-		@media screen and (max-width: 1280px) { html { font-size: 15px; } }
-		@media screen and (max-width: 736px) { html { font-size: 14px; } }
-		@media screen and (max-width: 360px) { html { font-size: 13px; } }
+	html { font-size: 18pt; }
+		@media screen and (max-width: 1680px) { html { font-size: 14pt; } }
+		@media screen and (max-width: 1280px) { html { font-size: 12pt; } }
+		@media screen and (max-width: 736px) { html { font-size: 11pt; } }
+		@media screen and (max-width: 360px) { html { font-size: 10pt; } }
 	body { background-color: #ffffff; color: #000000; }
-	body, input, select, textarea { font-family: "Roboto", sans-serif; font-size: 16px; font-weight: 400; line-height: 2; }
+	body, input, select, textarea { font-family: "Roboto", sans-serif; font-size: 1rem; font-weight: 400; line-height: 1.65; }
 	a {
 		-moz-transition: color 0.2s ease-in-out;
 		-webkit-transition: color 0.2s ease-in-out;
@@ -56,22 +56,22 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 		a:hover { text-decoration: none; }
 	strong, b { font-weight: 400; }
 	em, i { font-style: italic; }
-	p { margin: 0 0 2rem 0; font-size: 1rem; line-height: 2; }
-    p.major { font-size: 1.125rem; line-height: 1.8; }
+	p { margin: 0 0 2rem 0; }
+		p.major { font-size: 1.25rem; }
 	h1, h2, h3, h4, h5, h6 {
-		font-family: "Ubuntu", sans-serif;
-		font-weight: 500;
+		font-family: "Playfair Display", Georgia, serif;
+		font-weight: 700;
 		line-height: 1.375;
-		letter-spacing: normal;
+		letter-spacing: 0.05em;
 		margin: 0 0 1rem 0;
 	}
 		h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: inherit; text-decoration: none; }
-	h1 { font-size: 3.875rem; line-height: 1.2; font-weight: 500; }
-	h2 { font-size: 1.5rem; font-weight: 500; }
-	h3 { font-size: 1.125rem; font-weight: 500; }
-	h4 { font-size: 1rem; font-weight: 500; }
-	h5 { font-size: 0.875rem; font-weight: 500; }
-	h6 { font-size: 0.75rem; font-weight: 500; }
+	h1 { font-size: 3.5rem; line-height: 1.2; }
+	h2 { font-size: 2.25rem; }
+	h3 { font-size: 1.5rem; }
+	h4 { font-size: 1.1rem; }
+	h5 { font-size: 0.9rem; }
+	h6 { font-size: 0.7rem; }
 	sub { font-size: 0.8rem; position: relative; top: 0.5rem; }
 	sup { font-size: 0.8rem; position: relative; top: -0.5rem; }
 	blockquote {
@@ -79,8 +79,6 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 		font-style: italic;
 		margin: 0 0 2rem 0;
 		padding: 0.5rem 0 0.5rem 2rem;
-		font-size: 1rem;
-	    line-height: 1.8;
 	}
 	code {
 		border-radius: 4px;
@@ -102,9 +100,9 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 	.align-center { text-align: center; }
 	.align-right { text-align: right; }
 	@media screen and (max-width: 736px) {
-		p.major { font-size: 1.125rem; }
-		h1 { font-size: 2.25rem; }
-		h2 { font-size: 1.5rem; }
+		p.major { font-size: 1.1rem; }
+		h1 { font-size: 2.5rem; }
+		h2 { font-size: 2rem; }
 		h3 { font-size: 1.25rem; }
 		h4 { font-size: 1rem; }
 	}
@@ -1147,9 +1145,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 		text-decoration: none;
 		text-transform: uppercase;
 		white-space: nowrap;
-		font-family: "Ubuntu", sans-serif;
-	    font-size: 0.75rem;
-    	font-weight: 500;
+		font-size: 0.75rem;
 		max-width: 20rem;
 		height: 3.75em;
 		line-height: 3.75em;
@@ -1352,7 +1348,7 @@ input, select, textarea { -moz-appearance: none; -webkit-appearance: none; -ms-a
 
 	label {
 		display: block;
-		font-size: 0.875rem;
+		font-size: 0.9rem;
 		font-weight: 400;
 		margin: 0 0 1rem 0;
 	}
