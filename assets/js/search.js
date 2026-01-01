@@ -2,6 +2,7 @@
 
 // 1. Danh sách URL (dữ liệu)
 const urlList = [
+  { name: "Hát Bội Là Gì ? Đặc Sắc Nghệ Thuật Hát Bội Truyền Thống", url: "https://lazivoyage.blogspot.com/2026/01/hat-boi-la-gi-dac-sac-nghe-thuat-hat-boi-truyen-thong.html" },
   { name: "Kinh Nghiệm Du Lịch Cố Đô Hoa Lư Ninh Bình", url: "https://lazivoyage.blogspot.com/2025/12/kinh-nghiem-du-lich-co-do-hoa-lu-ninh.html" },
   { name: "Kinh Nghiệm Du Lịch Cần Thơ Tự Túc Cập Nhật Mới Nhất", url: "https://lazivoyage.blogspot.com/2025/12/kinh-nghiem-du-lich-can-tho-tu-tuc.html" },
   { name: "Thăm Đền Vua Đinh Vua Lê Khi Du Lịch Ninh Binh", url: "https://lazivoyage.blogspot.com/2025/12/tham-den-vua-dinh-vua-le-khi-du-lich-ninh.html" },
