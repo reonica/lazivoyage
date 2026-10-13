@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /tim-kiem/
+Disallow: /cam-on/
+Sitemap: https://lazivoyage.com/sitemap.xml
