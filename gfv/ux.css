@@ -100,3 +100,35 @@
   .gf-app .gf-filter-grid { grid-template-columns:1fr; }
   .gf-app .gf-word-header { flex-wrap:wrap; }
 }
+
+/* Mobile overflow guard. Keep form controls, cards and long French words
+   inside the viewport without clipping readable content. */
+.gf-app { width:100%; max-width:100%; min-width:0; }
+.gf-app .gf-toolbar,
+.gf-app .gf-layout,
+.gf-app .gf-list-panel,
+.gf-app .gf-detail-panel,
+.gf-app .gf-filter-grid,
+.gf-app .gf-two-cols,
+.gf-app .gf-word-header,
+.gf-app .gf-headings,
+.gf-app .gf-figure,
+.gf-app .gf-search-wrap { min-width:0; max-width:100%; }
+.gf-app .gf-list-title,
+.gf-app .gf-word-title,
+.gf-app .gf-section p,
+.gf-app .gf-example blockquote,
+.gf-app .gf-translation,
+.gf-app .gf-tag { overflow-wrap:anywhere; word-break:normal; }
+.gf-app .gf-filter-grid > label { min-width:0; max-width:100%; }
+.gf-app .gf-filter-grid select { display:block; width:100%; min-width:0; max-width:100%; text-overflow:ellipsis; }
+.gf-app .gf-figure img { display:block; width:100%; max-width:100%; }
+@media (max-width:760px) {
+  .gf-app .gf-toolbar, .gf-app .gf-layout { width:100%; grid-template-columns:minmax(0,1fr); }
+  .gf-app .gf-list-panel, .gf-app .gf-detail-panel { width:100%; }
+  .gf-app .gf-word-header { flex-wrap:wrap; }
+  .gf-app .gf-word-actions { min-width:0; flex-wrap:wrap; }
+  .gf-app .gf-list { overflow-x:hidden; }
+  .gf-app .gf-panel-top { flex-wrap:wrap; }
+  .gf-app .gf-pager { flex-wrap:wrap; }
+}
