@@ -8,7 +8,7 @@
  * When not configured, responds with 503 and the client falls back
  * to the browser's speech synthesis (which may not have a male voice).
  */
-const MAX_LENGTH = 260;
+const MAX_LENGTH = 500;
 const xmlEscape = value => value.replace(/[<>&"']/g, char =>
   ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'})[char]);
 
