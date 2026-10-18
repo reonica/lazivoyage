@@ -25,7 +25,7 @@ exports.handler = async event => {
   catch (_) { return { statusCode:400, body:'Invalid JSON' }; }
   const value = typeof input.text === 'string' ? input.text.trim() : '';
   if (!value || [...value].length > MAX_LENGTH) {
-    return { statusCode:400, body:'Text must be between 1 and 260 characters' };
+    return { statusCode:400, body:'Text must be between 1 and 500 characters' };
   }
 
   const key = process.env.AZURE_SPEECH_KEY;
