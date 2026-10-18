@@ -24,6 +24,7 @@
     saved: new Set()
   };
   try { state.saved = new Set(JSON.parse(localStorage.getItem('lazi-glossary-saved-v1') || '[]')); } catch (_) {}
+  root.lang = 'fr'; // The study UI is French; Vietnamese translations declare lang=vi individually.
   root.removeAttribute('data-tool'); // Prevent the legacy glossary controller from binding.
   root.classList.add('gf-app');
   root.innerHTML = [
