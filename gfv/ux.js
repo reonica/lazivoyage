@@ -55,7 +55,7 @@
   const audioCache = new Map();
   let currentAudio = null;
   const spoken = (text, status) => {
-    const value = String(text || '').trim().slice(0, 260);
+    const value = String(text || '').trim().slice(0, 500);
     if (!value) return;
     status.textContent = 'Chargement de la voix…';
     const fallback = () => {
