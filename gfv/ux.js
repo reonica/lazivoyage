@@ -54,48 +54,88 @@
   const PAGE_SIZE = 25;
   const audioCache = new Map();
   let currentAudio = null;
-  const spoken = (text, status) => {
-    const value = String(text || '').trim().slice(0, 500);
-    if (!value) return;
-    status.textContent = 'Chargement de la voix…';
-    const fallback = () => {
-      if (!('speechSynthesis' in window)) {
-        status.textContent = 'Lecture indisponible. Configurez Azure Speech sur Netlify.';
-        return;
-      }
-      speechSynthesis.cancel();
+  let azureConfigured = false;
+  let currentUtterance = null; // Keep the utterance alive while mobile TTS is speaking.
+
+  // Determine Azure availability early, not after a user has pressed Play.
+  // If it is not configured, speak directly from the original tap event.
+  fetch('/.netlify/functions/pronounce', {method:'GET',cache:'no-store'})
+    .then(response => response.ok ? response.json() : {available:false})
+    .then(data => {
+      azureConfigured = data.available === true;
+      const node = get('.gf-audio-status');
+      if (node) node.textContent = azureConfigured ?
+        'Voix masculine française · Azure Henri' :
+        'Voix du navigateur · le timbre masculin n’est pas garanti';
+    }).catch(() => { azureConfigured = false; });
+
+  function browserSpeech(value, status) {
+    if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)) {
+      status.textContent = 'Audio indisponible sur ce navigateur. Activez Azure Speech.';
+      return;
+    }
+    try {
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      const synth = window.speechSynthesis;
+      synth.cancel();
       const utterance = new SpeechSynthesisUtterance(value);
+      currentUtterance = utterance;
       utterance.lang = 'fr-FR';
       utterance.rate = 0.9;
-      const voices = speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().replace('_','-') === 'fr-fr');
-      const male = voices.find(v => /henri|male|homme/i.test(v.name));
-      if (male) utterance.voice = male;
-      else if (voices.length) utterance.voice = voices[0];
-      utterance.onerror = () => { status.textContent = 'Lecture vocale indisponible.'; };
-      utterance.onend = () => { status.textContent = ''; };
-      status.textContent = 'Voix du navigateur (accent non garanti).';
-      speechSynthesis.speak(utterance);
-    };
-    (async () => {
+      const voices = synth.getVoices().filter(v => /^fr[-_]FR$/i.test(v.lang));
+      const preferred = voices.find(v => /henri|male|homme/i.test(v.name)) || voices[0];
+      if (preferred) utterance.voice = preferred;
+      utterance.onerror = () => { status.textContent = 'Lecture vocale indisponible. Vérifiez le volume ou essayez un autre navigateur.'; };
+      utterance.onend = () => { currentUtterance = null; status.textContent = 'Voix du navigateur · accent et genre non garantis'; };
+      status.textContent = 'Voix du navigateur · accent et genre non garantis';
+      // Critical for iOS Safari: speak must be called synchronously inside the tap.
+      synth.speak(utterance);
+      synth.resume();
+    } catch (_) {
+      status.textContent = 'Ce navigateur ne permet pas la synthèse vocale.';
+    }
+  }
+
+  function spoken(text, status) {
+    const value = String(text || '').trim().slice(0, 500);
+    if (!value) return;
+    if (!azureConfigured) {
+      browserSpeech(value, status);
+      return;
+    }
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    const playAudio = async url => {
+      if (currentAudio) currentAudio.pause();
+      currentAudio = new Audio(url);
+      currentAudio.onended = () => { status.textContent = 'Voix masculine française · Azure Henri'; };
       try {
-        if (currentAudio) { currentAudio.pause(); currentAudio = null; }
-        let url = audioCache.get(value);
-        if (!url) {
-          const response = await fetch('/.netlify/functions/pronounce', {
-            method: 'POST', headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({text:value})
-          });
-          if (!response.ok) throw new Error('TTS unavailable');
-          url = URL.createObjectURL(await response.blob());
-          audioCache.set(value, url);
-        }
-        currentAudio = new Audio(url);
-        currentAudio.onended = () => { status.textContent = ''; };
         await currentAudio.play();
-        status.textContent = 'Voix française · Henri (Azure)';
-      } catch (_) { fallback(); }
-    })();
-  };
+        status.textContent = 'Voix masculine française · Azure Henri';
+      } catch (_) {
+        status.textContent = 'Audio prêt : touchez à nouveau « Écouter ».';
+      }
+    };
+    const readyURL = audioCache.get(value);
+    if (readyURL) { playAudio(readyURL); return; }
+    status.textContent = 'Préparation de la voix masculine…';
+    fetch('/.netlify/functions/pronounce', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({text:value})
+    }).then(response => {
+      if (!response.ok) throw Error('Synthèse Azure indisponible');
+      return response.blob();
+    }).then(blob => {
+      const url = URL.createObjectURL(blob);
+      audioCache.set(value,url);
+      // Autoplay can be restricted after an asynchronous fetch on mobile.
+      // If blocked, the now-cached audio is ready for the next explicit tap.
+      playAudio(url);
+    }).catch(() => {
+      azureConfigured = false;
+      status.textContent = 'Azure indisponible. Touchez de nouveau pour écouter la voix du navigateur.';
+    });
+  }
   function button(label, cls, onClick) {
     const node = el('button', cls, label);
     node.type = 'button';
@@ -173,6 +213,9 @@
     header.append(headings,actions); detail.append(header);
     const audioStatus = el('p','gf-audio-status');
     audioStatus.setAttribute('role','status');
+    audioStatus.textContent = azureConfigured ?
+      'Voix masculine française · Azure Henri' :
+      'Voix du navigateur · accent et genre non garantis';
     detail.append(audioStatus);
     const tags = el('div','gf-tags');
     [item.domain,item.theme,item.type].filter(Boolean).forEach(t => tags.append(el('span','gf-tag',t)));
