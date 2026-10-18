@@ -13,8 +13,20 @@ const xmlEscape = value => value.replace(/[<>&"']/g, char =>
   ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'})[char]);
 
 exports.handler = async event => {
+  // Public readiness check exposes only a boolean, never any credentials.
+  // The client needs this BEFORE a tap so browser TTS can run immediately.
+  if (event.httpMethod === 'GET') {
+    const ready = Boolean(process.env.AZURE_SPEECH_KEY &&
+      process.env.AZURE_SPEECH_REGION &&
+      /^[a-z0-9-]+$/i.test(process.env.AZURE_SPEECH_REGION));
+    return {
+      statusCode:200,
+      headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'},
+      body:JSON.stringify({available:ready})
+    };
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode:405, headers:{Allow:'POST'}, body:'Method not allowed' };
+    return { statusCode:405, headers:{Allow:'GET, POST'}, body:'Method not allowed' };
   }
   const type = String(event.headers?.['content-type'] || event.headers?.['Content-Type'] || '').toLowerCase();
   if (!type.includes('application/json')) {
