@@ -28,8 +28,8 @@
   root.removeAttribute('data-tool'); // Prevent the legacy glossary controller from binding.
   root.classList.add('gf-app');
   root.innerHTML = [
-    '<nav class="gf-breadcrumb" aria-label="Fil d’Ariane"><a href="../">Accueil</a><span aria-hidden="true">/</span><span>Glossaire</span></nav>',
-    '<header class="gf-intro"><p class="gf-eyebrow">Glossaire franco-vietnamien</p><h1>Les mots en contexte</h1><p>Apprenez en français grâce aux définitions, aux exemples et aux synonymes. La traduction reste facultative.</p></header>',
+    '<nav class="gf-breadcrumb ls-breadcrumbs" lang="vi" aria-label="Đường dẫn trang"><a href="../">Trang chủ</a><span aria-hidden="true">›</span><span aria-current="page">Từ điển Pháp–Việt</span></nav>',
+    '<header class="gf-intro ls-page-head" lang="vi"><p class="gf-eyebrow ls-kicker" lang="fr">Glossaire franco-vietnamien</p><h1 class="ls-title">Từ điển Pháp–Việt</h1><p>Học tiếng Pháp qua định nghĩa, ví dụ theo ngữ cảnh và từ đồng nghĩa. Nghĩa tiếng Việt chỉ mở khi cần.</p></header>',
     '<div class="gf-toolbar">',
       '<label class="gf-search-label" for="gf-search">Rechercher un mot</label>',
       '<div class="gf-search-wrap"><span aria-hidden="true">⌕</span><input id="gf-search" type="search" maxlength="200" autocomplete="off" placeholder="Rechercher un mot en français…" /></div>',
