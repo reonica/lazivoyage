@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#096b68">
+  <title>Cây văn hóa Việt Nam — Prototype | LaziVoyage</title>
+  <meta name="description" content="Bản thử nghiệm giao diện Cây văn hóa Việt Nam cho Lazivoyage.">
+  <link rel="icon" type="image/png" href="../favicon.png">
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./culture.css">
+  <script src="./culture.js" defer></script>
+</head>
+<body class="la-page ls-site cv-page" data-style="bulletin" data-base="../" data-page="/cay-van-hoa/">
+  <a class="skip-link" href="#main">Đến nội dung chính</a>
+  <div class="la-topline">
+    <div class="la-inner">
+      <span>Du lịch · Ẩm thực · Văn hoá Việt Nam</span>
+      <div class="la-contact">
+        <a href="tel:+84916882795">+84 91 688 2795</a>
+        <a href="mailto:lazi.voyage@gmail.com">lazi.voyage@gmail.com</a>
+      </div>
+    </div>
+  </div>
+  <header class="la-header">
+    <div class="la-inner">
+      <a class="la-brand" href="../" aria-label="Lazi Voyage — Trang chủ">
+        <img src="../assets/images/logo.webp" width="256" height="256" alt="" loading="eager" decoding="async">
+        <span class="la-wordmark">LaziVoyage</span>
+      </a>
+      <nav class="la-nav" aria-label="Điều hướng chính">
+        <a href="../">Home</a>
+        <div class="la-blog-group">
+          <a href="../blog/">Blog</a>
+          <details class="la-blog-menu">
+            <summary aria-label="Mở chuyên mục Blog"><span aria-hidden="true">⌄</span></summary>
+            <div class="la-blog-submenu">
+              <a href="../su-viet/">Sử Việt</a>
+              <a href="../gfv/">Từ điển du lịch</a>
+            </div>
+          </details>
+        </div>
+        <a href="../contact/">Contact</a>
+      </nav>
+      <form class="la-search" role="search" action="../tim-kiem/" method="get">
+        <label class="la-accessible" for="header-search">Tìm trên Lazi</label>
+        <input id="header-search" name="q" type="search" placeholder="Tìm kiếm…" maxlength="200">
+        <button type="submit" aria-label="Tìm kiếm">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+        </button>
+      </form>
+      <details class="la-menu">
+        <summary aria-label="Mở menu">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          Menu
+        </summary>
+        <nav aria-label="Điều hướng di động">
+          <a href="../">Home</a><a href="../blog/">Blog</a><a href="../su-viet/">Sử Việt</a><a href="../gfv/">Từ điển du lịch</a><a href="../contact/">Contact</a>
+        </nav>
+      </details>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1" class="la-inner cv-main">
+    <nav class="ls-breadcrumbs" aria-label="Đường dẫn trang">
+      <a href="../">Trang chủ</a><span aria-hidden="true">›</span><span aria-current="page">Cây văn hóa Việt Nam</span>
+    </nav>
+
+    <div class="cv-preview-notice" role="note">
+      <span class="cv-preview-dot" aria-hidden="true"></span>
+      Bản xem trước giao diện — nội dung minh họa, chưa kết nối Google Sheets
+    </div>
+
+    <header class="cv-hero">
+      <p class="ls-kicker">KHÁM PHÁ VĂN HÓA</p>
+      <h1 class="ls-title">Cây văn hóa Việt Nam</h1>
+      <p>Khám phá các giá trị, khái niệm và câu chuyện làm nên bản sắc Việt. Mỗi chủ đề mở ra nhiều góc nhìn và những mối liên hệ thú vị.</p>
+
+      <div class="cv-search-wrap">
+        <label for="cv-search" class="la-accessible">Tìm khái niệm văn hóa</label>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
+        <input id="cv-search" type="search" placeholder="Tìm khái niệm, phong tục, lễ hội..." autocomplete="off" spellcheck="false" maxlength="150">
+        <button id="cv-clear" type="button" aria-label="Xóa từ khóa" hidden>×</button>
+        <button class="cv-search-submit" id="cv-search-button" type="button" aria-label="Tìm kiếm">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.5 4.5"></path></svg>
+        </button>
+      </div>
+      <div class="cv-suggestions" aria-label="Gợi ý tìm kiếm">
+        <span>Gợi ý:</span>
+        <button type="button" data-choose="tet-nguyen-dan">Tết</button>
+        <button type="button" data-choose="dao-mau">Đạo Mẫu</button>
+        <button type="button" data-choose="banh-chung">Bánh chưng</button>
+        <button type="button" data-choose="pho-co-hoi-an">Hội An</button>
+      </div>
+    </header>
+
+    <section class="cv-explore" aria-labelledby="cv-explore-title">
+      <div class="cv-section-header">
+        <div>
+          <p class="ls-kicker">HỆ THỐNG KIẾN THỨC</p>
+          <h2 class="ls-subheading" id="cv-explore-title">Khám phá theo chủ đề</h2>
+        </div>
+        <p class="cv-muted">Chọn một chủ đề để xem các khái niệm và mối liên hệ.</p>
+      </div>
+
+      <div class="cv-mobile-picker">
+        <label for="cv-mobile-category">Chủ đề đang xem</label>
+        <select id="cv-mobile-category" aria-controls="cv-concept-list">
+          <option value="tin-nguong">Tín ngưỡng</option>
+        </select>
+      </div>
+
+      <div class="cv-explorer">
+        <nav class="cv-categories" aria-label="Nhóm văn hóa" id="cv-categories">
+          <h3>Chủ đề văn hóa</h3>
+          <button type="button" class="cv-category is-active" aria-current="true" data-category="tin-nguong"><span>Tín ngưỡng</span><span aria-hidden="true">›</span></button>
+          <button type="button" class="cv-category" data-category="phong-tuc"><span>Phong tục</span><span aria-hidden="true">›</span></button>
+          <button type="button" class="cv-category" data-category="le-hoi"><span>Lễ hội</span><span aria-hidden="true">›</span></button>
+          <button type="button" class="cv-category" data-category="nghe-thuat"><span>Nghệ thuật</span><span aria-hidden="true">›</span></button>
+          <button type="button" class="cv-category" data-category="am-thuc"><span>Ẩm thực</span><span aria-hidden="true">›</span></button>
+          <button type="button" class="cv-category" data-category="trang-phuc"><span>Trang phục</span><span aria-hidden="true">›</span></button>
+          <button type="button" class="cv-category" data-category="kien-truc"><span>Kiến trúc</span><span aria-hidden="true">›</span></button>
+          <button type="button" class="cv-category" data-category="doi-song"><span>Đời sống</span><span aria-hidden="true">›</span></button>
+        </nav>
+
+        <section class="cv-concepts" aria-label="Danh sách khái niệm">
+          <div class="cv-concepts-head">
+            <div>
+              <div class="cv-path"><span>Văn hóa Việt Nam</span><span aria-hidden="true">›</span><span id="cv-crumb">Tín ngưỡng</span></div>
+              <h3 id="cv-topic-title">Tín ngưỡng</h3>
+              <p id="cv-topic-desc">Tìm hiểu những hình thức tín ngưỡng và thực hành tâm linh trong đời sống văn hóa Việt Nam.</p>
+            </div>
+            <span id="cv-result-count" class="cv-count"></span>
+          </div>
+          <div class="cv-concept-list" id="cv-concept-list" aria-live="polite">
+            <button type="button" class="cv-concept is-selected" data-concept="dao-mau"><span><strong>Đạo Mẫu</strong><small>Tín ngưỡng thờ các vị Thánh Mẫu ở Việt Nam.</small></span><span aria-hidden="true">›</span></button>
+            <button type="button" class="cv-concept" data-concept="tho-cung-to-tien"><span><strong>Thờ cúng tổ tiên</strong><small>Truyền thống tưởng nhớ và tri ân các thế hệ đi trước.</small></span><span aria-hidden="true">›</span></button>
+            <button type="button" class="cv-concept" data-concept="hau-dong"><span><strong>Hầu đồng</strong><small>Nghi lễ gắn với thực hành tín ngưỡng thờ Mẫu.</small></span><span aria-hidden="true">›</span></button>
+          </div>
+        </section>
+
+        <aside class="cv-detail" id="cv-detail" aria-label="Tổng quan khái niệm">
+          <div class="cv-detail-top"><p class="cv-detail-kicker">TỔNG QUAN KHÁI NIỆM</p></div>
+          <h3>Đạo Mẫu</h3>
+          <span class="cv-tag">Tín ngưỡng</span>
+          <p>Đạo Mẫu là một hình thức tín ngưỡng dân gian của người Việt, gắn với việc tôn thờ các vị Thánh Mẫu.</p>
+          <p class="cv-detail-quiet">Chọn một khái niệm ở giữa để xem tóm tắt và những mối liên hệ.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="cv-bottom-copy" aria-labelledby="cv-bottom-title">
+      <h2 id="cv-bottom-title">Một chủ đề, nhiều kết nối</h2>
+      <p>Văn hóa không nằm trong những danh mục tách biệt. Một khái niệm có thể liên quan đồng thời đến tín ngưỡng, lễ hội, nghệ thuật hay đời sống cộng đồng. Cây văn hóa giúp bạn khám phá các kết nối đó theo cách tự nhiên, từ phần giải thích ngắn đến bài viết chuyên sâu.</p>
+      <p><a class="la-text-link" href="../category/van-hoa-viet-nam/">Xem thêm bài viết về văn hóa Việt Nam →</a></p>
+    </section>
+  </main>
+
+  <div class="cv-sheet-backdrop" id="cv-sheet-backdrop" hidden></div>
+  <section class="cv-mobile-sheet" id="cv-mobile-sheet" role="dialog" aria-modal="true" aria-label="Tổng quan khái niệm" aria-hidden="true" hidden>
+    <div class="cv-sheet-handle" aria-hidden="true"></div>
+    <button type="button" class="cv-sheet-close" id="cv-sheet-close" aria-label="Đóng bảng thông tin">×</button>
+    <div class="cv-sheet-body" id="cv-sheet-body"></div>
+  </section>
+
+  <footer class="la-footer">
+    <div class="la-inner">
+      <div class="la-footer-columns">
+        <div>
+          <div class="la-footer-brand">LaziVoyage</div>
+          <p>Khám phá Việt Nam qua những câu chuyện và hành trình.</p>
+        </div>
+        <div>
+          <h3>Khám phá</h3>
+          <a href="../blog/">Blog</a>
+          <a href="../su-viet/">Sử Việt</a>
+          <a href="../gfv/">Từ điển du lịch</a>
+        </div>
+        <div>
+          <h3>Liên hệ</h3>
+          <a href="../contact/">Contact</a>
+          <a href="mailto:lazi.voyage@gmail.com">lazi.voyage@gmail.com</a>
+        </div>
+      </div>
+      <div class="la-footer-bottom"><span>LaziVoyage — Bản xem trước Cây văn hóa</span><span>Dữ liệu minh họa · Không lập chỉ mục</span></div>
+    </div>
+  </footer>
+</body>
+</html>
