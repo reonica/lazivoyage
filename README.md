@@ -8,7 +8,7 @@ Các file chính nằm ngay ngoài cùng:
 | `style.css` | Giao diện desktop, tablet và mobile |
 | `script.js` | Carousel, tìm kiếm, lọc và các thao tác giao diện |
 | `assets/` | Hình ảnh và font |
-| `data/` | Dữ liệu tìm kiếm, Sử Việt, từ điển |
+| `data/` | Dữ liệu tìm kiếm và Sử Việt |
 | Các thư mục trang con | Mỗi trang có `index.html` riêng |
 | `sitemap.xml`, `rss.xml`, `robots.txt` | Các file hỗ trợ SEO |
 | `.github/workflows/pages.yml` | Tự triển khai website từ GitHub |
@@ -34,7 +34,7 @@ Mở `http://127.0.0.1:8080`. Đừng chỉ mở `index.html` bằng `file://` n
 
 ## Cập nhật
 
-Đây là bản HTML đã xuất của toàn bộ 211 trang. Bạn có thể sửa trực tiếp HTML/CSS/JS. Khi thêm bài hoặc đổi URL, cần cập nhật cả archive, `data/search-index.json`, sitemap và RSS. Với việc cập nhật thường xuyên, dùng bộ source `lazi-voyage-github.zip` đã gửi trước: nội dung ở `src`, build ra `dist` tự cập nhật các file liên quan.
+Đây là bản HTML đã xuất của toàn bộ 166 trang. Bạn có thể sửa trực tiếp HTML/CSS/JS. Khi thêm bài hoặc đổi URL, cần cập nhật cả archive, `data/search-index.json`, sitemap và RSS. Với việc cập nhật thường xuyên, dùng bộ source `lazi-voyage-github.zip` đã gửi trước: nội dung ở `src`, build ra `dist` tự cập nhật các file liên quan.
 
 Canonical và sitemap của gói này dùng `https://lazivoyage.com`, dành cho việc vận hành domain đó. Nếu dùng domain khác, cần thay domain trong các file HTML/XML và robots. Cấu hình domain/DNS trong nền tảng hosting.
 

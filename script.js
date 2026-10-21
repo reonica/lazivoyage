@@ -80,19 +80,6 @@
   const mq=matchMedia('(max-width:980px)');
   const updateDetails=()=>$$('[data-responsive-details]').forEach(node=>node.open=!mq.matches);
   updateDetails();mq.addEventListener('change',updateDetails);
-  const blogMenus=$$('.la-blog-menu');
-  blogMenus.forEach(dropdown=>dropdown.addEventListener('toggle',()=>{
-    if(dropdown.open)blogMenus.forEach(other=>{if(other!==dropdown)other.open=false;});
-  }));
-  document.addEventListener('click',event=>blogMenus.forEach(dropdown=>{
-    if(!dropdown.parentElement.contains(event.target))dropdown.open=false;
-  }));
-  document.addEventListener('keydown',event=>{
-    if(event.key==='Escape') {
-      const dropdown=blogMenus.find(item=>item.open);
-      if(dropdown){dropdown.open=false;$('summary',dropdown).focus();event.stopImmediatePropagation();}
-    }
-  });
   const menu=$('.la-menu');
   if(menu){document.addEventListener('click',e=>{if(!menu.contains(e.target))menu.open=false;});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menu.open){menu.open=false;$('summary',menu).focus();}});}
 
@@ -150,18 +137,9 @@
     [['Giai đoạn',item.period],['Vương triều',item.dynasty],['Người trị vì',item.ruler],['Niên hiệu',item.era],['Tên nước',item.country],['Loại sự kiện',item.type],['Địa điểm',item.location],['Ngày bắt đầu',item.startDate],['Ngày kết thúc',item.endDate],['Nguồn',item.source],['Trạng thái',item.verified?'Đã đánh dấu kiểm chứng trong dữ liệu nguồn':'Chưa đánh dấu kiểm chứng trong dữ liệu nguồn']].forEach(([label,value])=>field(info.list,label,value));
     body.append(info.details);article.append(create('p','ls-timeline-year',years),body);return article;
   }
-  function wordCard(item) {
-    const article=create('article','ls-word tool-word');article.id=item.id;
-    const mark=create('div','word-mark','Aa');mark.setAttribute('aria-hidden','true');
-    const body=create('div'),meta=create('p','ls-kicker',[item.type,item.grammar,item.domain].filter(Boolean).join(' · ')),title=create('h2','',item.word),pron=create('p','word-pronunciation',item.pronunciation),definition=create('p','',item.definition);
-    [meta,title,pron,definition].forEach(node=>node.lang='fr');body.append(meta,title,pron,create('p','word-translation',item.vietnamese),definition);
-    if(item.example){const quote=create('blockquote','',item.example);quote.lang='fr';body.append(quote);}
-    const info=detail('Cách dùng & từ liên quan');[['Collocations',item.collocations],['Notes d’usage',item.notes],['Synonymes',item.synonyms],['Famille lexicale',item.family],['Thème',item.theme]].forEach(([label,value])=>field(info.list,label,value,'fr'));
-    body.append(info.details);article.append(mark,body);return article;
-  }
-  const tool=$('[data-tool]');
+  const tool=$('[data-tool="history"]');
   if(tool) {
-    const kind=tool.dataset.tool,form=$('[data-tool-filters]',tool),status=$('[data-tool-status]',tool),results=$('[data-tool-results]',tool),pages=$('[data-tool-pages]',tool),size=Number(tool.dataset.toolSize);
+    const form=$('[data-tool-filters]',tool),status=$('[data-tool-status]',tool),results=$('[data-tool-results]',tool),pages=$('[data-tool-pages]',tool),size=Number(tool.dataset.toolSize);
     const input=$('[name="q"]',form),filter=$('[name="filter"]',form),secondary=$('[name="secondary"]',form);
     let generation=0,timer;
     async function run(page=1,updateURL=true,scroll=false) {
@@ -169,13 +147,13 @@
       const q=input.value.slice(0,200),f=filter.value,s=secondary.value;
       if(updateURL){const url=new URL(location.href);[['q',q],['filter',f],['secondary',s]].forEach(([k,v])=>v?url.searchParams.set(k,v):url.searchParams.delete(k));url.searchParams.set('p',String(page));history.replaceState({},'',url);}
       try {
-        const all=await getData(kind);if(id!==generation)return;
+        const all=await getData('history');if(id!==generation)return;
         const terms=norm(q).split(' ').filter(Boolean);
-        const found=all.filter(item=>(!f||(kind==='history'?item.period:item.theme)===f)&&(!s||(kind==='history'?item.start:item.type)===s)&&terms.every(term=>norm(Object.values(item).join(' ')).includes(term)));
+        const found=all.filter(item=>(!f||item.period===f)&&(!s||item.start===s)&&terms.every(term=>norm(Object.values(item).join(' ')).includes(term)));
         const total=Math.max(1,Math.ceil(found.length/size));page=Math.max(1,Math.min(Math.floor(Number(page))||1,total));
-        const slice=found.slice((page-1)*size,page*size);results.replaceChildren(...slice.map(kind==='history'?eventCard:wordCard));
+        const slice=found.slice((page-1)*size,page*size);results.replaceChildren(...slice.map(eventCard));
         if(!found.length)results.append(create('p','ls-note','Không tìm thấy kết quả phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.'));
-        status.textContent=found.length+' '+(kind==='history'?'sự kiện':'mục từ')+' · Trang '+page+' / '+total;
+        status.textContent=found.length+' sự kiện · Trang '+page+' / '+total;
         clientPager(pages,page,total,n=>run(n,true,true));if(scroll)scrollToResults(results);
       } catch {if(id===generation)status.textContent='Chưa tải được dữ liệu tra cứu. Bạn vẫn có thể đọc và chuyển trang bằng các liên kết bên dưới.';}
     }
