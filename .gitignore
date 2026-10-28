@@ -1,0 +1,12 @@
+.DS_Store
+.env
+.env.*
+cms/config.local.php
+cms/deployment-state.json
+uploads/cms/
+.cms-private/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+node_modules/
+test-results/

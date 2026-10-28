@@ -1,0 +1,3 @@
+# Netlify serves the admin interface; PHP runs on Vietnix.
+/cms/* /admin/backend-unavailable.json 200
+/tests/* /404.html 404

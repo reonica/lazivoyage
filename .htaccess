@@ -1,0 +1,15 @@
+# CMS redirects are inserted in a separate managed block on publication.
+Options -Indexes
+
+<IfModule mod_setenvif.c>
+  SetEnvIfNoCase Host "^sub\.lazivoyage\.com(?::[0-9]+)?$" CMS_STAGING=1
+</IfModule>
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Robots-Tag "noindex, nofollow, noarchive" env=CMS_STAGING
+</IfModule>
+
+<FilesMatch "^(?:\.env.*|.*\.(?:sqlite|sqlite-shm|sqlite-wal)|CMS\.md|DEPLOY-PRODUCTION\.md|deploy.*\.sh)$">
+  Require all denied
+</FilesMatch>

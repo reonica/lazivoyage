@@ -1,0 +1,7 @@
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: same-origin
+/cms/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store

@@ -1,0 +1,12 @@
+Options -Indexes
+<IfModule mod_headers.c>
+Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+<FilesMatch "^(?:config\.local\.php(?:\..*)?|console\.php)$">
+Require all denied
+</FilesMatch>
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^lib/ - [F,L]
+</IfModule>
