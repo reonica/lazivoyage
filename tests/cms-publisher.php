@@ -110,7 +110,13 @@ function publisher_real_content(): void
         publisher_assert(!$lost, 'Real article text, headings, tables, images and embeds are retained: ' . implode(', ', array_slice($lost, 0, 5)));
         $homeAfter = cms_dom((string)file_get_contents($root . '/index.html'));
         $homeMainAfter = cms_inner(cms_xpath_first(new DOMXPath($homeAfter), '//main'));
-        publisher_assert($homeMainBefore === $homeMainAfter, 'Real homepage main is preserved exactly after URL normalization');
+        foreach ([$homeBefore, $homeAfter] as $homeDoc) {
+            $homeXp = new DOMXPath($homeDoc);
+            foreach (iterator_to_array($homeXp->query('//*[contains(concat(" ",normalize-space(@class)," ")," la-faq-section ")]')) as $faqSection) { $faqSection->parentNode->removeChild($faqSection); }
+        }
+        $homeOutsideBefore = cms_inner(cms_xpath_first(new DOMXPath($homeBefore), '//main'));
+        $homeOutsideAfter = cms_inner(cms_xpath_first(new DOMXPath($homeAfter), '//main'));
+        publisher_assert($homeOutsideBefore === $homeOutsideAfter, 'Real homepage main outside the managed FAQ is preserved exactly after URL normalization');
         foreach (['index.html', 'blog/index.html'] as $verifiedPage) {
             $verifiedXp = new DOMXPath(cms_dom((string)file_get_contents($root . '/' . $verifiedPage)));
             publisher_assert(cms_meta($verifiedXp, 'google-site-verification') === $sourceVerification['google-site-verification'] && cms_meta($verifiedXp, 'msvalidate.01') === $sourceVerification['msvalidate.01'], 'Original Google and Bing verification survive first global publication: ' . $verifiedPage);
@@ -158,7 +164,7 @@ mkdir($root . '/su-viet', 0700, true);
 $fixture = static fn(string $title, string $content): string => '<!doctype html><html lang="vi"><head><meta charset="utf-8"><title>' . $title . '</title><meta name="description" content="Mô tả gốc"><meta name="google-site-verification" content="original-token"><link rel="stylesheet" href="../style.css"><script src="../script.js" defer></script></head><body><header class="la-header"><a href="../">Header cũ</a></header><main id="main"><h1>' . $title . '</h1><p class="ls-deck">Mô tả gốc</p><article class="ls-reading-body article-content">' . $content . '</article></main><footer class="la-footer"><form id="original-newsletter"><input name="email"></form>Footer cũ</footer></body></html>';
 file_put_contents($root . '/bai-mot/index.html', $fixture('Bài một', '<h2 id="muc">Điểm đến</h2><p>Nội dung gốc một.</p><a href="../tag/ha-giang/">Hà Giang</a>'));
 file_put_contents($root . '/bai-hai/index.html', $fixture('Bài hai', '<p>Nội dung gốc hai.</p>'));
-file_put_contents($root . '/index.html', '<!doctype html><html><head><title>Lazi Home</title></head><body><header class="la-header">Header cũ</header><main id="main" data-original="keep"><h1>Trang chủ</h1><form id="home-form"><input name="search"></form><section>Khối phức tạp</section></main><footer class="la-footer">Footer cũ</footer></body></html>');
+file_put_contents($root . '/index.html', '<!doctype html><html><head><title>Lazi Home</title><script type="application/ld+json">{"@type":"FAQPage","mainEntity":[]}</script></head><body><header class="la-header">Header cũ</header><main id="main" data-original="keep"><h1>Trang chủ</h1><form id="home-form"><input name="search"></form><section id="complex-home-block">Khối phức tạp</section><section class="la-inner la-faq-section"><div class="la-faq-heading"><h2 id="faq-title">Bạn muốn biết?</h2></div><div class="la-faq"><details><summary>Đi đâu?</summary><div class="la-faq-answer"><p>Đi <a href="/bai-mot/">Hà Giang.</a></p></div></details></div></section></main><footer class="la-footer">Footer cũ</footer></body></html>');
 file_put_contents($root . '/category/du-lich/index.html', '<html><head><title>Du lịch</title></head><body><h1>Du lịch</h1></body></html>');
 file_put_contents($root . '/su-viet/index.html', 'TOOL-DO-NOT-OVERWRITE');
 file_put_contents($root . '/sitemap.xml', '<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://lazivoyage.com/su-viet/</loc></url></urlset>');
@@ -174,7 +180,22 @@ try {
     $result = cms_import_existing($store);
     publisher_assert($result['imported']['posts'] === 2 && $result['imported']['pages'] === 1, 'Import posts and homepage with original URLs');
     publisher_assert(hash_file('sha256', $root . '/bai-mot/index.html') === $before, 'Import does not modify public HTML');
+    $initialFaq = $store->settings()['homeFaq'];
+    publisher_assert($initialFaq['initialized'] && count($initialFaq['items']) === 1 && $initialFaq['items'][0]['question'] === 'Đi đâu?' && $initialFaq['items'][0]['answer'] === 'Đi Hà Giang.', 'Explicit site import initializes homepage FAQ from visible questions and plain answers');
     publisher_assert(cms_import_existing($store)['imported']['posts'] === 0, 'Import is idempotent');
+    $faqSettings = $store->settings();
+    $brand = CMSStore::brandSeo();
+    $faqSettings['homeFaq'] = ['initialized' => true, 'enabled' => true, 'title' => 'Lazi giải đáp', 'items' => [
+        ['id' => 'faq-later', 'question' => 'Câu sau?', 'answer' => 'Trả lời sau.', 'enabled' => true, 'order' => 5],
+        ['id' => 'faq-first', 'question' => 'Câu đầu?', 'answer' => 'Câu trả lời <script>được coi là văn bản</script>.', 'enabled' => true, 'order' => 0],
+        ['id' => 'faq-hidden', 'question' => 'Câu ẩn?', 'answer' => 'Không được xuất bản.', 'enabled' => false, 'order' => 1],
+    ]];
+    $faqSettings['seo'] = [...$faqSettings['seo'], 'homeTitle' => $brand['homeTitle'], 'description' => $brand['description'], 'longDescription' => $brand['longDescription'], 'focusKeywords' => $brand['focusKeywords']];
+    $faqSettings['aio']['about'] = $brand['about'];
+    $faqSettings = $store->save('settings', $faqSettings);
+    $faqVersionBefore = $faqSettings['version'];
+    $faqReimport = cms_import_home_faq($store);
+    publisher_assert($faqReimport['record']['homeFaq'] === $faqSettings['homeFaq'] && $faqReimport['record']['version'] === $faqVersionBefore, 'Repeated FAQ import never overwrites saved edits or creates a revision');
     $posts = $store->all('posts');
     $one = array_values(array_filter($posts, fn($p) => $p['slug'] === 'bai-mot'))[0];
     $two = array_values(array_filter($posts, fn($p) => $p['slug'] === 'bai-hai'))[0];
@@ -193,6 +214,18 @@ try {
     $full = html_entity_decode((string)file_get_contents($root . '/bai-mot/index.html'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
     publisher_assert(str_contains($full, 'Bài một') && !str_contains($full, 'Tiêu đề bản nháp'), 'Global publish uses live snapshots, not saved drafts');
     publisher_assert(str_contains((string)file_get_contents($root . '/index.html'), 'id="home-form"'), 'Untouched complex homepage content is preserved');
+    $homeDoc = cms_dom((string)file_get_contents($root . '/index.html')); $homeXp = new DOMXPath($homeDoc);
+    $homeVisibleFaq = cms_home_faq_data($homeDoc);
+    publisher_assert(array_column($homeVisibleFaq['items'], 'question') === ['Câu đầu?', 'Câu sau?'] && $homeVisibleFaq['title'] === 'Lazi giải đáp', 'Homepage FAQ add/edit/order/hide controls render exactly the visible selection');
+    publisher_assert($homeXp->query('//*[@id="complex-home-block"]')->item(0)?->textContent === 'Khối phức tạp' && $homeXp->query('//script[not(@type="application/ld+json")]')->length === 0, 'FAQ publication preserves unrelated homepage sections and does not execute answer markup');
+    $homeGraph = json_decode(cms_xpath_first($homeXp, '//script[@type="application/ld+json"]')->textContent, true, 512, JSON_THROW_ON_ERROR)['@graph'];
+    $faqGraphs = array_values(array_filter($homeGraph, fn($node) => $node['@type'] === 'FAQPage'));
+    publisher_assert(count($faqGraphs) === 1 && count($faqGraphs[0]['mainEntity']) === 2 && array_column($faqGraphs[0]['mainEntity'], 'name') === array_column($homeVisibleFaq['items'], 'question') && $faqGraphs[0]['mainEntity'][0]['acceptedAnswer']['text'] === $homeVisibleFaq['items'][0]['answer'], 'Homepage FAQPage schema is unique and matches exact visible questions and answers');
+    publisher_assert($homeDoc->getElementsByTagName('title')->item(0)->textContent === $brand['homeTitle'] && cms_meta($homeXp, 'description') === $brand['description'] && cms_meta($homeXp, 'og:description') === $brand['longDescription'] && cms_meta($homeXp, 'twitter:description') === $brand['longDescription'], 'Homepage short and social SEO descriptions use the shared brand preset');
+    $websiteGraphs = array_values(array_filter($homeGraph, fn($node) => $node['@type'] === 'WebSite'));
+    publisher_assert($homeGraph[0]['description'] === $brand['about'] && $websiteGraphs[0]['keywords'] === $brand['focusKeywords'] && $homeXp->query('//meta[@name="keywords"]')->length === 0, 'Organization and WebSite schema carry plain brand context without meta-keywords');
+    $articleMeta = new DOMXPath(cms_dom((string)file_get_contents($root . '/bai-mot/index.html')));
+    publisher_assert(cms_meta($articleMeta, 'description') === 'Mô tả gốc', 'Homepage SEO preset preserves individual article descriptions');
     publisher_assert(str_contains($full, 'id="original-newsletter"'), 'Unchanged footer retains existing newsletter behavior');
     $published = cms_publish($store, ['collection' => 'posts', 'id' => $one['id']]);
     $html = html_entity_decode((string)file_get_contents($root . '/bai-mot/index.html'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -234,6 +267,11 @@ try {
     publisher_assert(strpos($snippetHtml, 'FIRST-ALLOWED') < strpos($snippetHtml, 'SECOND-ALLOWED'), 'Body-start snippets respect ascending order');
     publisher_assert(str_contains((string)file_get_contents($root . '/blog/index.html'), 'FIRST-ALLOWED'), 'Global snippets apply to public archives');
     publisher_assert(!str_contains(cms_preview($store, ['collection' => 'posts', 'id' => $one['id']]), 'FIRST-ALLOWED'), 'Preview never injects trusted code snippets');
+    $faqDisabled = $store->settings(); $faqDisabled['homeFaq']['enabled'] = false; $store->save('settings', $faqDisabled); cms_publish($store, []);
+    $disabledHome = (string)file_get_contents($root . '/index.html');
+    publisher_assert(!str_contains($disabledHome, 'la-faq-section') && !str_contains($disabledHome, 'FAQPage') && str_contains($disabledHome, 'complex-home-block'), 'Disabling homepage FAQ removes its section and schema while preserving other content');
+    $faqRemoved = $store->settings(); $faqRemoved['homeFaq']['enabled'] = true; $faqRemoved['homeFaq']['items'] = []; $store->save('settings', $faqRemoved); cms_publish($store, []);
+    publisher_assert(!str_contains((string)file_get_contents($root . '/index.html'), 'FAQPage'), 'Removing all homepage questions removes stale FAQ schema');
     $publicBeforeFailure = hash_file('sha256', $root . '/bai-mot/index.html');
     $snapshotBeforeFailure = hash_file('sha256', $temp . '/private/published.json');
     rename($root . '/blog/index.html', $temp . '/blog-before.html');

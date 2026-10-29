@@ -9,6 +9,7 @@ CMS nằm ở `/admin/`, backend PHP ở `/cms/`. Website công khai vẫn phụ
 - Trang/landing page: ảnh bìa, văn bản, ảnh, danh sách bài, FAQ, nút liên hệ và liên hệ qua email. Có thể sắp xếp/ẩn khối và chọn ẩn header/footer.
 - Thư viện ảnh: đồng bộ ảnh có sẵn trong `assets/images/` và `uploads/cms/`, upload JPEG/PNG/WebP/GIF, alt, chú thích và nguồn ảnh. Không nhận SVG hoặc mã thực thi. Đồng bộ giữ nguyên đường dẫn/file ảnh; chạy lại không tạo trùng và không ghi đè metadata đã sửa.
 - Header/footer: logo, menu, thông tin liên hệ, liên kết và bản quyền.
+- FAQ trang chủ: nhập câu hỏi đang hiển thị, thêm/sửa/xóa, sắp xếp và bật/tắt từng câu hoặc cả khu vực. Chỉ admin được sửa. FAQ riêng trong bài/trang vẫn được quản lý ở AIO của nội dung đó.
 - Mã chèn: head, đầu/cuối body, phạm vi URL, bật/tắt. Chỉ admin được sửa. Mã chèn không chạy trong trang quản trị hoặc iframe xem trước.
 - SEO/AIO: title/description/canonical/noindex, ảnh chia sẻ, thông tin tổ chức, xác minh Google/Bing, redirects, tóm tắt, nguồn, FAQ và ngày kiểm chứng. Kiểm tra nội dung là gợi ý biên tập, không phải điểm xếp hạng.
 - Tài khoản: admin tạo/sửa/khóa admin hoặc editor. Không có đăng ký công khai và không có mật khẩu mặc định. Hệ thống giữ ít nhất một admin hoạt động.
@@ -47,6 +48,10 @@ Lệnh thứ hai tạo cấu hình bí mật tại hosting và hiển thị mã 
 ## Lưu và xuất bản
 
 **Lưu nháp** chỉ lưu dữ liệu riêng; HTML công khai chưa thay đổi. **Xuất bản bài/trang** cập nhật nội dung đang chọn. **Áp dụng cấu hình website** cập nhật header/footer, SEO, mã chèn và các trang danh sách dựa trên nội dung đã xuất bản; không tự đưa toàn bộ bản nháp lên website.
+
+Trong **FAQ trang chủ**, chọn **Nhập FAQ đang hiển thị** trước lần chỉnh sửa đầu tiên để giữ các câu hỏi hiện có. Nhập lại không ghi đè FAQ đã quản lý trong CMS. **Lưu nháp FAQ** chưa thay đổi website; **Áp dụng lên website** lưu FAQ rồi áp dụng toàn bộ cấu hình website đã lưu, gồm cả header/footer, SEO và mã chèn. Schema FAQPage được tạo từ đúng những câu hỏi đang bật và hiển thị trên trang chủ.
+
+Trong **SEO & AIO**, **Nạp nội dung SEO Lazi** điền bản nội dung thương hiệu vào biểu mẫu để kiểm tra trước khi lưu. Mô tả ngắn giữ nguyên câu người quản trị cung cấp (142 ký tự Unicode); mô tả mở rộng được biên tập còn 244 ký tự từ phần giới thiệu dài. Toàn bộ ba đoạn gốc được lưu riêng ở **Giới thiệu đầy đủ về Lazi**. Hai từ khóa trọng tâm là `blog văn hoá việt` và `cẩm nang du lịch việt nam`. Chọn **Lưu cấu hình SEO**, sau đó áp dụng cấu hình website để cập nhật metadata công khai. Mô tả riêng của từng bài vẫn được giữ; phần giới thiệu đầy đủ dùng cho thông tin tổ chức và không tự thay nội dung trang Giới thiệu đã biên tập.
 
 CMS giữ bản chụp nội dung đã xuất bản tách khỏi bản đang sửa, cập nhật tìm kiếm/sitemap/RSS, và sao lưu các file trước khi ghi. Khôi phục một phiên bản nội dung tạo lại bản nháp; cần xuất bản lại nếu muốn áp dụng ra ngoài.
 
@@ -89,3 +94,9 @@ Các kiểm thử PHP dùng kho riêng/thư mục tạm, không sửa nội dung
 Nếu đã nhập bài/trang nhưng thư viện ảnh vẫn trống, cập nhật đồng thời 5 file mã hiện có sau từ GitHub: `admin/index.html`, `admin/admin.js`, `cms/api.php`, `cms/lib/Store.php`, `cms/lib/Publisher.php`. Chỉ thay mã CMS, giữ nguyên `cms/config.local.php`, kho dữ liệu riêng, `cms/deployment-state.json`, ảnh và HTML công khai.
 
 Tải lại `/admin/`, vào **Thư viện ảnh → Đồng bộ ảnh có sẵn**. Chỉ quản trị viên được thực hiện đồng bộ. Chức năng nhập từ website hiện tại cũng tự nhận ảnh kể từ bản cập nhật này. Không cần xuất bản lại bài/trang sau khi đồng bộ ảnh.
+
+## Cập nhật FAQ, SEO và sidebar cho website đã hoạt động
+
+Bản cập nhật này cần đúng 7 file mã hiện có: `style.css`, `admin/index.html`, `admin/admin.js`, `admin/admin.css`, `cms/api.php`, `cms/lib/Store.php`, `cms/lib/Publisher.php`. Sao lưu các file cũ trước khi ghi đè. Không upload các file HTML công khai từ GitHub đè lên website đã có dữ liệu CMS; metadata được áp dụng qua CMS để giữ nội dung đang dùng trên hosting.
+
+Sau upload, tải lại trang quản trị và bài blog bằng Cmd+Shift+R. Vào **FAQ trang chủ → Nhập FAQ đang hiển thị**, rồi **SEO & AIO → Nạp nội dung SEO Lazi → Lưu cấu hình SEO**. Cuối cùng trở lại **FAQ trang chủ → Áp dụng lên website** một lần để áp dụng cả FAQ và cấu hình SEO vừa lưu. Không cần tạo lại tài khoản hoặc nhập lại toàn bộ bài/trang.

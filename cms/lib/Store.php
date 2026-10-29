@@ -103,6 +103,8 @@ final class CMSStore
     public function save(string $collection, array $record, ?int $actorId = null, bool $internal = false): array
     {
         $this->collection($collection);
+        $hasHomeFaq = array_key_exists('homeFaq', $record);
+        $providedSeo = is_array($record['seo'] ?? null) ? $record['seo'] : [];
         $record = CMSValidator::record($collection, $record);
         $id = $collection === 'settings' ? 'site' : ($record['id'] ?? bin2hex(random_bytes(12)));
         if (!preg_match('/^[A-Za-z0-9_-]{1,96}$/D', (string) $id)) { throw new CMSException('ID không hợp lệ.'); }
@@ -112,6 +114,12 @@ final class CMSStore
             $old = $this->get($collection, $id);
             if (!$internal && $old && (!isset($record['version']) || (int) $record['version'] !== $old['version'])) {
                 throw new CMSException('Dữ liệu đã thay đổi ở phiên khác. Tải lại trước khi lưu để tránh ghi đè.', 409, 'version_conflict');
+            }
+            if ($collection === 'settings' && $old) {
+                if (!$hasHomeFaq && isset($old['homeFaq'])) { $record['homeFaq'] = $old['homeFaq']; }
+                foreach (['homeTitle', 'longDescription', 'focusKeywords'] as $field) {
+                    if (!array_key_exists($field, $providedSeo) && array_key_exists($field, $old['seo'] ?? [])) { $record['seo'][$field] = $old['seo'][$field]; }
+                }
             }
             if (in_array($collection, ['posts', 'pages', 'categories', 'tags'], true)) {
                 $peers = in_array($collection, ['posts', 'pages'], true) ? ['posts', 'pages'] : [$collection];
@@ -163,16 +171,28 @@ final class CMSStore
         } catch (Throwable $error) { if ($this->db->inTransaction()) { $this->db->rollBack(); } throw $error; }
     }
 
+    public static function brandSeo(): array
+    {
+        return [
+            'homeTitle' => 'Lazi Voyage — Blog văn hoá Việt & cẩm nang du lịch Việt Nam',
+            'description' => 'Blog văn hoá việt Lazi Voyage cung cấp góc nhìn đa dạng về lịch sử, văn hoá Việt Nam qua sự học tập, nghiên cứu không ngừng của người trẻ việt',
+            'longDescription' => 'Lazi Voyage là blog văn hoá Việt chia sẻ góc nhìn về lịch sử, ẩm thực, làng nghề, lễ hội và kiến trúc. Cùng những người trẻ yêu Việt Nam khám phá cẩm nang du lịch Việt Nam để mỗi hành trình không chỉ là đi, mà còn hiểu và cảm nhận giá trị Việt.',
+            'focusKeywords' => ['blog văn hoá việt', 'cẩm nang du lịch việt nam'],
+            'about' => "Lazi Voyage là một blog văn hóa Việt chuyên sâu, nơi những người đam mê khám phá và trân trọng giá trị Việt tìm thấy tiếng nói chung. Sứ mệnh của chúng tôi là mang đến cho độc giả một cái nhìn toàn diện và chân thực nhất về văn hóa Việt Nam qua từng điểm đến.\n\nKhác với các blog du lịch thông thường, Lazivoyage không chỉ cung cấp những cẩm nang du lịch Việt Nam chi tiết, mà còn đi sâu vào từng nét đặc trưng văn hóa: từ ẩm thực địa phương, làng nghề truyền thống, lễ hội độc đáo cho đến kiến trúc cổ kính. Mỗi bài viết là một hành trình kể chuyện, giúp bạn không chỉ đi mà còn hiểu và cảm nhận được tinh hoa của đất nước.\n\nĐược sáng lập bởi những người yêu Việt Nam, chúng tôi tin rằng du lịch là cách tốt nhất để kết nối với văn hóa và con người. Lazivoyage.com là cẩm nang đáng tin cậy dành cho những ai muốn trải nghiệm Việt Nam một cách trọn vẹn, chân thực và sâu sắc.",
+        ];
+    }
+
     public function settings(): array
     {
+        $brand = self::brandSeo();
         $defaults = ['id' => 'site', 'version' => 0, 'siteName' => 'Lazi Voyage', 'siteUrl' => 'https://lazivoyage.com', 'publishUrl' => 'https://sub.lazivoyage.com', 'environment' => 'test',
             'header' => ['logo' => '/assets/images/logo.webp', 'menu' => [['label' => 'Home', 'url' => '/'], ['label' => 'Blog', 'url' => '/blog/'], ['label' => 'Sử Việt', 'url' => '/su-viet/'], ['label' => 'Contact', 'url' => '/contact/']], 'sticky' => true, 'showSearch' => true],
             'footer' => ['description' => 'Những câu chuyện du lịch, văn hóa và cuộc sống Việt Nam.', 'email' => 'lazi.voyage@gmail.com', 'copyright' => '© Lazi Voyage', 'links' => []],
-            'seo' => ['titleTemplate' => '%title% | Lazi Voyage', 'description' => '', 'organizationName' => 'Lazi Voyage', 'sameAs' => [], 'googleVerification' => '', 'bingVerification' => ''], 'aio' => ['about' => '', 'editorialPolicy' => ''], 'redirects' => []];
+            'seo' => ['titleTemplate' => '%title% | Lazi Voyage', 'homeTitle' => $brand['homeTitle'], 'description' => $brand['description'], 'longDescription' => $brand['longDescription'], 'focusKeywords' => $brand['focusKeywords'], 'organizationName' => 'Lazi Voyage', 'sameAs' => [], 'googleVerification' => '', 'bingVerification' => ''], 'aio' => ['about' => $brand['about'], 'editorialPolicy' => ''], 'homeFaq' => ['initialized' => false, 'enabled' => true, 'title' => 'Bạn muốn biết?', 'items' => []], 'redirects' => []];
         $stored = $this->get('settings', 'site') ?? [];
         $result = array_replace($defaults, $stored);
         // Lists replace lists: a shorter menu must not resurrect default links.
-        foreach (['header', 'footer', 'seo', 'aio'] as $group) { $result[$group] = array_replace($defaults[$group], $stored[$group] ?? []); }
+        foreach (['header', 'footer', 'seo', 'aio', 'homeFaq'] as $group) { $result[$group] = array_replace($defaults[$group], $stored[$group] ?? []); }
         return $result;
     }
 
@@ -222,6 +242,30 @@ final class CMSStore
 
 final class CMSValidator
 {
+    public static function plainText(mixed $value, int $max = 1000): string
+    {
+        $value = trim(html_entity_decode(strip_tags(self::text($value, $max * 6)), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+        $length = preg_match_all('/./us', $value);
+        if ($length === false || $length > $max) { throw new CMSException('Văn bản vượt quá số ký tự cho phép.'); }
+        return $value;
+    }
+
+    public static function homeFaq(mixed $value): array
+    {
+        if (!is_array($value)) { throw new CMSException('Cấu hình FAQ trang chủ không hợp lệ.'); }
+        $items = []; $ids = [];
+        foreach (self::list($value['items'] ?? [], 100) as $index => $item) {
+            if (!is_array($item)) { throw new CMSException('Câu hỏi FAQ không hợp lệ.'); }
+            $id = self::text($item['id'] ?? ('faq-' . bin2hex(random_bytes(8))), 96);
+            if (!preg_match('/^[A-Za-z0-9_-]{1,96}$/D', $id) || isset($ids[$id])) { throw new CMSException('ID của câu hỏi FAQ không hợp lệ hoặc trùng nhau.'); }
+            $ids[$id] = true;
+            $question = self::plainText($item['question'] ?? '', 500); $answer = self::plainText($item['answer'] ?? '', 10000);
+            if ($question === '' || $answer === '') { throw new CMSException('Mỗi FAQ cần có câu hỏi và câu trả lời.'); }
+            $items[] = ['id' => $id, 'question' => $question, 'answer' => $answer, 'enabled' => (bool) ($item['enabled'] ?? true), 'order' => max(0, min(10000, (int) ($item['order'] ?? $index)))];
+        }
+        return ['initialized' => (bool) ($value['initialized'] ?? false), 'enabled' => (bool) ($value['enabled'] ?? true), 'title' => self::plainText($value['title'] ?? 'Bạn muốn biết?', 300), 'items' => $items];
+    }
+
     public static function mediaUrl(string $url): string
     {
         $upload = preg_match('~^/uploads/cms/[a-f0-9]{32}\.(?:jpg|png|webp|gif)$~D', $url);
@@ -342,8 +386,9 @@ final class CMSValidator
             $out['footer'] = ['description' => self::text($footer['description'] ?? '', 5000), 'email' => self::text($footer['email'] ?? '', 254), 'copyright' => self::text($footer['copyright'] ?? '', 500), 'links' => self::links($footer['links'] ?? [])];
             if ($out['footer']['email'] !== '' && !filter_var($out['footer']['email'], FILTER_VALIDATE_EMAIL)) { throw new CMSException('Email footer không hợp lệ.'); }
             $seo = is_array($value['seo'] ?? null) ? $value['seo'] : []; $aio = is_array($value['aio'] ?? null) ? $value['aio'] : [];
-            $out['seo'] = ['titleTemplate' => self::text($seo['titleTemplate'] ?? '%title% | Lazi Voyage', 500), 'description' => self::text($seo['description'] ?? '', 3000), 'organizationName' => self::text($seo['organizationName'] ?? 'Lazi Voyage', 500), 'sameAs' => array_map(static fn($url) => self::url($url, false), self::list($seo['sameAs'] ?? [], 50)), 'googleVerification' => self::text($seo['googleVerification'] ?? '', 300), 'bingVerification' => self::text($seo['bingVerification'] ?? '', 300)];
-            $out['aio'] = ['about' => self::text($aio['about'] ?? '', 10000), 'editorialPolicy' => self::text($aio['editorialPolicy'] ?? '', 20000)];
+            $out['seo'] = ['titleTemplate' => self::text($seo['titleTemplate'] ?? '%title% | Lazi Voyage', 500), 'homeTitle' => self::plainText($seo['homeTitle'] ?? '', 500), 'description' => self::plainText($seo['description'] ?? '', 3000), 'longDescription' => self::plainText($seo['longDescription'] ?? '', 5000), 'focusKeywords' => array_values(array_unique(array_map(static fn($word) => self::plainText($word, 150), self::list($seo['focusKeywords'] ?? [], 30)))), 'organizationName' => self::text($seo['organizationName'] ?? 'Lazi Voyage', 500), 'sameAs' => array_map(static fn($url) => self::url($url, false), self::list($seo['sameAs'] ?? [], 50)), 'googleVerification' => self::text($seo['googleVerification'] ?? '', 300), 'bingVerification' => self::text($seo['bingVerification'] ?? '', 300)];
+            $out['aio'] = ['about' => self::plainText($aio['about'] ?? '', 10000), 'editorialPolicy' => self::text($aio['editorialPolicy'] ?? '', 20000)];
+            $out['homeFaq'] = self::homeFaq($value['homeFaq'] ?? []);
             $out['redirects'] = []; $redirectMap = [];
             foreach (self::list($value['redirects'] ?? [], 500) as $redirect) {
                 if (!is_array($redirect)) { throw new CMSException('Chuyển hướng không hợp lệ.'); }

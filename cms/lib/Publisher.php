@@ -352,6 +352,77 @@ function cms_import_media(CMSStore $store): array
     });
 }
 
+/** Reads only the visible homepage FAQ section; unrelated page sections are untouched. */
+function cms_home_faq_data(DOMDocument $doc): array
+{
+    $xp = new DOMXPath($doc);
+    $section = cms_xpath_first($xp, '//*[contains(concat(" ",normalize-space(@class)," ")," la-faq-section ")]');
+    $result = ['initialized' => true, 'enabled' => true, 'title' => 'Bạn muốn biết?', 'items' => []];
+    if (!$section) { return $result; }
+    $heading = $xp->query('.//h2', $section)->item(0);
+    if ($heading) { $result['title'] = trim((string)preg_replace('/\s+/u', ' ', $heading->textContent)); }
+    foreach ($xp->query('.//details', $section) as $details) {
+        if ($details instanceof DOMElement && $details->hasAttribute('hidden')) { continue; }
+        $summary = $xp->query('./summary', $details)->item(0);
+        if (!$summary) { continue; }
+        $question = trim((string)preg_replace('/\s+/u', ' ', $summary->textContent));
+        $answerNode = $details->cloneNode(true);
+        foreach (iterator_to_array($answerNode->childNodes) as $child) {
+            if ($child instanceof DOMElement && strtolower($child->tagName) === 'summary') { $answerNode->removeChild($child); }
+        }
+        $answer = trim((string)preg_replace('/\s+/u', ' ', $answerNode->textContent));
+        if ($question === '' || $answer === '') { continue; }
+        $order = count($result['items']);
+        $result['items'][] = ['id' => 'faq-' . substr(hash('sha256', $question . ':' . $order), 0, 20), 'question' => $question, 'answer' => $answer, 'enabled' => true, 'order' => $order];
+    }
+    return $result;
+}
+
+function cms_import_home_faq(CMSStore $store, bool $alreadyLocked = false): array
+{
+    $import = function () use ($store): array {
+        $settings = $store->settings();
+        if (!empty($settings['homeFaq']['initialized'])) { return ['record' => $settings, 'imported' => 0, 'message' => 'FAQ đã được khởi tạo. Nội dung đã lưu được giữ nguyên.']; }
+        $path = cms_target($store, 'index.html');
+        if (!is_file($path)) { throw new RuntimeException('Không tìm thấy trang chủ để nhập FAQ.'); }
+        $settings['homeFaq'] = cms_home_faq_data(cms_dom((string)file_get_contents($path)));
+        $settings = $store->save('settings', $settings);
+        $count = count($settings['homeFaq']['items']);
+        $store->audit('content.import-faq', null, ['count' => $count]);
+        return ['record' => $settings, 'imported' => $count, 'message' => sprintf('Đã nhập %d câu hỏi trang chủ. Website công khai chưa thay đổi.', $count)];
+    };
+    return $alreadyLocked ? $import() : cms_locked($store, $import);
+}
+
+function cms_apply_home_faq(DOMDocument $doc, array $settings): void
+{
+    $faq = $settings['homeFaq'] ?? [];
+    if (empty($faq['initialized'])) { return; }
+    $xp = new DOMXPath($doc);
+    $existing = iterator_to_array($xp->query('//*[contains(concat(" ",normalize-space(@class)," ")," la-faq-section ")]'));
+    $items = array_values(array_filter($faq['items'] ?? [], fn($item) => !empty($item['enabled']) && trim((string)($item['question'] ?? '')) !== '' && trim((string)($item['answer'] ?? '')) !== ''));
+    usort($items, fn($a, $b) => ((int)($a['order'] ?? 0) <=> (int)($b['order'] ?? 0)) ?: strcmp((string)$a['id'], (string)$b['id']));
+    $html = '';
+    if (!empty($faq['enabled']) && $items) {
+        $html = '<section class="la-inner la-faq-section" aria-labelledby="faq-title"><div class="la-faq-heading"><h2 class="la-heading" id="faq-title">' . cms_html((string)($faq['title'] ?? 'Bạn muốn biết?')) . '</h2></div><div class="la-faq">';
+        foreach ($items as $item) {
+            $html .= '<details><summary>' . cms_html((string)$item['question']) . '</summary><div class="la-faq-answer"><p>' . nl2br(cms_html((string)$item['answer'])) . '</p></div></details>';
+        }
+        $html .= '</div></section>';
+    }
+    if ($existing) {
+        $first = array_shift($existing);
+        cms_replace_node($first, $html);
+        foreach ($existing as $node) { $node->parentNode?->removeChild($node); }
+    } elseif ($html !== '') {
+        $main = $doc->getElementsByTagName('main')->item(0);
+        if ($main) {
+            $fragment = cms_dom($html)->getElementsByTagName('section')->item(0);
+            if ($fragment) { $main->appendChild($doc->importNode($fragment, true)); }
+        }
+    }
+}
+
 function cms_import_existing(CMSStore $store): array
 {
     return cms_locked($store, function () use ($store): array {
@@ -447,6 +518,7 @@ function cms_import_existing(CMSStore $store): array
         }
         $media = cms_import_media_records($store);
         $counts['media'] = $media['added'];
+        $counts['faq'] = cms_import_home_faq($store, true)['imported'];
         if (!is_file($store->dataDir . '/chrome-baseline.json')) {
             cms_private_json($store->dataDir . '/chrome-baseline.json', $store->settings());
         }
@@ -659,14 +731,17 @@ function cms_replace_node(DOMNode $target, string $html): void
 function cms_render_document(CMSStore $store, array $record, string $collection, array $settings, array $posts, bool $preview = false): string
 {
     $path = cms_document_path($record, $collection);
+    $isHome = $collection === 'pages' && $path === 'index.html';
     $url = cms_record_url($record, $collection, $settings);
     $seo = $record['seo'] ?? [];
-    $title = (string)($seo['title'] ?? '');
+    $title = $isHome && trim((string)($settings['seo']['homeTitle'] ?? '')) !== '' ? (string)$settings['seo']['homeTitle'] : (string)($seo['title'] ?? '');
     if ($title === '') {
         $template = (string)($settings['seo']['titleTemplate'] ?? '{title} | {site}');
         $title = str_replace(['{title}','{site}','%title%','%site%'], [(string)$record['title'], (string)($settings['siteName'] ?? 'Lazi Voyage'), (string)$record['title'], (string)($settings['siteName'] ?? 'Lazi Voyage')], $template);
     }
     $description = (string)($seo['description'] ?? $record['excerpt'] ?? '');
+    if ($isHome && trim((string)($settings['seo']['description'] ?? '')) !== '') { $description = (string)$settings['seo']['description']; }
+    $socialDescription = $isHome && trim((string)($settings['seo']['longDescription'] ?? '')) !== '' ? (string)$settings['seo']['longDescription'] : $description;
     $canonical = cms_safe_url((string)($seo['canonical'] ?? ''));
     if (!preg_match('~^https?://~', $canonical)) {
         $canonical = $url;
@@ -746,6 +821,7 @@ function cms_render_document(CMSStore $store, array $record, string $collection,
             cms_replace_node($node, empty($record['hideFooter']) ? cms_footer($settings) : '');
         }
     }
+    if ($isHome) { cms_apply_home_faq($doc, $settings); }
     foreach (iterator_to_array($xp->query('//title | //meta[@name="description" or @name="robots" or starts-with(@name,"twitter:")] | //meta[starts-with(@property,"og:")] | //link[@rel="canonical"] | //script[@type="application/ld+json"]')) as $node) {
         $node->parentNode?->removeChild($node);
     }
@@ -764,10 +840,11 @@ function cms_render_document(CMSStore $store, array $record, string $collection,
     };
     $meta('description', $description);
     $meta('robots', $noindex ? 'noindex,follow' : 'index,follow,max-image-preview:large');
-    $meta('og:title', $title, true); $meta('og:description', $description, true); $meta('og:url', $canonical, true);
+    $meta('og:title', $title, true); $meta('og:description', $socialDescription, true); $meta('og:url', $canonical, true);
     $meta('og:site_name', (string)($settings['siteName'] ?? 'Lazi Voyage'), true);
     $meta('og:type', $collection === 'posts' ? 'article' : 'website', true);
     $meta('twitter:card', 'summary_large_image');
+    $meta('twitter:title', $title); $meta('twitter:description', $socialDescription);
     foreach (['googleVerification' => 'google-site-verification','bingVerification' => 'msvalidate.01'] as $field => $name) {
         if (!empty($settings['seo'][$field])) {
             foreach (iterator_to_array($xp->query('//meta[@name="' . $name . '"]')) as $old) {
@@ -787,7 +864,7 @@ function cms_render_document(CMSStore $store, array $record, string $collection,
     $link->setAttribute('rel', 'canonical'); $link->setAttribute('href', $canonical); $head->appendChild($link);
     $organization = ['@type' => 'Organization','@id' => rtrim((string)$settings['siteUrl'], '/') . '/#organization','name' => (string)($settings['seo']['organizationName'] ?? $settings['siteName'] ?? 'Lazi Voyage'),'url' => rtrim((string)$settings['siteUrl'], '/') . '/'];
     if (!empty($settings['aio']['about'])) {
-        $organization['description'] = (string)$settings['aio']['about'];
+        $organization['description'] = CMSValidator::plainText($settings['aio']['about'], 10000);
     }
     $sameAs = array_values(array_filter($settings['seo']['sameAs'] ?? [], fn($u) => is_string($u) && preg_match('~^https?://~', cms_safe_url($u))));
     if ($sameAs) {
@@ -809,8 +886,14 @@ function cms_render_document(CMSStore $store, array $record, string $collection,
         }
     }
     $graph = [$organization, $schema, ['@type' => 'BreadcrumbList','itemListElement' => [['@type' => 'ListItem','position' => 1,'name' => 'Trang chủ','item' => rtrim((string)$settings['siteUrl'], '/') . '/'],['@type' => 'ListItem','position' => 2,'name' => (string)$record['title'],'item' => $canonical]]]];
+    if ($isHome) {
+        $website = ['@type' => 'WebSite', '@id' => rtrim((string)$settings['siteUrl'], '/') . '/#website', 'name' => (string)($settings['siteName'] ?? 'Lazi Voyage'), 'url' => rtrim((string)$settings['siteUrl'], '/') . '/', 'inLanguage' => 'vi', 'publisher' => ['@id' => $organization['@id']]];
+        if (!empty($settings['seo']['focusKeywords'])) { $website['keywords'] = array_values($settings['seo']['focusKeywords']); }
+        $graph[] = $website;
+    }
     $faq = [];
-    foreach (($record['aio']['faq'] ?? []) as $item) {
+    $faqItems = $isHome ? cms_home_faq_data($doc)['items'] : ($record['aio']['faq'] ?? []);
+    foreach ($faqItems as $item) {
         if (!empty($item['question']) && !empty($item['answer'])) {
             $faq[] = ['@type' => 'Question','name' => (string)$item['question'],'acceptedAnswer' => ['@type' => 'Answer','text' => (string)$item['answer']]];
         }
