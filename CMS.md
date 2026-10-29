@@ -77,8 +77,7 @@ Khi chuyển sang `lazivoyage.com`, triển khai bộ code/HTML đã kiểm tra,
 
 ```bash
 php tests/cms-backend.php
-php tests/cms-publisher.php
-php tests/cms-media.php --real-content
+php tests/cms-publisher.php --real-content
 node --check admin/admin.js
 bash -n deploy-vietnix.sh deploy-cms-vietnix.sh
 ```
@@ -87,6 +86,6 @@ Các kiểm thử PHP dùng kho riêng/thư mục tạm, không sửa nội dung
 
 ## Cập nhật thư viện ảnh cho website đã nhập bài/trang
 
-Nếu đã nhập bài/trang nhưng thư viện ảnh vẫn trống, cập nhật đồng thời các file mã sau từ GitHub: `admin/index.html`, `admin/admin.js`, `cms/api.php`, `cms/lib/Store.php`, `cms/lib/Publisher.php` và file mới `cms/lib/Media.php`. Chỉ thay mã CMS, giữ nguyên `cms/config.local.php`, kho dữ liệu riêng, `cms/deployment-state.json`, ảnh và HTML công khai.
+Nếu đã nhập bài/trang nhưng thư viện ảnh vẫn trống, cập nhật đồng thời 5 file mã hiện có sau từ GitHub: `admin/index.html`, `admin/admin.js`, `cms/api.php`, `cms/lib/Store.php`, `cms/lib/Publisher.php`. Chỉ thay mã CMS, giữ nguyên `cms/config.local.php`, kho dữ liệu riêng, `cms/deployment-state.json`, ảnh và HTML công khai.
 
 Tải lại `/admin/`, vào **Thư viện ảnh → Đồng bộ ảnh có sẵn**. Chỉ quản trị viên được thực hiện đồng bộ. Chức năng nhập từ website hiện tại cũng tự nhận ảnh kể từ bản cập nhật này. Không cần xuất bản lại bài/trang sau khi đồng bộ ảnh.
