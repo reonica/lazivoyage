@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 if (!defined('CMS_INTERNAL')) { http_response_code(404); exit; }
+require_once __DIR__ . '/Media.php';
 
 /** Static publisher. Private snapshots deliberately separate drafts from live content. */
 function cms_html(string $value): string
@@ -259,7 +260,7 @@ function cms_import_existing(CMSStore $store): array
         if (!is_dir($sources) && !mkdir($sources, 0700, true)) {
             throw new RuntimeException('Không tạo được thư mục lưu bản gốc.');
         }
-        $counts = ['posts' => 0, 'pages' => 0, 'categories' => 0, 'tags' => 0, 'skipped' => 0];
+        $counts = ['posts' => 0, 'pages' => 0, 'categories' => 0, 'tags' => 0, 'skipped' => 0, 'media' => 0];
         $paths = [];
         foreach ($index as $item) {
             $paths[] = ['collection' => 'posts', 'path' => (string)$item['path'], 'item' => $item];
@@ -342,12 +343,14 @@ function cms_import_existing(CMSStore $store): array
                 $counts[$collection]++;
             }
         }
+        $media = cms_import_media_records($store);
+        $counts['media'] = $media['added'];
         if (!is_file($store->dataDir . '/chrome-baseline.json')) {
             cms_private_json($store->dataDir . '/chrome-baseline.json', $store->settings());
         }
         cms_private_json($store->dataDir . '/published.json', $live);
         $store->audit('content.import', null, $counts);
-        return ['imported' => $counts, 'message' => 'Đã nhập dữ liệu. Website công khai chưa thay đổi.'];
+        return ['imported' => $counts, 'media' => $media, 'message' => sprintf('Đã nhập dữ liệu và thêm %d ảnh vào thư viện. Website công khai chưa thay đổi.', $media['added'])];
     });
 }
 

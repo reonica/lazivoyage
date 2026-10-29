@@ -7,7 +7,7 @@ CMS nằm ở `/admin/`, backend PHP ở `/cms/`. Website công khai vẫn phụ
 - Bài viết: biên tập trực quan/HTML, bản nháp, ảnh đại diện, chuyên mục/tag, ngày đăng, SEO/AIO và lịch sử phiên bản.
 - Chuyên mục/tag: tên, slug, mô tả và SEO.
 - Trang/landing page: ảnh bìa, văn bản, ảnh, danh sách bài, FAQ, nút liên hệ và liên hệ qua email. Có thể sắp xếp/ẩn khối và chọn ẩn header/footer.
-- Thư viện ảnh: upload JPEG/PNG/WebP/GIF, alt, chú thích và nguồn ảnh. Không nhận SVG hoặc mã thực thi.
+- Thư viện ảnh: đồng bộ ảnh có sẵn trong `assets/images/` và `uploads/cms/`, upload JPEG/PNG/WebP/GIF, alt, chú thích và nguồn ảnh. Không nhận SVG hoặc mã thực thi. Đồng bộ giữ nguyên đường dẫn/file ảnh; chạy lại không tạo trùng và không ghi đè metadata đã sửa.
 - Header/footer: logo, menu, thông tin liên hệ, liên kết và bản quyền.
 - Mã chèn: head, đầu/cuối body, phạm vi URL, bật/tắt. Chỉ admin được sửa. Mã chèn không chạy trong trang quản trị hoặc iframe xem trước.
 - SEO/AIO: title/description/canonical/noindex, ảnh chia sẻ, thông tin tổ chức, xác minh Google/Bing, redirects, tóm tắt, nguồn, FAQ và ngày kiểm chứng. Kiểm tra nội dung là gợi ý biên tập, không phải điểm xếp hạng.
@@ -78,8 +78,15 @@ Khi chuyển sang `lazivoyage.com`, triển khai bộ code/HTML đã kiểm tra,
 ```bash
 php tests/cms-backend.php
 php tests/cms-publisher.php
+php tests/cms-media.php --real-content
 node --check admin/admin.js
 bash -n deploy-vietnix.sh deploy-cms-vietnix.sh
 ```
 
 Các kiểm thử PHP dùng kho riêng/thư mục tạm, không sửa nội dung đang phục vụ. Kiểm thử trình duyệt và backend thực hiện trên một bản copy riêng.
+
+## Cập nhật thư viện ảnh cho website đã nhập bài/trang
+
+Nếu đã nhập bài/trang nhưng thư viện ảnh vẫn trống, cập nhật đồng thời các file mã sau từ GitHub: `admin/index.html`, `admin/admin.js`, `cms/api.php`, `cms/lib/Store.php`, `cms/lib/Publisher.php` và file mới `cms/lib/Media.php`. Chỉ thay mã CMS, giữ nguyên `cms/config.local.php`, kho dữ liệu riêng, `cms/deployment-state.json`, ảnh và HTML công khai.
+
+Tải lại `/admin/`, vào **Thư viện ảnh → Đồng bộ ảnh có sẵn**. Chỉ quản trị viên được thực hiện đồng bộ. Chức năng nhập từ website hiện tại cũng tự nhận ảnh kể từ bản cập nhật này. Không cần xuất bản lại bài/trang sau khi đồng bộ ảnh.

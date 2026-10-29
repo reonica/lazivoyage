@@ -27,7 +27,7 @@ try {
     $store = new CMSStore(); $auth = new CMSAuth($store);
     $action = (string) ($_GET['action'] ?? 'session');
     $get = ['session', 'bootstrap', 'users', 'revisions', 'preview'];
-    $post = ['setup', 'login', 'logout', 'save', 'remove', 'user-save', 'password', 'upload', 'import', 'publish', 'restore'];
+    $post = ['setup', 'login', 'logout', 'save', 'remove', 'user-save', 'password', 'upload', 'import', 'import-media', 'publish', 'restore'];
     if (!in_array($action, array_merge($get, $post), true)) { throw new CMSException('Không tìm thấy chức năng.', 404, 'not_found'); }
     $expected = in_array($action, $get, true) ? 'GET' : 'POST';
     if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== $expected) { header('Allow: ' . $expected); throw new CMSException('Phương thức không hợp lệ.', 405, 'method'); }
@@ -94,9 +94,10 @@ try {
         catch (Throwable $error) { @unlink($dir . '/' . $filename); throw $error; }
         cms_reply(['record' => $record], 201);
     }
-    if (in_array($action, ['import', 'publish', 'preview'], true)) {
+    if (in_array($action, ['import', 'import-media', 'publish', 'preview'], true)) {
         if (!is_file(__DIR__ . '/lib/Publisher.php')) { throw new CMSException('Chưa cài bộ xuất bản CMS.', 503, 'publisher_missing'); }
         require_once __DIR__ . '/lib/Publisher.php';
+        if ($action === 'import-media') { $auth->requireUser(true); cms_input(); $store->limit('media-import:' . $user['id'], 20, 3600); cms_reply(cms_import_media($store)); }
         if ($action === 'import') { $auth->requireUser(true); cms_input(); $result = cms_import_existing($store); $store->audit('site.import', $user['id']); cms_reply(is_array($result) ? $result : ['ok' => true]); }
         if ($action === 'publish') { $auth->requireUser(true); $data = cms_input(); $result = cms_publish($store, $data); $store->audit('site.publish', $user['id'], ['id' => $data['id'] ?? null, 'collection' => $data['collection'] ?? null]); cms_reply(is_array($result) ? $result : ['ok' => true]); }
         $collection = (string) ($_GET['collection'] ?? 'posts'); $id = (string) ($_GET['id'] ?? '');

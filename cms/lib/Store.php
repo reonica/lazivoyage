@@ -222,6 +222,14 @@ final class CMSStore
 
 final class CMSValidator
 {
+    public static function mediaUrl(string $url): string
+    {
+        $upload = preg_match('~^/uploads/cms/[a-f0-9]{32}\.(?:jpg|png|webp|gif)$~D', $url);
+        $asset = preg_match('~^/assets/images/(?:[a-z0-9][a-z0-9_.-]*/)*[a-z0-9][a-z0-9_.-]*\.(?:jpe?g|png|webp|gif)$~iD', $url);
+        if (!$upload && !$asset) { throw new CMSException('Đường dẫn ảnh phải thuộc assets/images hoặc kho ảnh CMS.'); }
+        return $url;
+    }
+
     public static function text(mixed $value, int $max = 1000): string
     {
         if (!is_scalar($value) && $value !== null) { throw new CMSException('Trường văn bản không hợp lệ.'); }
@@ -321,7 +329,7 @@ final class CMSValidator
             $out['allowTest'] = (bool) ($value['allowTest'] ?? false);
         } elseif ($collection === 'media') {
             $out['name'] = self::text($value['name'] ?? '', 255); $out['url'] = self::url($value['url'] ?? '');
-            if (!preg_match('~^/uploads/cms/[a-f0-9]{32}\.(?:jpg|png|webp|gif)$~D', $out['url'])) { throw new CMSException('Đường dẫn ảnh không thuộc kho ảnh CMS.'); }
+            self::mediaUrl($out['url']);
             foreach (['alt', 'caption', 'source'] as $field) { $out[$field] = self::text($value[$field] ?? '', 2000); }
             $out['width'] = max(0, (int) ($value['width'] ?? 0)); $out['height'] = max(0, (int) ($value['height'] ?? 0)); $out['size'] = max(0, (int) ($value['size'] ?? 0));
         } elseif ($collection === 'settings') {
